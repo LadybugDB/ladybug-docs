@@ -1,4 +1,4 @@
-const GITHUB_API_URL = "https://api.github.com/repos/lbugdb/lbug/releases/latest";
+const GITHUB_API_URL = "https://api.github.com/repos/LadybugDB/ladybug/releases/latest";
 const fs = require('fs/promises');
 const path = require('path');
 
