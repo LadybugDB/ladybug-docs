@@ -5,7 +5,7 @@ description: Bulk import data from MATCH queries or LOAD FROM scans using subque
 
 You can bulk import the results of a subquery like `MATCH ....` by attaching
 that query as a subquery of a `COPY FROM` statement. Because the `COPY FROM` command is part of
-the Data Definition Language (DDL) in Kuzu, it follows SQL's semantics and hence, a subquery
+the Data Definition Language (DDL) in Ladybug, it follows SQL's semantics and hence, a subquery
 is passed within parentheses `()` that contains a `RETURN` clause.
 
 Copying using a subquery is useful when you need to transform data
@@ -43,11 +43,11 @@ object, such as a Pandas DataFrame using `LOAD FROM` and use its results as inpu
 command. This can be combined with predicate filters as follows:
 
 ```python
-import kuzu
+import lbug
 import pandas as pd
 
-db = kuzu.Database("example.kuzu")
-conn = kuzu.Connection(db)
+db = lbug.Database("example.lbug")
+conn = lbug.Connection(db)
 
 df = pd.DataFrame({
     "name": ["Adam", "Karissa", "Zhang", "Noura"],
@@ -62,7 +62,7 @@ conn.execute("COPY Person FROM (LOAD FROM df WHERE age < 30 RETURN *)")
 ```
 
 You can similarly use this approach to subset your data, for example, read only a part of your
-DataFrame, Parquet or CSV file, and then copy that subset into Kuzu.
+DataFrame, Parquet or CSV file, and then copy that subset into Ladybug.
 
 ```python
 # Load specific columns only

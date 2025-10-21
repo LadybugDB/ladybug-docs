@@ -1,6 +1,6 @@
 ---
 title: Example database
-description: Sample database schemas and datasets for learning and testing Kuzu features with real-world data examples.
+description: Sample database schemas and datasets for learning and testing Ladybug features with real-world data examples.
 ---
 
 The dataset used in the tutorials is a social network dataset of users and posts that has the following schema.
@@ -9,10 +9,10 @@ The dataset used in the tutorials is a social network dataset of users and posts
 
 ## Download the data
 
-You can download the zipped data by clicking on [this link](https://kuzudb.github.io/data/tutorial/tutorial_data.zip),
+You can download the zipped data by clicking on [this link](https://lbugdb.github.io/data/tutorial/tutorial_data.zip),
 or use curl as shown below. Once downloaded, unzip the files to your current working directory.
 ```bash
-curl -o tutorial_data.zip https://kuzudb.github.io/data/tutorial/tutorial_data.zip
+curl -o tutorial_data.zip https://lbugdb.github.io/data/tutorial/tutorial_data.zip
 unzip tutorial_data.zip
 ```
 
@@ -82,9 +82,9 @@ userID,postID
 11,1
 ```
 
-## Create Kuzu tables
+## Create Ladybug tables
 
-In the Kuzu CLI, let's create a node table for the `User`s in our dataset.
+In the Ladybug CLI, let's create a node table for the `User`s in our dataset.
 
 ```cypher
 // Create a node table for the `User`s in our dataset.
@@ -113,4 +113,4 @@ CREATE REL TABLE LIKES(From User To Post);
 
 ```
 
-This will create the required node and relationship tables in Kuzu.
+This will create the required node and relationship tables in Ladybug.

@@ -12,19 +12,19 @@ Please see [Install an extension](/extensions#install-an-extension) and [Load an
 
 ### Example dataset
 
-Download [iceberg_tables.zip](https://kuzudb.github.io/data/iceberg-extension/iceberg_tables.zip) and unzip
+Download [iceberg_tables.zip](https://lbugdb.github.io/data/iceberg-extension/iceberg_tables.zip) and unzip
 it to the `/tmp` directory.
 
 ```shell
 cd /tmp
-wget https://kuzudb.github.io/data/iceberg-extension/iceberg_tables.zip
+wget https://lbugdb.github.io/data/iceberg-extension/iceberg_tables.zip
 unzip iceberg_tables.zip
 ```
 
 ### Scan Iceberg tables
 
 `LOAD FROM` is a Cypher query that scans a file or object element by element, but doesn’t actually
-copy the data into a Kuzu table.
+copy the data into a Ladybug table.
 
 ```cypher
 LOAD FROM
@@ -48,13 +48,13 @@ RETURN *;
 
 :::note[Notes]
 - The `file_format` parameter is required here to explicitly specify the file format of the given path.
-Kuzu is currently not capable of autodetecting Iceberg tables.
+Ladybug is currently not capable of autodetecting Iceberg tables.
 - The `allow_moved_paths` option ensures that proper path resolution is performed, which allows scanning
 Iceberg tables that are moved from their original location.
 :::
 
-### Copy Iceberg tables into Kuzu
-You can use a `COPY FROM` statement to copy the contents of an Iceberg table into Kuzu.
+### Copy Iceberg tables into Ladybug
+You can use a `COPY FROM` statement to copy the contents of an Iceberg table into Ladybug.
 
 ```cypher
 CREATE NODE TABLE university (name STRING PRIMARY KEY, age INT64);
@@ -117,7 +117,7 @@ CALL ICEBERG_SNAPSHOTS('/tmp/iceberg_tables/lineitem_iceberg') RETURN *;
 
 ### Access Iceberg tables hosted on S3
 
-Kuzu also supports scanning and copying Iceberg tables hosted on S3.
+Ladybug also supports scanning and copying Iceberg tables hosted on S3.
 
 #### Configure the S3 connection
 
@@ -150,7 +150,7 @@ LOAD FROM
 RETURN *;
 ```
 
-#### Copy Iceberg tables from S3 into Kuzu
+#### Copy Iceberg tables from S3 into Ladybug
 
 ```cypher
 CREATE NODE TABLE student (ID INT64 PRIMARY KEY, name STRING);
@@ -221,5 +221,5 @@ RETURN *;
 
 Currently, the `iceberg` extension does not support:
 
-- Exporting to Iceberg tables from Kuzu is not supported.
+- Exporting to Iceberg tables from Ladybug is not supported.
 - Scanning/copying nested data (i.e., of type `STRUCT`) in Iceberg table columns is not supported.

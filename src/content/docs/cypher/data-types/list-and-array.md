@@ -3,7 +3,7 @@ title: LIST and ARRAY
 description: "Variable-length LIST and fixed-length ARRAY data types for storing collections"
 ---
 
-Kuzu supports two list-like data types: (i) variable-length lists, simply called `LIST`, and (ii)
+Ladybug supports two list-like data types: (i) variable-length lists, simply called `LIST`, and (ii)
 fixed-length lists, called `ARRAY`.
 
 :::note[Info]
@@ -13,7 +13,7 @@ fixed-length lists, called `ARRAY`.
 ## LIST
 
 A `LIST` can contain an arbitrary number of values, but they must all be of the same type. The types
-inside a `LIST` can be any of those supported by Kuzu, including nested/complex types. Some examples are shown below:
+inside a `LIST` can be any of those supported by Ladybug, including nested/complex types. Some examples are shown below:
 
 - `STRING[]` is a `LIST` of `STRING` values
 - `INT64[]` is a `LIST` of `INT64` values
@@ -41,7 +41,7 @@ RETURN ["Alice", "Bob"] AS l;
 If you try to create a `LIST` with elements that are of different types, an exception will be thrown.
 
 ```cypher
-kuzu> RETURN ["Alice", 1] AS l;
+lbug> RETURN ["Alice", 1] AS l;
 Error: Binder exception: Cannot bind LIST_CREATION with parameter type STRING and INT64.
 ```
 :::

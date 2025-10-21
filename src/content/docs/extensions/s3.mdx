@@ -47,7 +47,7 @@ You can alternatively set the following environment variables:
 The example below shows how to scan data from a Parquet file hosted on S3.
 
 ```cypher
-LOAD FROM 's3://kuzu-datasets/follows.parquet'
+LOAD FROM 's3://lbug-datasets/follows.parquet'
 RETURN *;
 ```
 
@@ -71,7 +71,7 @@ CREATE NODE TABLE tableOfTypes (
     PRIMARY KEY (id));
 
 COPY tableOfTypes
-FROM "s3://kuzu-datasets/types/types_50k_*.parquet";
+FROM "s3://lbug-datasets/types/types_50k_*.parquet";
 ```
 
 ### Writing data to S3
@@ -83,7 +83,7 @@ COPY (
     MATCH (p:Location)
     RETURN p.*
 )
-TO 's3://kuzu-datasets/saved/location.parquet';
+TO 's3://lbug-datasets/saved/location.parquet';
 ```
 
 ## Additional configurations

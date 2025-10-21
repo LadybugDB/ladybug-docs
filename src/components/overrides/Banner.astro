@@ -5,16 +5,16 @@
     const banner = document.getElementById('top-banner');
     const closeButton = document.getElementById('close-banner');
     if (!banner || !closeButton) return;
-    if (localStorage.getItem('kuzuBannerClosed') !== 'true') {
+    if (localStorage.getItem('lbugBannerClosed') !== 'true') {
       banner.classList.remove('hidden');
     }
-    if (localStorage.getItem('kuzuBannerClosed') === 'true') {
+    if (localStorage.getItem('lbugBannerClosed') === 'true') {
       banner.style.display = 'none';
       return;
     }
     closeButton.addEventListener('click', () => {
       banner.style.display = 'none';
-      localStorage.setItem('kuzuBannerClosed', 'true');
+      localStorage.setItem('lbugBannerClosed', 'true');
     });
   });
 </script> 

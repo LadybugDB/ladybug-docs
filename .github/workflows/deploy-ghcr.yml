@@ -29,4 +29,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/kuzudb/dev-docs:latest
+          tags: ghcr.io/lbugdb/dev-docs:latest

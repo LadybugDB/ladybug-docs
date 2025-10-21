@@ -1,11 +1,11 @@
 ---
 title: Testing framework
-description: "End-to-end testing framework for Kuzu using Cypher statements and .test files"
+description: "End-to-end testing framework for Ladybug using Cypher statements and .test files"
 ---
 
 ## Introduction
 
-Testing is a crucial part of Kuzu to ensure that existing features continue to work correctly 
+Testing is a crucial part of Ladybug to ensure that existing features continue to work correctly 
 while developing new features. In general, we avoid testing individual components of the code.
 Instead, we test most of the functionality with end-to-end (e2e) tests using Cypher statements.
 
@@ -42,7 +42,7 @@ TEST_F(basic, e2e_test_BasicTest) { ... }
 For test files stored in subdirectories of `test/test_files` or `extension/name_of_extension/test/test_files`, the test
 name in GTest will be prepended with the relative path delimited by `~`, followed by a dot and the test case name.
 
-The testing framework runs the Cypher statements specified in the test files and asserts that the actual output from Kuzu
+The testing framework runs the Cypher statements specified in the test files and asserts that the actual output from Ladybug
 matches the specified results.
 
 :::caution[Note]
@@ -126,7 +126,7 @@ $ ./e2e_test .
 ```
 
 Use `E2E_TEST_FILES_DIRECTORY` to set a different root directory for the test files, for example when running the tests
-from the root directory of the Kuzu repo:
+from the root directory of the Ladybug repo:
 ```bash
 # Run all tests inside test/test_files/copy
 $ E2E_TEST_FILES_DIRECTORY='.' ./build/relwithdebinfo/test/runner/e2e_test test/test_files/copy
@@ -174,9 +174,9 @@ dataset is required, use the keyword 'empty'.
 
 | Property                         | Description                                                                                                                  |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `-DATASET [type] [dataset name]` | **Type:** CSV, PARQUET, NPY, KUZU or empty<br/> **Dataset name:** the name of a directory inside `dataset/`. E.g., `tinysnb`. |
+| `-DATASET [type] [dataset name]` | **Type:** CSV, PARQUET, NPY, LBUG or empty<br/> **Dataset name:** the name of a directory inside `dataset/`. E.g., `tinysnb`. |
 
-The `KUZU` dataset type is a Kuzu database file.
+The `LBUG` dataset type is a Ladybug database file.
 
 Examples:
 
@@ -347,7 +347,7 @@ The following variables are available for use inside statements:
 
 | Variable                 | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `${KUZU_ROOT_DIRECTORY}` | Kuzu directory path                                                                                                                                              |
+| `${LBUG_ROOT_DIRECTORY}` | Ladybug directory path                                                                                                                                              |
 | `${DATABASE_PATH}`       | When a test case runs, a temporary database path is created and cleaned up after the suite finishes. This variable represents the path of the running test case. |
 
 ### Multiple queries
@@ -443,7 +443,7 @@ framework reads the query statements from the file and executes each query state
 You can use `-MULTI_COPY_RANDOM` to randomly split a copy-able source into multiple csv files, which will then each be copied to a specified table.
 
 ```
--MULTI_COPY_RANDOM 5 test "${KUZU_ROOT_DIRECTORY}/dataset/large-serial/serialtable_merged.csv"
+-MULTI_COPY_RANDOM 5 test "${LBUG_ROOT_DIRECTORY}/dataset/large-serial/serialtable_merged.csv"
 ```
 
 In the example above:
@@ -461,9 +461,9 @@ Optionally, a seed can be specified after the table name to stably split the sou
 To avoid having to manually write test results, the test runner supports an `E2E_REWRITE_TESTS=1` mode,
 similar to `sqllogictest`'s [completion mode](https://www.sqlite.org/sqllogictest/doc/trunk/about.wiki).
 When turned on, the test runner switches from checking the specified output in a test file against
-the actual output from Kuzu to overwriting the result section for each statement in the test file.
+the actual output from Ladybug to overwriting the result section for each statement in the test file.
 The mode is intended to make it easy to write new tests and also modify the existing tests if the
-output from Kuzu changes during development.
+output from Ladybug changes during development.
 
 The following example run shows how the tests are rewritten automatically:
 
@@ -513,14 +513,14 @@ $ E2E_REWRITE_TESTS=1 make test NUM_THREADS=7 TEST_JOBS=1
 ```
 
 :::caution[Info]
-If unordered results in a test file match the actual output from Kuzu, the
+If unordered results in a test file match the actual output from Ladybug, the
 existing results will be left unmodified to avoid unnecessary changes. However,
 on a mismatch, the correct results will be written in a sorted order.
 
 Currently, this mode does not support rewriting tests using the following features and are left unmodified:
 * Results stored in a file using `<FILE>:`.
 * Statement in statement blocks or batch statements.
-* Results containing variables such as `${KUZU_ROOT_DIRECTORY}`.
+* Results containing variables such as `${LBUG_ROOT_DIRECTORY}`.
 :::
 
 
@@ -596,7 +596,7 @@ RETURN a.ID, b.ID;
 
 | File                                                                                                                                                   | Description             |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
-| [set.test](https://github.com/kuzudb/kuzu/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/tinysnb/update_node/set.test#LL78C33-L78C36)   | ARANGE example          |
-| [copy_long_string.test](https://github.com/kuzudb/kuzu/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_long_string.test)       | REPEAT example          |
-| [copy_multiple_files.test](https://github.com/kuzudb/kuzu/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_multiple_files.test) | Using statement blocks  |
-| [catalog.test](https://github.com/kuzudb/kuzu/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/exceptions/catalog/catalog.test)           | Dealing with exceptions |
+| [set.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/tinysnb/update_node/set.test#LL78C33-L78C36)   | ARANGE example          |
+| [copy_long_string.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_long_string.test)       | REPEAT example          |
+| [copy_multiple_files.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_multiple_files.test) | Using statement blocks  |
+| [catalog.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/exceptions/catalog/catalog.test)           | Dealing with exceptions |

@@ -1,6 +1,6 @@
 ---
 title: "Create your first graph"
-description: "Get started with Kuzu by creating your first graph database and running basic queries"
+description: "Get started with Ladybug by creating your first graph database and running basic queries"
 ---
 
 <div class="font-nunito">
@@ -12,12 +12,12 @@ import { Code } from 'astro-expressive-code/components';
 export const CODE_BLOCKS = {
     java: {
         maven: `<dependency>
-    <groupId>com.kuzudb</groupId>
-    <artifactId>kuzu</artifactId>
+    <groupId>com.lbugdb</groupId>
+    <artifactId>lbug</artifactId>
     <version>${version}</version>
 </dependency>`,
-        groovy: `implementation 'com.kuzudb:kuzu:${version}'`,
-        kotlin: `implementation("com.kuzudb:kuzu:${version}")`,
+        groovy: `implementation 'com.lbugdb:lbug:${version}'`,
+        kotlin: `implementation("com.lbugdb:lbug:${version}")`,
         gradle: `plugins {
     id 'java'
     id 'application'
@@ -29,27 +29,27 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation 'com.kuzudb:kuzu:${version}'
+    implementation 'com.lbugdb:lbug:${version}'
 }`,
 },
 swift:`import PackageDescription
 
 let package = Package(
-    name: "kuzu-swift-example",
+    name: "lbug-swift-example",
     platforms: [
         .macOS(.v11),
         .iOS(.v14),
     ],
     dependencies: [
-        .package(url: "https://github.com/kuzudb/kuzu-swift/", branch: "${version}"),
+        .package(url: "https://github.com/LadybugDB/lbug-swift/", branch: "${version}"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
-            name: "kuzu-swift-example",
+            name: "lbug-swift-example",
             dependencies: [
-                .product(name: "Kuzu", package: "kuzu-swift"),
+                .product(name: "Ladybug", package: "lbug-swift"),
             ]
         ),
     ]
@@ -57,7 +57,7 @@ let package = Package(
 
 }
 
-Kuzu implements a **structured property graph model** and requires a pre-defined schema.
+Ladybug implements a **structured property graph model** and requires a pre-defined schema.
 
 - Schema definition involves node and relationship tables and their associated properties.
 - Each property key is strongly typed and these types must be explicitly declared.
@@ -66,13 +66,13 @@ Kuzu implements a **structured property graph model** and requires a pre-defined
 
 ## Persistence
 
-Kuzu supports both **on-disk** and **in-memory** modes of operation. The mode is determined
+Ladybug supports both **on-disk** and **in-memory** modes of operation. The mode is determined
 at the time of creating the database, as explained below.
 
 ### On-disk database
 
-If you specify a database path when initializing a database, such as `example.kuzu`, Kuzu
-will operate in the **on-disk** mode. In this mode, Kuzu persists all data to disk at the given
+If you specify a database path when initializing a database, such as `example.lbug`, Ladybug
+will operate in the **on-disk** mode. In this mode, Ladybug persists all data to disk at the given
 path. All transactions are logged to a Write-Ahead Log (WAL) and updates are periodically merged into the
 database files during checkpoints.
 
@@ -82,7 +82,7 @@ On-disk databases allow you to process larger-than-memory workloads, provide tra
 
 ### In-memory database
 
-If you omit the database path, by specifying it as `""` or `:memory:`, Kuzu will operate in the **in-memory** mode.
+If you omit the database path, by specifying it as `""` or `:memory:`, Ladybug will operate in the **in-memory** mode.
 In this mode, there are **no writes** to the WAL, and no data is persisted to disk. All data is lost when the process finishes.
 
 :::note[When do I need an in-memory database?]
@@ -92,22 +92,22 @@ and analysis on small datasets, without persisting the data to disk.
 
 ## Quick start
 
-Ensure that you have [installed](/installation) Kuzu using the CLI or your preferred client API.
-Also download the example CSV files [from our GitHub repo](https://github.com/kuzudb/kuzu/tree/master/dataset/demo-db/csv).
+Ensure that you have [installed](/installation) Ladybug using the CLI or your preferred client API.
+Also download the example CSV files [from our GitHub repo](https://github.com/LadybugDB/lbug/tree/master/dataset/demo-db/csv).
 
 ```bash
 mkdir ./data/
-curl -L -o ./data/city.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/city.csv
-curl -L -o ./data/user.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/user.csv
-curl -L -o ./data/follows.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/follows.csv
-curl -L -o ./data/lives-in.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/lives-in.csv
+curl -L -o ./data/city.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/city.csv
+curl -L -o ./data/user.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/user.csv
+curl -L -o ./data/follows.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/follows.csv
+curl -L -o ./data/lives-in.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/lives-in.csv
 ```
 
 In this example, we will create a graph with two node types, `User` and `City`, and two relationship types, `Follows` and `LivesIn`.
 
-Because Kuzu is an embedded database, there are no servers to set up. You can simply import the
-`kuzu` module in your code and run queries on the database. The examples for different client APIs
-below demonstrate how to create a graph schema and import data into an on-disk Kuzu database.
+Because Ladybug is an embedded database, there are no servers to set up. You can simply import the
+`lbug` module in your code and run queries on the database. The examples for different client APIs
+below demonstrate how to create a graph schema and import data into an on-disk Ladybug database.
 
 <Tabs syncKey="client-apis">
 
@@ -115,12 +115,12 @@ below demonstrate how to create a graph schema and import data into an on-disk K
 
 ```py
 # main.py
-import kuzu
+import lbug
 
 def main():
     # Create an empty on-disk database and connect to it
-    db = kuzu.Database("example.kuzu")
-    conn = kuzu.Connection(db)
+    db = lbug.Database("example.lbug")
+    conn = lbug.Connection(db)
 
     # Create schema
     conn.execute("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)")
@@ -270,12 +270,12 @@ f.since: [[2020,2020,2021,2022]]
 
 ```js
 // main.js
-const kuzu = require("kuzu");
+const lbug = require("lbug");
 
 (async () => {
   // Create an empty on-disk database and connect to it
-  const db = new kuzu.Database("example.kuzu");
-  const conn = new kuzu.Connection(db);
+  const db = new lbug.Database("example.lbug");
+  const conn = new lbug.Connection(db);
 
   // Create the tables
   await conn.query("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)");
@@ -312,11 +312,11 @@ const kuzu = require("kuzu");
 
 <TabItem label="Java">
 
-Kuzu's Java client library is available on [Maven Central](https://central.sonatype.com/artifact/com.kuzudb/kuzu). You can add the following snippet to your `pom.xml` to get it installed:
+Ladybug's Java client library is available on [Maven Central](https://central.sonatype.com/artifact/com.lbugdb/lbug). You can add the following snippet to your `pom.xml` to get it installed:
 
 <Code code={CODE_BLOCKS.java.maven} lang="xml"/>
 
-Alternatively, if you are using Gradle, you can add the following snippet to your build.gradle file to include Kuzu's Java client library:
+Alternatively, if you are using Gradle, you can add the following snippet to your build.gradle file to include Ladybug's Java client library:
 
 For Groovy DSL:
 <Code code={CODE_BLOCKS.java.groovy} lang="groovy"/>
@@ -346,12 +346,12 @@ The `Main.java` contains the following code:
 
 ```java
 // Main.java
-import com.kuzudb.*;
+import com.lbugdb.*;
 
 public class Main {
     public static void main(String[] args) throws ObjectRefDestroyedException {
         // Create an empty on-disk database and connect to it
-        Database db = new Database("example.kuzu");
+        Database db = new Database("example.lbug");
         Connection conn = new Connection(db);
         // Create tables.
         conn.query("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)");
@@ -393,19 +393,19 @@ Zhang|2022|Noura
 
 <TabItem label="Rust">
 
-When installing the `kuzu` crate via Cargo, it will by default build and statically link Kuzu's C++
+When installing the `lbug` crate via Cargo, it will by default build and statically link Ladybug's C++
 library from source. You can also link against the dynamic release libraries (see the Rust
-[crate docs](https://docs.rs/kuzu/latest/kuzu/) for details).
+[crate docs](https://docs.rs/lbug/latest/lbug/) for details).
 
 The `main.rs` file contains the following code:
 
 ```rust
 // main.rs
-use kuzu::{Connection, Database, Error, SystemConfig};
+use lbug::{Connection, Database, Error, SystemConfig};
 
 fn main() -> Result<(), Error> {
     // Create an empty on-disk database and connect to it
-    let db = Database::new("example.kuzu", SystemConfig::default())?;
+    let db = Database::new("example.lbug", SystemConfig::default())?;
     let conn = Connection::new(&db)?;
 
     // Create the tables
@@ -451,20 +451,20 @@ package main
 import (
     "fmt"
 
-    "github.com/kuzudb/go-kuzu"
+    "github.com/LadybugDB/go-lbug"
 )
 
 func main() {
     // Create an empty on-disk database and connect to it
-    systemConfig := kuzu.DefaultSystemConfig()
+    systemConfig := lbug.DefaultSystemConfig()
     systemConfig.BufferPoolSize = 1024 * 1024 * 1024
-    db, err := kuzu.OpenDatabase("example.kuzu", systemConfig)
+    db, err := lbug.OpenDatabase("example.lbug", systemConfig)
     if err != nil {
         panic(err)
     }
     defer db.Close()
 
-    conn, err := kuzu.OpenConnection(db)
+    conn, err := lbug.OpenConnection(db)
     if err != nil {
         panic(err)
     }
@@ -525,8 +525,8 @@ func main() {
 Initialize a new project using the Swift package manager:
 
 ```bash
-mkdir kuzu-swift-example
-cd kuzu-swift-example
+mkdir lbug-swift-example
+cd lbug-swift-example
 swift package init --type=executable
 ```
 
@@ -534,15 +534,15 @@ Update the `Package.swift` file:
 
 <Code code={CODE_BLOCKS.swift} lang="swift"/>
 
-This configuration sets the minimum deployment target and adds the `kuzu-swift` client as a dependency.
+This configuration sets the minimum deployment target and adds the `lbug-swift` client as a dependency.
 
 Next, replace the contents of `Sources/main.swift`:
 
 ```swift
-import Kuzu
+import Ladybug
 
 // Create an empty on-disk database and connect to it
-let db = try! Database("example.kuzu")
+let db = try! Database("example.lbug")
 let conn = try! Connection(db)
 
 // Create schema and load data
@@ -578,7 +578,7 @@ swift build -c release
 Copy the output executable so that it can access the `data` directory:
 
 ```bash
-cp ./.build/arm64-apple-macosx/release/kuzu-swift-example .
+cp ./.build/arm64-apple-macosx/release/lbug-swift-example .
 ```
 
 If you are using an Intel Mac or Linux, replace `arm64-apple-macosx` with your specific architecture.
@@ -586,7 +586,7 @@ If you are using an Intel Mac or Linux, replace `arm64-apple-macosx` with your s
 Finally, run the executable.
 
 ```bash
-./kuzu-swift-example
+./lbug-swift-example
 ```
 
 You should see the following output:
@@ -602,7 +602,7 @@ You should see the following output:
 
 <TabItem label="C++">
 
-The Kuzu C++ client is distributed as `so`/`dylib`/`dll+lib` library files along with a header file (`kuzu.hpp`).
+The Ladybug C++ client is distributed as `so`/`dylib`/`dll+lib` library files along with a header file (`lbug.hpp`).
 Once you've downloaded and extracted the C++ files into a directory, they are ready to use without
 any additional installation. You just need to specify the library and include file search paths.
 
@@ -610,10 +610,10 @@ For example, organize the files and directories as follows:
 
 ```bash
 ├── include
-│   ├── kuzu.hpp
+│   ├── lbug.hpp
 │   └── ......
 ├── lib
-│   ├── libkuzu.so / libkuzu.dylib / kuzu_shared.dll + kuzu_shared.lib
+│   ├── liblbug.so / liblbug.dylib / lbug_shared.dll + lbug_shared.lib
 │   └── ......
 ├── data
 │   ├── city.csv
@@ -628,9 +628,9 @@ For example, organize the files and directories as follows:
 // main.cpp
 #include <iostream>
 
-#include "include/kuzu.hpp"
+#include "include/lbug.hpp"
 
-using namespace kuzu::main;
+using namespace lbug::main;
 using namespace std;
 
 unique_ptr<QueryResult> runQuery(const string_view &query, unique_ptr<Connection> &connection) {
@@ -642,13 +642,13 @@ unique_ptr<QueryResult> runQuery(const string_view &query, unique_ptr<Connection
 }
 
 int main() {
-    // Remove example.kuzu
-    remove("example.kuzu");
-    remove("example.kuzu.wal");
+    // Remove example.lbug
+    remove("example.lbug");
+    remove("example.lbug.wal");
 
     // Create an empty on-disk database and connect to it
     SystemConfig systemConfig;
-    auto database = make_unique<Database>("example.kuzu", systemConfig);
+    auto database = make_unique<Database>("example.lbug", systemConfig);
     auto connection = make_unique<Connection>(database.get());
 
     // Create the schema.
@@ -681,7 +681,7 @@ int main() {
 ```cmake
 // CMakeLists.txt
 cmake_minimum_required(VERSION 3.15)
-project(kuzu-cpp)
+project(lbug-cpp)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -701,7 +701,7 @@ if(MSVC)
     # Remove the default to avoid warnings
     STRING(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     STRING(REPLACE "/EHs" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    # Store all libraries and binaries in the same directory so that kuzu_shared.dll is found at runtime
+    # Store all libraries and binaries in the same directory so that lbug_shared.dll is found at runtime
     set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/src")
     set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/src")
     # This is a workaround for regex stackoverflow issue on windows in gtest.
@@ -715,12 +715,12 @@ else()
     add_compile_options(-Wno-unknown-pragmas)
 endif()
 
-add_executable(kuzu-cpp main.cpp)
+add_executable(lbug-cpp main.cpp)
 
-# Find and link kuzu library
-find_library(KUZU_LIB kuzu PATHS ${CMAKE_SOURCE_DIR}/lib REQUIRED)
-target_link_libraries(kuzu-cpp PRIVATE ${KUZU_LIB})
-target_include_directories(kuzu-cpp PRIVATE ${CMAKE_SOURCE_DIR}/include)
+# Find and link lbug library
+find_library(LBUG_LIB lbug PATHS ${CMAKE_SOURCE_DIR}/lib REQUIRED)
+target_link_libraries(lbug-cpp PRIVATE ${LBUG_LIB})
+target_include_directories(lbug-cpp PRIVATE ${CMAKE_SOURCE_DIR}/include)
 ```
 
 Compile and run `main.cpp`:
@@ -728,7 +728,7 @@ Compile and run `main.cpp`:
 ```bash
 cmake -S . -B build
 cmake --build build
-./build/kuzu-cpp
+./build/lbug-cpp
 ```
 
 ```
@@ -742,17 +742,17 @@ Zhang | 2022 | Noura
 
 <TabItem label="C">
 
-The Kuzu C API shares the same `so`/`dylib` library files with the C++ API and can be used by
-including the C header file (`kuzu.h`).
+The Ladybug C API shares the same `so`/`dylib` library files with the C++ API and can be used by
+including the C header file (`lbug.h`).
 
 In this example, we assume that the `so`/`dylib`, the header file, the CSV files, and the C code file
 are all under the same directory:
 
 ```bash
 ├── include
-│   ├── kuzu.h
+│   ├── lbug.h
 │   └── ......
-├── libkuzu.so / libkuzu.dylib
+├── liblbug.so / liblbug.dylib
 ├── main.c
 ├── user.csv
 ├── city.csv
@@ -766,100 +766,100 @@ The file `main.c` contains the following code:
 // main.c
 #include <stdio.h>
 
-#include "include/kuzu.h"
+#include "include/lbug.h"
 
 int main()
 {
     // Create an empty on-disk database and connect to it
-    kuzu_database db;
-    kuzu_database_init("example.kuzu", kuzu_default_system_config(), &db);
+    lbug_database db;
+    lbug_database_init("example.lbug", lbug_default_system_config(), &db);
 
     // Connect to the database.
-    kuzu_connection conn;
-    kuzu_connection_init(&db, &conn);
+    lbug_connection conn;
+    lbug_connection_init(&db, &conn);
 
     // Create the schema.
-    kuzu_query_result result;
-    kuzu_connection_query(&conn, "CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)", &result);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_query(&conn, "CREATE NODE TABLE City(name STRING PRIMARY KEY, population INT64)", &result);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_query(&conn, "CREATE REL TABLE Follows(FROM User TO User, since INT64)", &result);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_query(&conn, "CREATE REL TABLE LivesIn(FROM User TO City)", &result);
-    kuzu_query_result_destroy(&result);
+    lbug_query_result result;
+    lbug_connection_query(&conn, "CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)", &result);
+    lbug_query_result_destroy(&result);
+    lbug_connection_query(&conn, "CREATE NODE TABLE City(name STRING PRIMARY KEY, population INT64)", &result);
+    lbug_query_result_destroy(&result);
+    lbug_connection_query(&conn, "CREATE REL TABLE Follows(FROM User TO User, since INT64)", &result);
+    lbug_query_result_destroy(&result);
+    lbug_connection_query(&conn, "CREATE REL TABLE LivesIn(FROM User TO City)", &result);
+    lbug_query_result_destroy(&result);
 
     // Load data.
-    kuzu_connection_query(&conn, "COPY User FROM \"user.csv\"", &result);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_query(&conn, "COPY City FROM \"city.csv\"", &result);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_query(&conn, "COPY Follows FROM \"follows.csv\"", &result);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_query(&conn, "COPY LivesIn FROM \"lives-in.csv\"", &result);
-    kuzu_query_result_destroy(&result);
+    lbug_connection_query(&conn, "COPY User FROM \"user.csv\"", &result);
+    lbug_query_result_destroy(&result);
+    lbug_connection_query(&conn, "COPY City FROM \"city.csv\"", &result);
+    lbug_query_result_destroy(&result);
+    lbug_connection_query(&conn, "COPY Follows FROM \"follows.csv\"", &result);
+    lbug_query_result_destroy(&result);
+    lbug_connection_query(&conn, "COPY LivesIn FROM \"lives-in.csv\"", &result);
+    lbug_query_result_destroy(&result);
 
     // Execute a simple query.
-    kuzu_connection_query(&conn, "MATCH (a:User)-[f:Follows]->(b:User) RETURN a.name, f.since, b.name;", &result);
+    lbug_connection_query(&conn, "MATCH (a:User)-[f:Follows]->(b:User) RETURN a.name, f.since, b.name;", &result);
 
     // Output query result.
-    kuzu_flat_tuple tuple;
-    kuzu_value value;
-    while (kuzu_query_result_has_next(&result))
+    lbug_flat_tuple tuple;
+    lbug_value value;
+    while (lbug_query_result_has_next(&result))
     {
-        kuzu_query_result_get_next(&result, &tuple);
+        lbug_query_result_get_next(&result, &tuple);
 
-        kuzu_flat_tuple_get_value(&tuple, 0, &value);
+        lbug_flat_tuple_get_value(&tuple, 0, &value);
         char *name = NULL;
-        kuzu_value_get_string(&value, &name);
-        kuzu_value_destroy(&value);
+        lbug_value_get_string(&value, &name);
+        lbug_value_destroy(&value);
 
-        kuzu_flat_tuple_get_value(&tuple, 1, &value);
+        lbug_flat_tuple_get_value(&tuple, 1, &value);
         int64_t since = 0;
-        kuzu_value_get_int64(&value, &since);
-        kuzu_value_destroy(&value);
+        lbug_value_get_int64(&value, &since);
+        lbug_value_destroy(&value);
 
-        kuzu_flat_tuple_get_value(&tuple, 2, &value);
+        lbug_flat_tuple_get_value(&tuple, 2, &value);
         char *name2 = NULL;
-        kuzu_value_get_string(&value, &name2);
-        kuzu_value_destroy(&value);
+        lbug_value_get_string(&value, &name2);
+        lbug_value_destroy(&value);
 
 
         printf("%s follows %s since %lld \n", name, name2, since);
         free(name);
         free(name2);
     }
-    kuzu_value_destroy(&value);
-    kuzu_flat_tuple_destroy(&tuple);
-    kuzu_query_result_destroy(&result);
-    kuzu_connection_destroy(&conn);
-    kuzu_database_destroy(&db);
+    lbug_value_destroy(&value);
+    lbug_flat_tuple_destroy(&tuple);
+    lbug_query_result_destroy(&result);
+    lbug_connection_destroy(&conn);
+    lbug_database_destroy(&db);
     return 0;
 }
 ```
 
-Compile and run `main.c`: Since we did not install the libkuzu as a system library, we need to
+Compile and run `main.c`: Since we did not install the liblbug as a system library, we need to
 override the linker search path to correctly compile the C code and run the compiled program.
 
 On Linux:
 
 ```bash
-env LIBRARY_PATH=. LD_LIBRARY_PATH=. gcc main.c -lkuzu
+env LIBRARY_PATH=. LD_LIBRARY_PATH=. gcc main.c -llbug
 env LIBRARY_PATH=. LD_LIBRARY_PATH=. ./a.out
 ```
 
 On macOS:
 
 ```bash
-env DYLD_LIBRARY_PATH=. LIBRARY_PATH=. clang main.c -lkuzu
+env DYLD_LIBRARY_PATH=. LIBRARY_PATH=. clang main.c -llbug
 env DYLD_LIBRARY_PATH=. LIBRARY_PATH=. ./a.out
 ```
 
 On Windows, the library file is passed to the compiler directly and the current directory is used
-automatically when searching for `kuzu_shared.dll` at runtime:
+automatically when searching for `lbug_shared.dll` at runtime:
 
 ```cmd
-cl main.c kuzu_shared.lib
+cl main.c lbug_shared.lib
 ./main.exe
 ```
 
@@ -874,25 +874,25 @@ Zhang follows Noura since 2022
 
 <TabItem label="Shell">
 
-When using the Kuzu CLI's shell, you can create an on-disk database by specifying a path after
-the `kuzu` command in the terminal.
+When using the Ladybug CLI's shell, you can create an on-disk database by specifying a path after
+the `lbug` command in the terminal.
 
 ```bash
-kuzu example.kuzu
+lbug example.lbug
 ```
 ```
-Opened the database example.kuzu in read-write mode.
+Opened the database example.lbug in read-write mode.
 Enter ":help" for usage hints.
-kuzu>
+lbug>
 ```
 
 :::note[In-memory database]
-You can create an in-memory database by omitting the path entirely, and just calling `kuzu`.
+You can create an in-memory database by omitting the path entirely, and just calling `lbug`.
 This will create a database in memory that will be lost when the process finishes.
 ```
 Opened the database under in-memory mode.
 Enter ":help" for usage hints.
-kuzu>
+lbug>
 ```
 :::
 
@@ -939,7 +939,7 @@ The following result is obtained:
 ---
 
 :::tip[Congratulations]
-You've now created and queried your first graph in Kuzu!
+You've now created and queried your first graph in Ladybug!
 :::
 
 </div>

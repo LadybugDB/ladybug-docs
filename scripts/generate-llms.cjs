@@ -4,9 +4,9 @@ const matter = require('gray-matter');
 
 const docsDir = path.join(__dirname, '../src/content/docs');
 const outputFile = path.join(__dirname, '../public/llms.txt');
-const baseUrl = 'https://kuzudb.github.io/docs';
+const baseUrl = 'https://lbugdb.github.io/docs';
 
-const header = "# Kuzu Documentation\n\n> Comprehensive documentation for Kuzu, an embedded (in-process), scalable, blazing fast graph database.\n";
+const header = "# Ladybug Documentation\n\n> Comprehensive documentation for Ladybug, an embedded (in-process), scalable, blazing fast graph database.\n";
 
 // Node structure for the directory tree
 function TreeNode(name, isDir, filePath = null, title = null) {

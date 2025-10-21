@@ -1,11 +1,11 @@
 ---
 title: Merge
-description: Insert small amounts of data into existing Kuzu tables using the MERGE clause with nodes and relationships.
+description: Insert small amounts of data into existing Ladybug tables using the MERGE clause with nodes and relationships.
 ---
 
 For small graphs (a few thousand nodes), the `MERGE` [Cypher clause](/cypher/data-manipulation-clauses)
 can be used to insert nodes and
-relationships to existing tables in Kuzu. These are similar to SQL's `INSERT` statements, but bear in
+relationships to existing tables in Ladybug. These are similar to SQL's `INSERT` statements, but bear in
 mind that they are slower than `COPY FROM`, which is optimized for bulk inserts. It's generally
 recommended that the `MERGE` clause is only used to do small additions or updates on a sporadic basis.
 
@@ -65,11 +65,11 @@ without having to merge the rows one by one (i.e., **without for loops**).
 Let's see this in action with an example.
 
 ```py
-import kuzu
+import lbug
 import pandas as pd
 
-db = kuzu.Database('example.kuzu')
-conn = kuzu.Connection(db)
+db = lbug.Database('example.lbug')
+conn = lbug.Connection(db)
 
 df = pd.DataFrame({
     'name': ['Karissa', 'Rhea', 'James'],

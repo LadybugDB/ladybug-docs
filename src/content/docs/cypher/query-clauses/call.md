@@ -15,7 +15,7 @@ The following table lists the built-in schema functions you can use with the `CA
 | Function | Description                                                                                  |
 | ----------- |----------------------------------------------------------------------------------------------|
 | `CURRENT_SETTING('setting')` | returns the value of the given setting                                                       |
-| `DB_VERSION()` | returns the version of Kuzu                                                                  |
+| `DB_VERSION()` | returns the version of Ladybug                                                                  |
 | `SHOW_TABLES()` | returns the name, type, comment of all tables in the database                                |
 | `SHOW_CONNECTION('tableName')` | returns the source/destination nodes for a relationship/relgroup in the database             |
 | `SHOW_ATTACHED_DATABASES()` | returns the name, type of all attached databases                                             |
@@ -120,10 +120,10 @@ CALL show_tables() RETURN *;
 │ id     │ name    │ type   │ database name │ comment │
 │ UINT64 │ STRING  │ STRING │ STRING        │ STRING  │
 ├────────┼─────────┼────────┼───────────────┼─────────┤
-│ 0      │ User    │ NODE   │ local(kuzu)   │         │
-│ 2      │ Follows │ REL    │ local(kuzu)   │         │
-│ 1      │ City    │ NODE   │ local(kuzu)   │         │
-│ 3      │ LivesIn │ REL    │ local(kuzu)   │         │
+│ 0      │ User    │ NODE   │ local(lbug)   │         │
+│ 2      │ Follows │ REL    │ local(lbug)   │         │
+│ 1      │ City    │ NODE   │ local(lbug)   │         │
+│ 3      │ LivesIn │ REL    │ local(lbug)   │         │
 └────────┴─────────┴────────┴───────────────┴─────────┘
 ```
 
@@ -215,7 +215,7 @@ CALL clear_warnings();
 ```
 
 ### SHOW_OFFICIAL_EXTENSIONS
-If you would like to know all official [extensions](/extensions) available in Kuzu, you can run the `SHOW_OFFICIAL_EXTENSIONS` function.
+If you would like to know all official [extensions](/extensions) available in Ladybug, you can run the `SHOW_OFFICIAL_EXTENSIONS` function.
 
 | Column | Description | Type |
 | ------ | ----------- | ---- |
@@ -243,12 +243,12 @@ CALL SHOW_OFFICIAL_EXTENSIONS() RETURN *;
 ```
 
 ### SHOW_LOADED_EXTENSIONS
-If you would like to know information about loaded extensions in Kuzu, you can run the `SHOW_LOADED_EXTENSIONS` function.
+If you would like to know information about loaded extensions in Ladybug, you can run the `SHOW_LOADED_EXTENSIONS` function.
 
 | Column | Description | Type |
 | ------ | ----------- | ---- |
 | extension name | name of the extension | STRING |
-| extension source | whether the extension is officially supported by the Kuzu team or is developed by a third-party | STRING |
+| extension source | whether the extension is officially supported by the Ladybug team or is developed by a third-party | STRING |
 | extension path | the path to the extension | STRING |
 
 ```cypher
@@ -260,12 +260,12 @@ CALL SHOW_LOADED_EXTENSIONS() RETURN *;
 │ extension name │ extension source │ extension path                                                              │
 │ STRING         │ STRING           │ STRING                                                                      │
 ├────────────────┼──────────────────┼─────────────────────────────────────────────────────────────────────────────┤
-│ FTS            │ OFFICIAL         │ extension/fts/build/libfts.kuzu_extension                                   │
+│ FTS            │ OFFICIAL         │ extension/fts/build/libfts.lbug_extension                                   │
 └────────────────┴──────────────────┴─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### SHOW_INDEXES
-If you would like to know information about indexes built in kuzu, you can run the `SHOW_INDEXES` function.
+If you would like to know information about indexes built in lbug, you can run the `SHOW_INDEXES` function.
 
 | Column | Description | Type |
 | ------ | ----------- | ---- |
@@ -293,7 +293,7 @@ CALL SHOW_INDEXES() RETURN *;
 ```
 
 ### SHOW_PROJECTED_GRAPHS
-To list all existing projected graphs in a Kuzu database, you can use the `SHOW_PROJECTED_GRAPHS` function.
+To list all existing projected graphs in a Ladybug database, you can use the `SHOW_PROJECTED_GRAPHS` function.
 
 | Column | Description | Type |
 | ------ | ----------- | ---- |
@@ -363,7 +363,7 @@ call PROJECTED_GRAPH_INFO('student') RETURN *;
 
 ## YIELD
 
-The `YIELD` clause in Kuzu allows renaming the return columns of a `CALL` function to prevent naming conflicts and improve readability.
+The `YIELD` clause in Ladybug allows renaming the return columns of a `CALL` function to prevent naming conflicts and improve readability.
 Usage:
 ```cypher
 CALL FUNC()
@@ -405,7 +405,7 @@ RETURN *;
 
 #### All columns must appear in the `YIELD` clause
 
-If the `YIELD` clause is used after a `CALL` function, **all** return columns of the function must appear in the `YIELD` clause. Using `YIELD *` is not allowed in Kuzu.
+If the `YIELD` clause is used after a `CALL` function, **all** return columns of the function must appear in the `YIELD` clause. Using `YIELD *` is not allowed in Ladybug.
 
 For example:
 ```cypher

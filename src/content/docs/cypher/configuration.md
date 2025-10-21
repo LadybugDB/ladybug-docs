@@ -3,7 +3,7 @@ title: Configuration
 description: "Connection and database configuration"
 ---
 
-The configuration of a Kuzu database or a connection to the database can be changed through a standalone `CALL`
+The configuration of a Ladybug database or a connection to the database can be changed through a standalone `CALL`
 statement, described in this section. Different from [the `CALL` clause](/cypher/query-clauses/call), this statement for changing
 configuration **cannot** be used with other query clauses, such as `RETURN`.
 
@@ -52,12 +52,12 @@ CALL enable_semi_mask=false;
 
 #### Configure home directory
 ```cypher
-CALL home_directory='/kuzu';
+CALL home_directory='/lbug';
 ```
 
 #### Configure file search path
 ```cypher
-CALL file_search_path='/kuzu/file';
+CALL file_search_path='/lbug/file';
 ```
 
 #### Configure progress bar
