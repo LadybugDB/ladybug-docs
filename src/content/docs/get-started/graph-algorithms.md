@@ -1,20 +1,20 @@
 ---
 title: "Run graph algorithms"
-description: "Execute graph algorithms in Kuzu using the algo extension or NetworkX integration"
+description: "Execute graph algorithms in Ladybug using the algo extension or NetworkX integration"
 ---
 
 Network analysis is a field of data science and graph theory focused on understanding the connections and interactions between entities in a graph. By examining the structure and dynamics of these networks, analysts can reveal important properties such as influential nodes, community structures, and information flow. Applications of network analysis span diverse areas, including identifying key players in social networks, detecting fraud in financial systems, optimizing transportation routes, and mapping the spread of diseases in healthcare.
 
-When working with Kuzu, you can run graph algorithms in one of two ways:
+When working with Ladybug, you can run graph algorithms in one of two ways:
 
-1. `algo` extension: Run graph algorithms natively in Kuzu via the [algo extension](/extensions/algo).
+1. `algo` extension: Run graph algorithms natively in Ladybug via the [algo extension](/extensions/algo).
 2. `networkx`: Use the [NetworkX](https://networkx.org/documentation/stable/reference/index.html) library
-in Python to run almost any graph algorithm on a Kuzu subgraph.
+in Python to run almost any graph algorithm on a Ladybug subgraph.
 
 ## Prepare the dataset
 
 A dataset of Nobel laureates and their mentorship network is provided
-[here](https://raw.githubusercontent.com/kuzudb/tutorials/main/src/network_analysis/data.zip).
+[here](https://raw.githubusercontent.com/lbugdb/tutorials/main/src/network_analysis/data.zip).
 Download the dataset to your local directory and unzip it.
 
 The nodes in the dataset are scholars who won Nobel prizes, as well as other
@@ -25,24 +25,24 @@ Medicine, and Economics are in the dataset.
 To run the code examples below, you can install the following dependencies:
 ```bash
 uv init
-uv add kuzu polars pyarrow networkx numpy scipy
+uv add lbug polars pyarrow networkx numpy scipy
 ```
 
 ## Create the graph
 
-First, initialize a connection to a new Kuzu database named `example.kuzu`:
+First, initialize a connection to a new Ladybug database named `example.lbug`:
 
 ```py
 from pathlib import Path
-import kuzu
+import lbug
 
-db_path = "example.kuzu"
+db_path = "example.lbug"
 
 Path(db_path).unlink(missing_ok=True)
 Path(db_path + ".wal").unlink(missing_ok=True)
 
-db = kuzu.Database(db_path)
-conn = kuzu.Connection(db)
+db = lbug.Database(db_path)
+conn = lbug.Connection(db)
 ```
 
 There will be one node table `Scholar`, and one relationship table `MENTORED` in this graph:
@@ -63,7 +63,7 @@ conn.execute(
 conn.execute("CREATE REL TABLE MENTORED(FROM Scholar TO Scholar);")
 ```
 
-The node data can be ingested into Kuzu using `MERGE` commands as follows:
+The node data can be ingested into Ladybug using `MERGE` commands as follows:
 ```py
 res = conn.execute(
     """
@@ -98,34 +98,34 @@ Merged 3384 scholar nodes into the database
 Merged 5657 mentorship relationships into the database
 ```
 
-The resulting graph can be visualized using [Kuzu Explorer](/visualization/kuzu-explorer),
+The resulting graph can be visualized using [Ladybug Explorer](/visualization/lbug-explorer),
 and shows rich connections between scholars who mentored one another.
 
 <img src="/img/graph-algorithms/mentorship-graph.png" />
 
 Now that you've loaded the mentorship graph, you're ready to run graph algorithms on it!
 
-## Method 1: Kuzu `algo` extension
+## Method 1: Ladybug `algo` extension
 
-The first method to run a graph algorithm natively in Kuzu is using the `algo` extension.
+The first method to run a graph algorithm natively in Ladybug is using the `algo` extension.
 
 #### Install and load the extension
 
 ```py
-import kuzu
+import lbug
 
-db_path = "example.kuzu"
+db_path = "example.lbug"
 
-db = kuzu.Database(db_path)
-conn = kuzu.Connection(db)
+db = lbug.Database(db_path)
+conn = lbug.Connection(db)
 
-# Install and load the Kuzu algo extension
+# Install and load the Ladybug algo extension
 conn.execute("INSTALL algo; LOAD algo;")
 ```
 
 #### Project a subgraph
 
-When using the `algo` extension in Kuzu, graph algorithms run
+When using the `algo` extension in Ladybug, graph algorithms run
 on a [projected subgraph](/extensions/algo/#projected-graphs).
 
 ```py
@@ -146,9 +146,9 @@ res = conn.execute(
 pagerank_df = res.get_as_pl()
 ```
 
-#### Write results to Kuzu
+#### Write results to Ladybug
 
-The above steps computed the PageRank metrics for the nodes, but didn't persist them to the Kuzu database.
+The above steps computed the PageRank metrics for the nodes, but didn't persist them to the Ladybug database.
 To do this, you can use the `pagerank_df` DataFrame to write the PageRank scores to the `Scholar` node table.
 
 To ingest the data back in, first run `ALTER TABLE` to add a new column
@@ -170,10 +170,10 @@ conn.execute(
     SET s.pagerank = pagerank;
     """
 )
-print("Finished adding graph algorithm metric scores to Kuzu database")
+print("Finished adding graph algorithm metric scores to Ladybug database")
 ```
 
-You can test that the results were ingested correctly in Kuzu by running the
+You can test that the results were ingested correctly in Ladybug by running the
 following query:
 
 ```py
@@ -202,7 +202,7 @@ print(res.get_as_pl())
 └────────────────────────┴────────────┘
 ```
 
-You can also run the following query in Kuzu Explorer to visualize the tree structure that led to the
+You can also run the following query in Ladybug Explorer to visualize the tree structure that led to the
 person with the highest PageRank score:
 
 ```py
@@ -224,33 +224,33 @@ Niels Bohr, Ernest Rutherford, J.J. Thomson, Edward Teller, and Linus Pauling.
 
 ## Method 2: NetworkX
 
-You can also run graph algorithms via NetworkX. This involves transforming a Kuzu subgraph into
-a NetworkX graph object, running the algorithm on it, and then writing the results back to Kuzu.
+You can also run graph algorithms via NetworkX. This involves transforming a Ladybug subgraph into
+a NetworkX graph object, running the algorithm on it, and then writing the results back to Ladybug.
 
 :::note[Note]
-Running a graph algorithm in NetworkX will be slower than using Kuzu's `algo` extension, due to
+Running a graph algorithm in NetworkX will be slower than using Ladybug's `algo` extension, due to
 additional overhead in dealing with Python objects, but NetworkX can be a useful fallback when
-you want to run a graph algorithm that's not yet supported in Kuzu. It's trivial to transform
-a NetworkX algorithm result into a Pandas/Polars DataFrame and write it back to Kuzu.
+you want to run a graph algorithm that's not yet supported in Ladybug. It's trivial to transform
+a NetworkX algorithm result into a Pandas/Polars DataFrame and write it back to Ladybug.
 :::
 
-First, obtain a connection to the existing `example.kuzu` database:
+First, obtain a connection to the existing `example.lbug` database:
 
 ```py
-import kuzu
+import lbug
 
-db_path = "example.kuzu"
+db_path = "example.lbug"
 
-db = kuzu.Database(db_path)
-conn = kuzu.Connection(db)
+db = lbug.Database(db_path)
+conn = lbug.Connection(db)
 ```
 
 #### Create a NetworkX graph
 
-The first step is to extract a subgraph from Kuzu and convert it to a NetworkX graph object.
+The first step is to extract a subgraph from Ladybug and convert it to a NetworkX graph object.
 
 ```py
-# Convert a Kuzu subgraph to a NetworkX graph
+# Convert a Ladybug subgraph to a NetworkX graph
 res = conn.execute(
     """
     MATCH (a:Scholar)-[b:MENTORED]->(c:Scholar)
@@ -268,16 +268,16 @@ import polars as pl
 
 pageranks = nx.pagerank(nx_graph)
 # NetworkX prefixes the node label to the results
-# This step cleans up the naming so that we can import it back into Kuzu
+# This step cleans up the naming so that we can import it back into Ladybug
 pagerank_df = (
     pl.DataFrame({"name": k, "metric": v} for k, v in pageranks.items())
     .with_columns(pl.col("name").str.replace("Scholar_", "").alias("name"))
 )
 ```
 The results from NetworkX are transformed into a Polars DataFrame and the columns
-are renamed appropriately, to match with the node table's columns in Kuzu.
+are renamed appropriately, to match with the node table's columns in Ladybug.
 
-#### Write NetworkX results to Kuzu
+#### Write NetworkX results to Ladybug
 
 To ingest the data back in, first run `ALTER TABLE` to add a new column
 `pagerank` to the `Scholar` node table. Then, scan the data from the Polars
@@ -294,10 +294,10 @@ conn.execute(
     SET s.pagerank = metric;
     """
 )
-print("Finished adding graph algorithm metric scores to Kuzu database")
+print("Finished adding graph algorithm metric scores to Ladybug database")
 ```
 
-We can test that the results were ingested correctly in Kuzu by running the
+We can test that the results were ingested correctly in Ladybug by running the
 following Cypher query:
 
 ```py
@@ -335,7 +335,7 @@ of the betweenness centrality algorithm run on the same graph.
 # Run betweenness centrality
 bc_results = nx.betweenness_centrality(nx_graph)
 # NetworkX prefixes the node label to the results
-# This step cleans up the naming so that we can import it back into Kuzu
+# This step cleans up the naming so that we can import it back into Ladybug
 betweenness_centrality_df = (
     pl.DataFrame({"name": k, "metric": v} for k, v in bc_results.items())
     .with_columns(pl.col("name").str.replace("Scholar_", "").alias("name"))
@@ -346,7 +346,7 @@ The following command adds a new column `betweenness_centrality` to the `Scholar
 ```py
 conn.execute("ALTER TABLE Scholar ADD IF NOT EXISTS betweenness_centrality DOUBLE DEFAULT 0.0;")
 ```
-Then, write the results back to the Kuzu database as before:
+Then, write the results back to the Ladybug database as before:
 ```py
 conn.execute(
     """
@@ -355,7 +355,7 @@ conn.execute(
     SET s.betweenness_centrality = metric;
     """
 )
-print("Finished adding graph algorithm metric scores to Kuzu database")
+print("Finished adding graph algorithm metric scores to Ladybug database")
 ```
 
 The query below shows the top 5 Physics laureates with the highest betweenness centrality scores and
@@ -404,9 +404,9 @@ By using centrality metrics like PageRank and betweenness centrality to analyze 
 the data. This demonstrates the power of graph algorithms and network analysis in uncovering insights from
 complex data.
 
-For performance and scalability, it's recommended to use Kuzu's native `algo` extension if your algorithm of choice
+For performance and scalability, it's recommended to use Ladybug's native `algo` extension if your algorithm of choice
 is available. If not, you can always fall back to using NetworkX, which has a far more extensive suite of
 graph algorithms.
 
 To reproduce the analysis shown in this tutorial, see the code
-[here](https://github.com/kuzudb/tutorials/tree/main/src/network_analysis).
+[here](https://github.com/LadybugDB/tutorials/tree/main/src/network_analysis).

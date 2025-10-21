@@ -1,64 +1,64 @@
 ---
 title: Python API
-description: "Use Kuzu embedded graph database in Python applications with the official Python API"
+description: "Use Ladybug embedded graph database in Python applications with the official Python API"
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Kuzu provides a Python package that you can install via PyPI. A full list of the available functions and classes
+Ladybug provides a Python package that you can install via PyPI. A full list of the available functions and classes
 can be found in the Python API documentation, linked below.
 
 <LinkCard
   title="Python API source documentation"
-  href="https://kuzudb.github.io/api-docs/python"
+  href="https://lbugdb.github.io/api-docs/python"
 />
 
 ## Sync and Async APIs
 
-Kuzu provides both a synchronous and an asynchronous Python API. The synchronous API is the default
+Ladybug provides both a synchronous and an asynchronous Python API. The synchronous API is the default
 and is more convenient to use.
 
-Download the [CSV files](https://github.com/kuzudb/kuzu/tree/master/dataset/demo-db/csv) used in the examples below:
+Download the [CSV files](https://github.com/LadybugDB/lbug/tree/master/dataset/demo-db/csv) used in the examples below:
 ```bash
 mkdir ./data/
-curl -L -o ./data/city.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/city.csv
-curl -L -o ./data/user.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/user.csv
-curl -L -o ./data/follows.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/follows.csv
-curl -L -o ./data/lives-in.csv https://raw.githubusercontent.com/kuzudb/kuzu/refs/heads/master/dataset/demo-db/csv/lives-in.csv
+curl -L -o ./data/city.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/city.csv
+curl -L -o ./data/user.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/user.csv
+curl -L -o ./data/follows.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/follows.csv
+curl -L -o ./data/lives-in.csv https://raw.githubusercontent.com/lbugdb/lbug/refs/heads/master/dataset/demo-db/csv/lives-in.csv
 ```
 
 <Tabs syncKey="sync">
 
 <TabItem label="Sync API">
 
-The synchronous API is the default and is a common way to work with Kuzu in Python.
+The synchronous API is the default and is a common way to work with Ladybug in Python.
 
 ```python
-import kuzu
+import lbug
 
 def main() -> None:
     # Create an empty on-disk database and connect to it
-    db = kuzu.Database("example.kuzu")
-    conn = kuzu.Connection(db)
+    db = lbug.Database("example.lbug")
+    conn = lbug.Connection(db)
 
     create_tables(conn)
     copy_data(conn)
     query(conn)
 
-def create_tables(conn: kuzu.Connection) -> None:
+def create_tables(conn: lbug.Connection) -> None:
     conn.execute("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)")
     conn.execute("CREATE NODE TABLE City(name STRING PRIMARY KEY, population INT64)")
     conn.execute("CREATE REL TABLE Follows(FROM User TO User, since INT64)")
     conn.execute("CREATE REL TABLE LivesIn(FROM User TO City)")
 
-def copy_data(conn: kuzu.Connection) -> None:
+def copy_data(conn: lbug.Connection) -> None:
     conn.execute('COPY User FROM "./data/user.csv"')
     conn.execute('COPY City FROM "./data/city.csv"')
     conn.execute('COPY Follows FROM "./data/follows.csv"')
     conn.execute('COPY LivesIn FROM "./data/lives-in.csv"')
 
-def query(conn: kuzu.Connection) -> None:
+def query(conn: lbug.Connection) -> None:
     results = conn.execute("""
         MATCH (a:User)-[f:Follows]->(b:User)
         RETURN a.name, b.name, f.since;
@@ -74,24 +74,24 @@ if __name__ == "__main__":
 
 <TabItem label="Async API">
 
-The asynchronous API is useful for running Kuzu in an async context,
-such as in web frameworks like FastAPI or cases where you need to concurrently run queries in Kuzu.
+The asynchronous API is useful for running Ladybug in an async context,
+such as in web frameworks like FastAPI or cases where you need to concurrently run queries in Ladybug.
 
 ```python
 import asyncio
-import kuzu
+import lbug
 
 async def main():
     # Create an empty on-disk database and connect to it
-    db = kuzu.Database("example.kuzu")
+    db = lbug.Database("example.lbug")
     # The underlying connection pool will be automatically created and managed by the async connection
-    conn = kuzu.AsyncConnection(db, max_concurrent_queries=4)
+    conn = lbug.AsyncConnection(db, max_concurrent_queries=4)
 
     await create_tables(conn)
     await copy_data(conn)
     await query(conn)
 
-async def create_tables(conn: kuzu.AsyncConnection) -> None:
+async def create_tables(conn: lbug.AsyncConnection) -> None:
     await conn.execute("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)")
     await conn.execute(
         "CREATE NODE TABLE City(name STRING PRIMARY KEY, population INT64)"
@@ -99,13 +99,13 @@ async def create_tables(conn: kuzu.AsyncConnection) -> None:
     await conn.execute("CREATE REL TABLE Follows(FROM User TO User, since INT64)")
     await conn.execute("CREATE REL TABLE LivesIn(FROM User TO City)")
 
-async def copy_data(conn: kuzu.AsyncConnection) -> None:
+async def copy_data(conn: lbug.AsyncConnection) -> None:
     await conn.execute("COPY User FROM './data/user.csv'")
     await conn.execute("COPY City FROM './data/city.csv'")
     await conn.execute("COPY Follows FROM './data/follows.csv'")
     await conn.execute("COPY LivesIn FROM './data/lives-in.csv'")
 
-async def query(conn: kuzu.AsyncConnection) -> None:
+async def query(conn: lbug.AsyncConnection) -> None:
     results = await conn.execute("""
         MATCH (a:User)-[f:Follows]->(b:User)
         RETURN a.name, b.name, f.since;
@@ -172,7 +172,7 @@ for response in responses:
 
 ## DataFrames and Arrow Tables
 
-In Python, Kuzu supports the use of Pandas and Polars DataFrames, as well as PyArrow Tables. This
+In Python, Ladybug supports the use of Pandas and Polars DataFrames, as well as PyArrow Tables. This
 allows you to leverage the data manipulation capabilities of these libraries in your graph workflows.
 
 ### Output query results
@@ -187,11 +187,11 @@ The following examples show how to output query results to each of these data st
 You can output the results of a Cypher query to a Pandas DataFrame using the `get_as_df()` method:
 
 ```py
-import kuzu
+import lbug
 import pandas as pd
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
 conn.execute("CREATE (a:Person {name: 'Adam', age: 30})")
@@ -226,11 +226,11 @@ print(result.get_as_df())
 You can output the results of a Cypher query to a Polars DataFrame using the `get_as_pl()` method:
 
 ```py
-import kuzu
+import lbug
 import polars as pl
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
 conn.execute("CREATE (a:Person {name: 'Adam', age: 30})")
@@ -277,11 +277,11 @@ shape: (3, 1)
 You can output the results of a Cypher query to a PyArrow Table using the `get_as_arrow()` method:
 
 ```py
-import kuzu
+import lbug
 import pyarrow as pa
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
 conn.execute("CREATE (a:Person {name: 'Adam', age: 30})")
@@ -306,19 +306,19 @@ p.age: [[30,40,50]]
 
 ### LOAD FROM
 
-You can scan a Pandas DataFrame, Polars DataFrame, or PyArrow Table in Kuzu using the `LOAD FROM` clause.
-Scanning a DataFrame or Table does *not* copy the data into Kuzu, it only reads the data.
+You can scan a Pandas DataFrame, Polars DataFrame, or PyArrow Table in Ladybug using the `LOAD FROM` clause.
+Scanning a DataFrame or Table does *not* copy the data into Ladybug, it only reads the data.
 
 <Tabs syncKey="python">
 
 <TabItem label="Pandas">
 
 ```py
-import kuzu
+import lbug
 import pandas as pd
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 df = pd.DataFrame({
     "name": ["Adam", "Karissa", "Zhang"],
@@ -339,11 +339,11 @@ print(result.get_as_df())
 <TabItem label="Polars">
 
 ```py
-import kuzu
+import lbug
 import polars as pl
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 df = pl.DataFrame({
     "name": ["Adam", "Karissa", "Zhang"],
@@ -370,11 +370,11 @@ shape: (3, 2)
 <TabItem label="Arrow Table">
 
 ```py
-import kuzu
+import lbug
 import pyarrow as pa
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 tbl = pa.table({
     "name": ["Adam", "Karissa", "Zhang"],
@@ -402,14 +402,14 @@ age: [[30,40,50]]
 
 <TabItem label="Pandas">
 
-Copy from a Pandas DataFrame into a Kuzu table using the `COPY FROM` command:
+Copy from a Pandas DataFrame into a Ladybug table using the `COPY FROM` command:
 
 ```py
-import kuzu
+import lbug
 import pandas as pd
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
 
@@ -433,14 +433,14 @@ print(result.get_as_df())
 
 <TabItem label="Polars">
 
-Copy from a Polars DataFrame into a Kuzu table using the `COPY FROM` command:
+Copy from a Polars DataFrame into a Ladybug table using the `COPY FROM` command:
 
 ```py
-import kuzu
+import lbug
 import polars as pl
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
 
@@ -470,14 +470,14 @@ shape: (3, 2)
 
 <TabItem label="Arrow Table">
 
-Copy from a PyArrow Table into a Kuzu table using the `COPY FROM` command:
+Copy from a PyArrow Table into a Ladybug table using the `COPY FROM` command:
 
 ```py
-import kuzu
+import lbug
 import pyarrow as pa
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
 
@@ -507,10 +507,10 @@ p.age: [[30,40,50]]
 
 ## Type notation
 
-This section summarizes the type notation used in Kuzu's Python API. Below is a table from Python
-types to a Kuzu `LogicalTypeID`, which will be used to infer types via Python type annotations.
+This section summarizes the type notation used in Ladybug's Python API. Below is a table from Python
+types to a Ladybug `LogicalTypeID`, which will be used to infer types via Python type annotations.
 
-|Python type|Kuzu `LogicalTypeID`|
+|Python type|Ladybug `LogicalTypeID`|
 |---|---|
 |`bool`|`BOOL`|
 |`int`|`INT64`|
@@ -525,13 +525,13 @@ types to a Kuzu `LogicalTypeID`, which will be used to infer types via Python ty
 
 ## UDF
 
-Kuzu's Python API also supports the registration of User Defined Functions (UDFs),
+Ladybug's Python API also supports the registration of User Defined Functions (UDFs),
 allowing you to define custom functions in Python and use them in your Cypher queries. This can allow
-you to quickly extend Kuzu with new functions you need in your Python applications.
+you to quickly extend Ladybug with new functions you need in your Python applications.
 
 :::caution[Note]
 There are performance implications of writing UDFs in Python. Before writing your own UDF, it's
-recommended to check if an equivalent Cypher function in Kuzu exists, as native functions run faster
+recommended to check if an equivalent Cypher function in Ladybug exists, as native functions run faster
 than UDFs.
 :::
 
@@ -541,27 +541,27 @@ difference between two numbers, and then apply it in a Cypher query.
 ### Register the UDF
 
 ```py
-import kuzu
+import lbug
 
-db = kuzu.Database(":memory:")
-conn = kuzu.Connection(db)
+db = lbug.Database(":memory:")
+conn = lbug.Connection(db)
 
 # define your function
 def difference(a, b):
     return a - b
 
 # define the expected type of your parameters
-parameters = [kuzu.Type.INT64, kuzu.Type.INT64]
+parameters = [lbug.Type.INT64, lbug.Type.INT64]
 
 # define expected type of the returned value
-return_type = kuzu.Type.INT64
+return_type = lbug.Type.INT64
 
 # register the UDF
 conn.create_function("difference", difference, parameters, return_type)
 ```
 
 Note that in the example above, we explicitly declared the expected types of the parameters and the
-return value in Kuzu, prior to registering the UDF. 
+return value in Ladybug, prior to registering the UDF. 
 
 Alternatively, you can simply use Python type annotations to denote the type signature of the
 parameters and return value.
@@ -579,10 +579,10 @@ The UDF API's `create_function` provides the following additional parameters:
 
 - `name: str` : The name of the function to be invoked in cypher.
 - `udf: Callable[[...], Any]` : The function to be executed.
-- `params_type: Optional[list[Type | str]]` : A list whose elements can either be `kuzu.Type` or `str`. `kuzu.Type`
+- `params_type: Optional[list[Type | str]]` : A list whose elements can either be `lbug.Type` or `str`. `lbug.Type`
 can be used to denote nonnested parameter types, while `str` can be used to denote both nested and nonnested parameter types.
 Details on how to denote types are in the [type notation](#type-notation) section.
-- `return_type: Optional[Type | str]` : Either a `kuzu.Type` enum or `str`. Details on how to denote types are in the [type notation](#type-notation) section.
+- `return_type: Optional[Type | str]` : Either a `lbug.Type` enum or `str`. Details on how to denote types are in the [type notation](#type-notation) section.
 - `default_null_handling: Optional[bool]` : True by default. When true, if any one of the inputs is null, function execution is skipped and the output is resolved to null.
 - `catch_exceptions: Optional[bool]` : False by default. When true, if the UDF raises an exception, the output is resolved to null. Otherwise the Exception is rethrown.
 
@@ -623,7 +623,7 @@ conn.remove_function("difference")
 
 When working with UDFs, you can also specify nested or complex types, though in this case, there are some differences
 from the examples shown above. With these additional types, a string representation should be given
-for the parameters which are then manually casted to the respective Kuzu type.
+for the parameters which are then manually casted to the respective Ladybug type.
 
 Some examples of where this is relevant are listed below:
 
@@ -641,7 +641,7 @@ def calculate_discounted_price(price: float, has_discount: bool) -> float:
     # Assume 10% discount on all items for simplicity
     return float(price) * 0.9 if has_discount else price
 
-parameters = ['DECIMAL(7, 2)', kuzu.Type.BOOL]
+parameters = ['DECIMAL(7, 2)', lbug.Type.BOOL]
 
 return_type = 'DECIMAL(7, 2)'
 
@@ -666,6 +666,6 @@ print(result.get_as_df())
 0    90.00      100.00
 ```
 
-The second parameter is a built-in native type in Kuzu, i.e., `kuzu.Type.BOOL`. For the first parameter,
-we need to specify a string, i.e. `DECIMAL(7,2)` that is then parsed and used by Kuzu
+The second parameter is a built-in native type in Ladybug, i.e., `lbug.Type.BOOL`. For the first parameter,
+we need to specify a string, i.e. `DECIMAL(7,2)` that is then parsed and used by Ladybug
 to map to the internal decimal representation.

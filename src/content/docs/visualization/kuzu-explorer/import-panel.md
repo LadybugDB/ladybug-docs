@@ -1,6 +1,6 @@
 ---
 title: Import Panel
-description: Import data into Kuzu through the Explorer interface with CSV, Parquet, and JSON file upload capabilities.
+description: Import data into Ladybug through the Explorer interface with CSV, Parquet, and JSON file upload capabilities.
 ---
 
 The Import Panel allows you to import data into your database from CSV or Parquet files via the UI.
@@ -33,7 +33,7 @@ Whenever possible, header information in files is automatically detected and dis
 Parquet files, this is not an issue as they contain header and data type information implicitly. For CSV files,
 the first row of a file is assumed to be the header row.
 
-If your CSV file doesn't contain a header row, Kuzu cannot make assumptions about your table's column names,
+If your CSV file doesn't contain a header row, Ladybug cannot make assumptions about your table's column names,
 or, for node tables, which of the columns is the primary key column. In such cases, you will need to
 expand the table's options by clicking on the downward arrow to manually specify the column names.
 
@@ -102,7 +102,7 @@ You can head over to the Schema tab to see the graph schema that was created fro
 <img src="/img/visualization/schema-panel.png" />
 
 That's it! You can now begin querying the data by heading over to the query editor in the
-[query panel](/visualization/kuzu-explorer/query-panel/).
+[query panel](/visualization/lbug-explorer/query-panel/).
 
 ## Troubleshooting
 

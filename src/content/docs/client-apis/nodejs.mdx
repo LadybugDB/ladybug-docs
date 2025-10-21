@@ -1,6 +1,6 @@
 ---
 title: Node.js API
-description: "Use Kuzu embedded graph database in Node.js applications with the official Node.js API"
+description: "Use Ladybug embedded graph database in Node.js applications with the official Node.js API"
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -10,27 +10,27 @@ See the following link for the full documentation of the Node.js API.
 
 <LinkCard
   title="Node.js API documentation"
-  href="https://kuzudb.github.io/api-docs/nodejs"
+  href="https://lbugdb.github.io/api-docs/nodejs"
 />
 
 ## Sync and Async APIs
 
-Kuzu provides both a sync and an async Node.js API. The async API is the default
-and is more commonly used when building Kuzu applications in Node.js.
+Ladybug provides both a sync and an async Node.js API. The async API is the default
+and is more commonly used when building Ladybug applications in Node.js.
 
 <Tabs syncKey="sync">
 
 <TabItem label="Async API">
 
-The asynchronous API is commonly used when writing Kuzu applications in Node.js.
+The asynchronous API is commonly used when writing Ladybug applications in Node.js.
 
 ```js
-const kuzu = require("kuzu");
+const lbug = require("lbug");
 
 (async () => {
   // Create an empty on-disk database and connect to it
-  const db = new kuzu.Database("example.kuzu");
-  const conn = new kuzu.Connection(db);
+  const db = new lbug.Database("example.lbug");
+  const conn = new lbug.Connection(db);
 
   // Create the tables
   await conn.query("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)");
@@ -60,16 +60,16 @@ const kuzu = require("kuzu");
 
 <TabItem label="Sync API">
 
-In addition to the standard async Node.js API, Kuzu also provides a synchronous Node.js API.
-This is useful for running Kuzu in a synchronous context, such as debugging or applications
+In addition to the standard async Node.js API, Ladybug also provides a synchronous Node.js API.
+This is useful for running Ladybug in a synchronous context, such as debugging or applications
 where async operations are not desired.
 
 ```js
-const kuzu = require("kuzu");
+const lbug = require("lbug");
 
 // Create an empty on-disk database and connect to it
-const db = new kuzu.Database("example.kuzu");
-const conn = new kuzu.Connection(db);
+const db = new lbug.Database("example.lbug");
+const conn = new lbug.Connection(db);
 
 // Create the tables
 conn.querySync("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)");
@@ -103,7 +103,7 @@ for (const row of rows) {
 
 </Tabs>
 
-See the [Node.js API documentation](https://kuzudb.github.io/api-docs/nodejs) for more details
+See the [Node.js API documentation](https://lbugdb.github.io/api-docs/nodejs) for more details
 on the methods available in the sync and async APIs.
 
 ## Run multiple queries in one execution

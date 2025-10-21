@@ -6,7 +6,7 @@ description: "Native disk-based HNSW index for fast similarity search over vecto
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 The `vector` extension provides a *native disk-based* [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) vector index
-for accelerating similarity search over vector embeddings (32-bit and 64-bit float arrays) stored in Kuzu.
+for accelerating similarity search over vector embeddings (32-bit and 64-bit float arrays) stored in Ladybug.
 
 :::note[Note]
 Currently, indexing is only supported for vectors stored as node table properties.
@@ -28,7 +28,7 @@ Please see [Install an extension](/extensions#install-an-extension) and [Load an
 ### Example dataset
 
 Below is an example demonstrating two ways in which such a dataset can be created. The first is to use some external
-library, such as `sentence_transformers` in Python to create the embeddings. Alternatively, you can use Kuzu's [`llm`](/extensions/llm)
+library, such as `sentence_transformers` in Python to create the embeddings. Alternatively, you can use Ladybug's [`llm`](/extensions/llm)
 extension to directly create the embeddings using Cypher.
 
 <Tabs syncKey="vector">
@@ -36,11 +36,11 @@ extension to directly create the embeddings using Cypher.
 ```python
 # create_embeddings.py
 # pip install sentence-transformers
-import kuzu
+import lbug
 import os
 
-db = kuzu.Database("example.kuzu")
-conn = kuzu.Connection(db)
+db = lbug.Database("example.lbug")
+conn = lbug.Connection(db)
 
 from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -96,11 +96,11 @@ for title, publisher in zip(titles, publishers):
 <TabItem value="llm" label="LLM extension">
 ```python
 # create_embeddings.py
-import kuzu
+import lbug
 import os
 
-db = kuzu.Database("example.kuzu")
-conn = kuzu.Connection(db)
+db = lbug.Database("example.lbug")
+conn = lbug.Connection(db)
 
 conn.execute("INSTALL llm; LOAD llm;")
 os.environ["OPENAI_API_KEY"] = "sk-proj-key" # Replace with your own OpenAI API key
@@ -160,7 +160,7 @@ for title, publisher in zip(titles, publishers):
 </Tabs>
 
 The embeddings are generated on the title properties of each `Book` and
-ingested into the Kuzu database.
+ingested into the Ladybug database.
 
 ### Creating a vector index
 
@@ -269,11 +269,11 @@ Let's run some example search queries on our newly created vector index.
 <Tabs syncKey="vector">
 <TabItem value="sentence_transformers" label="sentence_transformers">
 ```python
-import kuzu
+import lbug
 
 # Initialize the database
-db = kuzu.Database("example.kuzu")
-conn = kuzu.Connection(db)
+db = lbug.Database("example.lbug")
+conn = lbug.Connection(db)
 
 # Install and load vector extension once again
 conn.execute("INSTALL VECTOR;")
@@ -304,11 +304,11 @@ print(result.get_as_pl())
 </TabItem>
 <TabItem value="llm" label="LLM extension">
 ```python
-import kuzu
+import lbug
 
 # Initialize the database
-db = kuzu.Database("example.kuzu")
-conn = kuzu.Connection(db)
+db = lbug.Database("example.lbug")
+conn = lbug.Connection(db)
 
 # Install and load vector extension once again
 conn.execute("INSTALL VECTOR;")
@@ -411,7 +411,7 @@ Example output:
 ```
 
 ## Filtered vector search
-Kuzu allows you to combine vector search with filter predicates by using [projected graphs](/extensions/algo#projected-graphs).
+Ladybug allows you to combine vector search with filter predicates by using [projected graphs](/extensions/algo#projected-graphs).
 
 For example, we can search for books similar to "quantum world", but only those that were published after 2010.
 

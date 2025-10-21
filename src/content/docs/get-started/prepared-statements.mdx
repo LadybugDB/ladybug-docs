@@ -77,9 +77,9 @@ conn.execute(
 #include <iostream>
 #include <ranges>
 
-#include "kuzu.hpp"
+#include "lbug.hpp"
 
-using namespace kuzu::main;
+using namespace lbug::main;
 using namespace std;
 
 unique_ptr<QueryResult> runQuery(const string_view &query, unique_ptr<Connection> &connection) {
@@ -92,7 +92,7 @@ unique_ptr<QueryResult> runQuery(const string_view &query, unique_ptr<Connection
 
 unique_ptr<QueryResult>
 runPreparedQuery(const string_view &query,
-                 std::unordered_map<std::string, std::unique_ptr<kuzu::common::Value>> inputParams,
+                 std::unordered_map<std::string, std::unique_ptr<lbug::common::Value>> inputParams,
                  const unique_ptr<Connection> &connection) {
     auto prepared_stmt = connection->prepare(query);
     if (!prepared_stmt->isSuccess()) {
@@ -108,13 +108,13 @@ runPreparedQuery(const string_view &query,
 }
 
 int main() {
-    // Remove example.kuzu
-    remove("example.kuzu");
-    remove("example.kuzu.wal");
+    // Remove example.lbug
+    remove("example.lbug");
+    remove("example.lbug.wal");
 
     // Create an empty on-disk database and connect to it
     SystemConfig systemConfig;
-    auto database = make_unique<Database>("example.kuzu", systemConfig);
+    auto database = make_unique<Database>("example.lbug", systemConfig);
     auto connection = make_unique<Connection>(database.get());
 
     // Create the schema.
@@ -123,22 +123,22 @@ int main() {
     // Create a node.
     runQuery("CREATE (:N {name: 'Alice', embedding: [10.0, 20.0, 30.0], age: 25});", connection);
 
-    std::unordered_map<std::string, unique_ptr<kuzu::common::Value>> args;
+    std::unordered_map<std::string, unique_ptr<lbug::common::Value>> args;
 
     // `name` parameter.
-    args.emplace("name", make_unique<kuzu::common::Value>("Bob"));
+    args.emplace("name", make_unique<lbug::common::Value>("Bob"));
 
     // `age` parameter.
     uint64_t age = 30;
-    args.emplace("age", make_unique<kuzu::common::Value>(age));
+    args.emplace("age", make_unique<lbug::common::Value>(age));
 
     // `embedding` parameter.
-    auto type = kuzu::common::LogicalType::LIST(kuzu::common::LogicalType::FLOAT());
-    vector<unique_ptr<kuzu::common::Value>> data;
-    data.push_back(make_unique<kuzu::common::Value>((float)40.0));
-    data.push_back(make_unique<kuzu::common::Value>((float)50.1));
-    data.push_back(make_unique<kuzu::common::Value>((float)60.0));
-    args.emplace("embedding", make_unique<kuzu::common::Value>(std::move(type), std::move(data)));
+    auto type = lbug::common::LogicalType::LIST(lbug::common::LogicalType::FLOAT());
+    vector<unique_ptr<lbug::common::Value>> data;
+    data.push_back(make_unique<lbug::common::Value>((float)40.0));
+    data.push_back(make_unique<lbug::common::Value>((float)50.1));
+    data.push_back(make_unique<lbug::common::Value>((float)60.0));
+    args.emplace("embedding", make_unique<lbug::common::Value>(std::move(type), std::move(data)));
 
     // Create a node using parameters.
     runPreparedQuery("CREATE (:N {name: $name, age: $age, embedding: $embedding});", std::move(args), connection);
@@ -162,22 +162,22 @@ int main() {
 
         // Print `name`.
         auto value_name = row->getValue(0);
-        KU_ASSERT_UNCONDITIONAL(value_name->getDataType().getLogicalTypeID() == kuzu::common::LogicalTypeID::STRING);
+        KU_ASSERT_UNCONDITIONAL(value_name->getDataType().getLogicalTypeID() == lbug::common::LogicalTypeID::STRING);
         cout << value_name->getValue<string>() << " | ";
 
         // Print `age`.
         auto value_int64 = row->getValue(1);
-        KU_ASSERT_UNCONDITIONAL(value_int64->getDataType().getLogicalTypeID() == kuzu::common::LogicalTypeID::INT64);
+        KU_ASSERT_UNCONDITIONAL(value_int64->getDataType().getLogicalTypeID() == lbug::common::LogicalTypeID::INT64);
         cout << value_int64->getValue<int64_t>() << " | ";
 
         // Print `embedding`.
         auto value_embedding = row->getValue(2);
-        KU_ASSERT_UNCONDITIONAL(value_embedding->getDataType().getLogicalTypeID() == kuzu::common::LogicalTypeID::LIST);
+        KU_ASSERT_UNCONDITIONAL(value_embedding->getDataType().getLogicalTypeID() == lbug::common::LogicalTypeID::LIST);
         auto length = value_embedding->getChildrenSize();
         vector<float> embedding;
         for (auto i = 0u; i < length; ++i) {
-            auto element = kuzu::common::NestedVal::getChildVal(value_embedding, i);
-            KU_ASSERT_UNCONDITIONAL(element->getDataType().getLogicalTypeID() == kuzu::common::LogicalTypeID::FLOAT);
+            auto element = lbug::common::NestedVal::getChildVal(value_embedding, i);
+            KU_ASSERT_UNCONDITIONAL(element->getDataType().getLogicalTypeID() == lbug::common::LogicalTypeID::FLOAT);
             embedding.push_back(element->getValue<float>());
         }
         auto join = [](const std::vector<float>& vec, const std::string& sep) {
