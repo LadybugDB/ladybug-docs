@@ -9,7 +9,7 @@ const cypherGrammar = JSON.parse(
     fs.readFileSync(path.resolve('./src/styles/cypher.tmLanguage.json'), 'utf8')
   )
 
-const site = "https://lbugdb.github.io/";
+const site = "https://docs.ladybugdb.com/";
 
 process.env.ASTRO_TELEMETRY_DISABLED = '1';
 
