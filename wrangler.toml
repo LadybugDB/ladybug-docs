@@ -1,0 +1,6 @@
+name = "ladybug-docs"
+compatibility_date = "2025-10-22"
+
+[pages_build_output_dir]
+directory = "./dist"
+
