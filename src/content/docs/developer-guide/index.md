@@ -17,7 +17,7 @@ Below are the instructions for building Ladybug on Ubuntu, AlmaLinux, Arch Linux
 - For other Arch-based Linux distributions, such as *Manjaro*, the instructions should be similar to Arch Linux.
 
 :::note[Tip]
-You can refer to our [multi-platform GitHub Actions workflow](https://github.com/LadybugDB/lbug/blob/master/.github/workflows/multiplatform-build-test.yml) for the exact commands we use on different platforms.
+You can refer to our [multi-platform GitHub Actions workflow](https://github.com/LadybugDB/ladybug/blob/master/.github/workflows/multiplatform-build-test.yml) for the exact commands we use on different platforms.
 :::
 
 ## Building Instructions

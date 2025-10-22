@@ -596,7 +596,7 @@ RETURN a.ID, b.ID;
 
 | File                                                                                                                                                   | Description             |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
-| [set.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/tinysnb/update_node/set.test#LL78C33-L78C36)   | ARANGE example          |
-| [copy_long_string.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_long_string.test)       | REPEAT example          |
-| [copy_multiple_files.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_multiple_files.test) | Using statement blocks  |
-| [catalog.test](https://github.com/LadybugDB/lbug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/exceptions/catalog/catalog.test)           | Dealing with exceptions |
+| [set.test](https://github.com/LadybugDB/ladybug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/tinysnb/update_node/set.test#LL78C33-L78C36)   | ARANGE example          |
+| [copy_long_string.test](https://github.com/LadybugDB/ladybug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_long_string.test)       | REPEAT example          |
+| [copy_multiple_files.test](https://github.com/LadybugDB/ladybug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/copy/copy_multiple_files.test) | Using statement blocks  |
+| [catalog.test](https://github.com/LadybugDB/ladybug/blob/1bd26e46eac7a5de1d8776bab74988b05c4913dc/test/test_files/exceptions/catalog/catalog.test)           | Dealing with exceptions |

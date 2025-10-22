@@ -12,16 +12,16 @@ import { Code } from 'astro-expressive-code/components';
 export const DOWNLOAD_LINKS = {
   cli:{
     linux: `# x86-64
-curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/lbug_cli-linux-x86_64.tar.gz
+curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-linux-x86_64.tar.gz
 # aarch64
-curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/lbug_cli-linux-aarch64.tar.gz
+curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-linux-aarch64.tar.gz
 
 tar xzf lbug_cli-*.tar.gz`,
-macos: `curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/lbug_cli-osx-universal.tar.gz
+macos: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-osx-universal.tar.gz
 tar xzf lbug_cli-*.tar.gz
 ./lbug`,
-win: `curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/lbug_cli-windows-x86_64.zip`,
-winUrl: `https://github.com/LadybugDB/lbug/releases/download/v${version}/lbug_cli-windows-x86_64.zip`,
+win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-windows-x86_64.zip`,
+winUrl: `https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-windows-x86_64.zip`,
   },
 java: `<dependency>
   <groupId>com.lbugdb</groupId>
@@ -31,19 +31,19 @@ java: `<dependency>
 `,
 cxx: {
     linux: `# x86-64
-curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/liblbug-linux-x86_64.tar.gz
+curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-linux-x86_64.tar.gz
 # aarch64
-curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/liblbug-linux-aarch64.tar.gz
+curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-linux-aarch64.tar.gz
 
 tar xzf liblbug-*.tar.gz`,
-    macos: `curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/liblbug-osx-universal.tar.gz
+    macos: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-osx-universal.tar.gz
 
 tar xzf liblbug-*.tar.gz`,
-    win: `curl -L -O https://github.com/LadybugDB/lbug/releases/download/v${version}/liblbug-windows-x86_64.zip`
+    win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-windows-x86_64.zip`
 },
 go: `go get github.com/LadybugDB/go-lbug@v${version}`,
 swift: `dependencies: [
-  .package(url: "https://github.com/LadybugDB/lbug-swift/", branch: "${version}"),
+  .package(url: "https://github.com/LadybugDB/ladybug-swift/", branch: "${version}"),
 ],`
 }
 
@@ -52,7 +52,7 @@ a variety of programming languages. This page shows all the ways you can install
 After installation, you can learn how to run Ladybug by [creating your first graph](/get-started).
 
 :::note[License]
-All source code and pre-compiled binaries of Ladybug are distributed under the [MIT License](https://github.com/LadybugDB/lbug/blob/master/LICENSE). By installing and using Ladybug, you acknowledge and agree to these terms.
+All source code and pre-compiled binaries of Ladybug are distributed under the [MIT License](https://github.com/LadybugDB/ladybug/blob/master/LICENSE). By installing and using Ladybug, you acknowledge and agree to these terms.
 :::
 
 ## Command Line (Shell)
@@ -219,7 +219,7 @@ To add `lbug-swift` to your Swift project, you can use the Swift package manager
 Alternatively, you can add the package through Xcode:
 1. Open your Xcode project.
 2. Go to `File` > `Add Packages Dependencies...`.
-3. Enter the URL of the lbug-swift repository: `https://github.com/LadybugDB/lbug-swift`.
+3. Enter the URL of the lbug-swift repository: `https://github.com/LadybugDB/ladybug-swift`.
 4. Select the version you want to use (e.g., {version} for the latest stable release or `main` for the latest development version).
 
 
@@ -264,7 +264,7 @@ for more details.
 
 Our [Model Context Protocol](https://modelcontextprotocol.io/introduction) server allows you to expose
 your Ladybug database as a tool that can be used by LLMs and agents.
-Refer to the Ladybug-MCP [GitHub repo](https://github.com/LadybugDB/lbug-mcp-server) for more details.
+Refer to the Ladybug-MCP [GitHub repo](https://github.com/LadybugDB/ladybug-mcp-server) for more details.
 
 ## Nightly Builds
 
@@ -272,8 +272,8 @@ If you want access to the latest features in development, you can use our nightl
 
 - Python: `uv pip install --pre lbug`
 - Node.js: `npm i lbug@next`
-- Java: The latest snapshot version is available on [GitHub Packages](https://github.com/LadybugDB/lbug/packages/2258307)
+- Java: The latest snapshot version is available on [GitHub Packages](https://github.com/LadybugDB/ladybug/packages/2258307)
 - For the CLI, C/C++ shared libraries, and Rust crate, the latest nightly versions for each can be
-downloaded from the latest run of [this GitHub Actions workflow](https://github.com/LadybugDB/lbug/actions/workflows/build-and-deploy.yml).
+downloaded from the latest run of [this GitHub Actions workflow](https://github.com/LadybugDB/ladybug/actions/workflows/build-and-deploy.yml).
 
 </div>

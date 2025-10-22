@@ -10,7 +10,7 @@ import { Code } from 'astro-expressive-code/components';
 export const CMAKE_CONTENT =`cmake_minimum_required(VERSION 3.11)
 project(example LANGUAGES C)
 ExternalProject_Add(lbug-prebuilt
-    URL https://github.com/LadybugDB/lbug/releases/download/v${version}/liblbug-linux-x86_64.tar.gz
+    URL https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-linux-x86_64.tar.gz
 )
 ExternalProject_Get_Property(lbug-prebuilt SOURCE_DIR)
 add_library(lbug SHARED IMPORTED)
@@ -50,7 +50,7 @@ project(example LANGUAGES C CXX)
 set(BUILD_SHELL FALSE)
 include(FetchContent)
 FetchContent_Declare(lbug
-    URL https://github.com/LadybugDB/lbug/archive/refs/tags/v0.5.0.zip
+    URL https://github.com/LadybugDB/ladybug/archive/refs/tags/v0.5.0.zip
     URL_HASH SHA256=47ff308079cbbfeccc38eeb1c5f455a8c00f9294034141b9084387518f0bbed9
 )
 FetchContent_MakeAvailable(lbug)
