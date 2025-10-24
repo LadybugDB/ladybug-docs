@@ -28,7 +28,7 @@ export default defineConfig({
                 replacesTitle: true,
             },
             social: {
-                github: 'https://github.com/LadybugDB/lbug',
+                github: 'https://github.com/LadybugDB/ladybug',
             },
             editLink: {
                 baseUrl: 'https://github.com/LadybugDB/ladybug-docs/edit/main',
