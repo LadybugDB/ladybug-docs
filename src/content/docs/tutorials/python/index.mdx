@@ -24,7 +24,7 @@ for alternative installation methods.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install lbug
+pip install real_ladybug
 ```
 
 Next, [download the zipped data](https://lbugdb.github.io/data/tutorial/tutorial_data.zip) and unzip the files.
@@ -70,13 +70,13 @@ We are now ready to start the tutorial.
 ## Create the database
 Clear out the contents of `src/create_db.py` and import Ladybug:
 ```py
-import lbug
+import real_ladybug as lb
 ```
 Next, create and connect to an empty Ladybug database:
 ```py
 def main() -> None:
-    db = lbug.Database("social_network.lbug")
-    conn = lbug.Connection(db)
+    db = lb.Database("social_network.lbug")
+    conn = lb.Connection(db)
 
     # Rest of the code goes here
 
@@ -169,11 +169,11 @@ We can now start querying the graph to answer some questions about the social ne
 
 Replace the contents of `src/main.py` with the following code snippet:
 ```py
-import lbug
+import real_ladybug as lb
 
 def main() -> None:
-    db = lbug.Database("social_network.lbug")
-    conn = lbug.Connection(db)
+    db = lb.Database("social_network.lbug")
+    conn = lb.Connection(db)
 
     # Query to be filled out below
     result = conn.execute(...)
@@ -344,11 +344,11 @@ python src/main.py
 <TabItem label="create_db.py">
 
 ```py
-import lbug
+import real_ladybug as lb
 
 def main() -> None:
-    db = lbug.Database("social_network.lbug")
-    conn = lbug.Connection(db)
+    db = lb.Database("social_network.lbug")
+    conn = lb.Connection(db)
 
     conn.execute("""
         CREATE NODE TABLE User (
@@ -396,11 +396,11 @@ if __name__ == "__main__":
 <TabItem label="main.py">
 
 ```py
-import lbug
+import real_ladybug as lb
 
 def main() -> None:
-    db = lbug.Database("social_network.lbug")
-    conn = lbug.Connection(db)
+    db = lb.Database("social_network.lbug")
+    conn = lb.Connection(db)
 
     # Query to be filled out below
     result = conn.execute(...)

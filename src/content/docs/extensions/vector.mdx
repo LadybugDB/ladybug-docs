@@ -36,11 +36,11 @@ extension to directly create the embeddings using Cypher.
 ```python
 # create_embeddings.py
 # pip install sentence-transformers
-import lbug
+import real_ladybug as lb
 import os
 
-db = lbug.Database("example.lbug")
-conn = lbug.Connection(db)
+db = lb.Database("example.lbug")
+conn = lb.Connection(db)
 
 from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -96,11 +96,11 @@ for title, publisher in zip(titles, publishers):
 <TabItem value="llm" label="LLM extension">
 ```python
 # create_embeddings.py
-import lbug
+import real_ladybug as lb
 import os
 
-db = lbug.Database("example.lbug")
-conn = lbug.Connection(db)
+db = lb.Database("example.lbug")
+conn = lb.Connection(db)
 
 conn.execute("INSTALL llm; LOAD llm;")
 os.environ["OPENAI_API_KEY"] = "sk-proj-key" # Replace with your own OpenAI API key
@@ -269,11 +269,11 @@ Let's run some example search queries on our newly created vector index.
 <Tabs syncKey="vector">
 <TabItem value="sentence_transformers" label="sentence_transformers">
 ```python
-import lbug
+import real_ladybug as lb
 
 # Initialize the database
-db = lbug.Database("example.lbug")
-conn = lbug.Connection(db)
+db = lb.Database("example.lbug")
+conn = lb.Connection(db)
 
 # Install and load vector extension once again
 conn.execute("INSTALL VECTOR;")
@@ -304,11 +304,11 @@ print(result.get_as_pl())
 </TabItem>
 <TabItem value="llm" label="LLM extension">
 ```python
-import lbug
+import real_ladybug as lb
 
 # Initialize the database
-db = lbug.Database("example.lbug")
-conn = lbug.Connection(db)
+db = lb.Database("example.lbug")
+conn = lb.Connection(db)
 
 # Install and load vector extension once again
 conn.execute("INSTALL VECTOR;")

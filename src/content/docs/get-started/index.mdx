@@ -115,12 +115,12 @@ below demonstrate how to create a graph schema and import data into an on-disk L
 
 ```py
 # main.py
-import lbug
+import real_ladybug as lb
 
 def main():
     # Create an empty on-disk database and connect to it
-    db = lbug.Database("example.lbug")
-    conn = lbug.Connection(db)
+    db = lb.Database("example.lbug")
+    conn = lb.Connection(db)
 
     # Create schema
     conn.execute("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)")
@@ -274,8 +274,8 @@ const lbug = require("lbug");
 
 (async () => {
   // Create an empty on-disk database and connect to it
-  const db = new lbug.Database("example.lbug");
-  const conn = new lbug.Connection(db);
+  const db = new lb.Database("example.lbug");
+  const conn = new lb.Connection(db);
 
   // Create the tables
   await conn.query("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)");
@@ -456,15 +456,15 @@ import (
 
 func main() {
     // Create an empty on-disk database and connect to it
-    systemConfig := lbug.DefaultSystemConfig()
+    systemConfig := lb.DefaultSystemConfig()
     systemConfig.BufferPoolSize = 1024 * 1024 * 1024
-    db, err := lbug.OpenDatabase("example.lbug", systemConfig)
+    db, err := lb.OpenDatabase("example.lbug", systemConfig)
     if err != nil {
         panic(err)
     }
     defer db.Close()
 
-    conn, err := lbug.OpenConnection(db)
+    conn, err := lb.OpenConnection(db)
     if err != nil {
         panic(err)
     }
@@ -602,7 +602,7 @@ You should see the following output:
 
 <TabItem label="C++">
 
-The Ladybug C++ client is distributed as `so`/`dylib`/`dll+lib` library files along with a header file (`lbug.hpp`).
+The Ladybug C++ client is distributed as `so`/`dylib`/`dll+lib` library files along with a header file (`lb.hpp`).
 Once you've downloaded and extracted the C++ files into a directory, they are ready to use without
 any additional installation. You just need to specify the library and include file search paths.
 
@@ -610,10 +610,10 @@ For example, organize the files and directories as follows:
 
 ```bash
 ├── include
-│   ├── lbug.hpp
+│   ├── lb.hpp
 │   └── ......
 ├── lib
-│   ├── liblbug.so / liblbug.dylib / lbug_shared.dll + lbug_shared.lib
+│   ├── liblb.so / liblb.dylib / lbug_shared.dll + lbug_shared.lib
 │   └── ......
 ├── data
 │   ├── city.csv
@@ -628,7 +628,7 @@ For example, organize the files and directories as follows:
 // main.cpp
 #include <iostream>
 
-#include "include/lbug.hpp"
+#include "include/lb.hpp"
 
 using namespace lbug::main;
 using namespace std;
@@ -644,7 +644,7 @@ unique_ptr<QueryResult> runQuery(const string_view &query, unique_ptr<Connection
 int main() {
     // Remove example.lbug
     remove("example.lbug");
-    remove("example.lbug.wal");
+    remove("example.lb.wal");
 
     // Create an empty on-disk database and connect to it
     SystemConfig systemConfig;
@@ -743,16 +743,16 @@ Zhang | 2022 | Noura
 <TabItem label="C">
 
 The Ladybug C API shares the same `so`/`dylib` library files with the C++ API and can be used by
-including the C header file (`lbug.h`).
+including the C header file (`lb.h`).
 
 In this example, we assume that the `so`/`dylib`, the header file, the CSV files, and the C code file
 are all under the same directory:
 
 ```bash
 ├── include
-│   ├── lbug.h
+│   ├── lb.h
 │   └── ......
-├── liblbug.so / liblbug.dylib
+├── liblb.so / liblb.dylib
 ├── main.c
 ├── user.csv
 ├── city.csv
@@ -766,7 +766,7 @@ The file `main.c` contains the following code:
 // main.c
 #include <stdio.h>
 
-#include "include/lbug.h"
+#include "include/lb.h"
 
 int main()
 {

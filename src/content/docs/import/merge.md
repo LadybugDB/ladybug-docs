@@ -65,11 +65,11 @@ without having to merge the rows one by one (i.e., **without for loops**).
 Let's see this in action with an example.
 
 ```py
-import lbug
+import real_ladybug as lb
 import pandas as pd
 
-db = lbug.Database('example.lbug')
-conn = lbug.Connection(db)
+db = lb.Database('example.lbug')
+conn = lb.Connection(db)
 
 df = pd.DataFrame({
     'name': ['Karissa', 'Rhea', 'James'],

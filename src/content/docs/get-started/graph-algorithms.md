@@ -34,15 +34,15 @@ First, initialize a connection to a new Ladybug database named `example.lbug`:
 
 ```py
 from pathlib import Path
-import lbug
+import real_ladybug as lb
 
 db_path = "example.lbug"
 
 Path(db_path).unlink(missing_ok=True)
 Path(db_path + ".wal").unlink(missing_ok=True)
 
-db = lbug.Database(db_path)
-conn = lbug.Connection(db)
+db = lb.Database(db_path)
+conn = lb.Connection(db)
 ```
 
 There will be one node table `Scholar`, and one relationship table `MENTORED` in this graph:
@@ -112,12 +112,12 @@ The first method to run a graph algorithm natively in Ladybug is using the `algo
 #### Install and load the extension
 
 ```py
-import lbug
+import real_ladybug as lb
 
 db_path = "example.lbug"
 
-db = lbug.Database(db_path)
-conn = lbug.Connection(db)
+db = lb.Database(db_path)
+conn = lb.Connection(db)
 
 # Install and load the Ladybug algo extension
 conn.execute("INSTALL algo; LOAD algo;")
@@ -237,12 +237,12 @@ a NetworkX algorithm result into a Pandas/Polars DataFrame and write it back to 
 First, obtain a connection to the existing `example.lbug` database:
 
 ```py
-import lbug
+import real_ladybug as lb
 
 db_path = "example.lbug"
 
-db = lbug.Database(db_path)
-conn = lbug.Connection(db)
+db = lb.Database(db_path)
+conn = lb.Connection(db)
 ```
 
 #### Create a NetworkX graph

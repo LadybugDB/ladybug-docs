@@ -43,11 +43,11 @@ object, such as a Pandas DataFrame using `LOAD FROM` and use its results as inpu
 command. This can be combined with predicate filters as follows:
 
 ```python
-import lbug
+import real_ladybug as lb
 import pandas as pd
 
-db = lbug.Database("example.lbug")
-conn = lbug.Connection(db)
+db = lb.Database("example.lbug")
+conn = lb.Connection(db)
 
 df = pd.DataFrame({
     "name": ["Adam", "Karissa", "Zhang", "Noura"],

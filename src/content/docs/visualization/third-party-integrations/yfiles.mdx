@@ -25,7 +25,7 @@ The yFiles Jupyter Graphs widget can be installed using `uv` or `pip`:
 ```bash
 # Install lbug as a pre-requisite
 uv init
-uv add lbug yfiles-jupyter-graphs-for-lbug
+uv add real_ladybug yfiles-jupyter-graphs-for-lbug
 ```
 
 </TabItem>
@@ -33,7 +33,7 @@ uv add lbug yfiles-jupyter-graphs-for-lbug
 
 ```bash
 # Install lbug as a pre-requisite
-pip install lbug yfiles-jupyter-graphs-for-lbug
+pip install real_ladybug yfiles-jupyter-graphs-for-lbug
 ```
 
 </TabItem>
@@ -46,11 +46,11 @@ table `Person`, and one relationship table `MENTORED`, which describes who mento
 Each person has a `name` and an `alias`, which is the name they are best known by.
 
 ```py
-import lbug
+import real_ladybug as lb
 from yfiles_jupyter_graphs_for_lbug import LadybugGraphWidget
 # Open a new in-memory database
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 # Create tables
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, alias STRING)")
 conn.execute("CREATE REL TABLE MENTORED(FROM Person TO Person)")

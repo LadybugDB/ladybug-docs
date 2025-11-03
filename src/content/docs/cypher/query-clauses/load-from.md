@@ -139,11 +139,11 @@ inferred from the schema information of the data frame. Here is an example:
 
 ```py
 # main.py
-import lbug
+import real_ladybug as lb
 import pandas as pd
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 df = pd.DataFrame({
     "name": ["Adam", "Karissa", "Zhang"],
@@ -172,11 +172,11 @@ Ladybug can also scan Polars DataFrames via the underlying PyArrow layer. The ru
 variable names and data types is identical to scanning Pandas data frames. Here is an example:
 
 ```python
-import lbug
+import real_ladybug as lb
 import polars as pl
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 df = pl.DataFrame({
     "name": ["Adam", "Karissa", "Zhang"],
@@ -205,11 +205,11 @@ shape: (3, 2)
 You can scan an existing PyArrow table as follows:
 
 ```python
-import lbug
+import real_ladybug as lb
 import pyarrow as pa
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 pa_table = pa.table({
     "name": ["Adam", "Karissa", "Zhang"],
