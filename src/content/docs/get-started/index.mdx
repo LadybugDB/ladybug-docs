@@ -12,12 +12,12 @@ import { Code } from 'astro-expressive-code/components';
 export const CODE_BLOCKS = {
     java: {
         maven: `<dependency>
-    <groupId>com.lbugdb</groupId>
+    <groupId>com.ladybugdb</groupId>
     <artifactId>lbug</artifactId>
     <version>${version}</version>
 </dependency>`,
-        groovy: `implementation 'com.lbugdb:lbug:${version}'`,
-        kotlin: `implementation("com.lbugdb:lbug:${version}")`,
+        groovy: `implementation 'com.ladybugdb:lbug:${version}'`,
+        kotlin: `implementation("com.ladybugdb:lbug:${version}")`,
         gradle: `plugins {
     id 'java'
     id 'application'
@@ -29,7 +29,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation 'com.lbugdb:lbug:${version}'
+    implementation 'com.ladybugdb:lbug:${version}'
 }`,
 },
 swift:`import PackageDescription
@@ -312,7 +312,7 @@ const lbug = require("lbug");
 
 <TabItem label="Java">
 
-Ladybug's Java client library is available on [Maven Central](https://central.sonatype.com/artifact/com.lbugdb/lbug). You can add the following snippet to your `pom.xml` to get it installed:
+Ladybug's Java client library is available on [Maven Central](https://central.sonatype.com/artifact/com.ladybugdb/lbug). You can add the following snippet to your `pom.xml` to get it installed:
 
 <Code code={CODE_BLOCKS.java.maven} lang="xml"/>
 
@@ -346,7 +346,7 @@ The `Main.java` contains the following code:
 
 ```java
 // Main.java
-import com.lbugdb.*;
+import com.ladybugdb.*;
 
 public class Main {
     public static void main(String[] args) throws ObjectRefDestroyedException {
