@@ -43,12 +43,12 @@ Here's a simple example application in Python that demonstrates these two steps 
 database and a connection. The same principles apply to other language APIs as well:
 
 ```python
-import lbug
+import real_ladybug as lb
 
 # Open the database in `READ_WRITE` mode. The below code is equivalent to:
-# db = lbug.Database("example.lbug", read_only=False)
-db = lbug.Database("example.lbug")
-conn = lbug.Connection(db)
+# db = lb.Database("example.lbug", read_only=False)
+db = lb.Database("example.lbug")
+conn = lb.Connection(db)
 conn.execute("CREATE (a:Person {name: 'Alice'});")
 ```
 

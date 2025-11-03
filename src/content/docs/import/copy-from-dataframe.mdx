@@ -14,11 +14,11 @@ There are two different ways in Ladybug to import dataframes:
 The dataframe can be passed as a query parameter:
 
 ```python
-import lbug
+import real_ladybug as lb
 import polars as pl
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 conn.execute(
     """
@@ -117,10 +117,10 @@ We can ignore these erroneous rows during import by setting the `ignore_errors` 
 in the `COPY FROM` command:
 
 ```py
-import lbug
+import real_ladybug as lb
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 # Create a Person node table with name as the primary key
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64)")
@@ -157,11 +157,11 @@ You can directly copy from a Pandas dataframe into Ladybug. Both numpy-backed an
 dataframes are supported.
 
 ```python
-import lbug
+import real_ladybug as lb
 import pandas as pd
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64);")
 
@@ -188,11 +188,11 @@ You can utilize an existing in-memory PyArrow table to copy data directly into L
 Internally, the Polars dataframe example above also leverages scanning from PyArrow tables.
 
 ```python
-import lbug
+import real_ladybug as lb
 import pyarrow as pa
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64);")
 
@@ -218,11 +218,11 @@ print(res.get_as_df())
 This example shows a basic use case where you have no nesting of data and no null values.
 
 ```python
-import lbug
+import real_ladybug as lb
 import polars as pl
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 conn.execute("CREATE NODE TABLE Person(name STRING PRIMARY KEY, age INT64);")
 
@@ -338,10 +338,10 @@ We can now scan the DataFrame using the `LOAD FROM` clause in Ladybug in combina
 obtain each of the insurance provider records in a row-wise manner.
 
 ```python
-import lbug
+import real_ladybug as lb
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 result = conn.execute(
     """
@@ -368,10 +368,10 @@ We now have the necessary information to create our `Patient`, `InsuranceProvide
 tables and copy the relevant data into them.
 
 ```python
-import lbug
+import real_ladybug as lb
 
-db = lbug.Database(":memory:")
-conn = lbug.Connection(db)
+db = lb.Database(":memory:")
+conn = lb.Connection(db)
 
 conn.execute(
     """
