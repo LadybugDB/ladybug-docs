@@ -4,7 +4,7 @@ const matter = require('gray-matter');
 
 const docsDir = path.join(__dirname, '../src/content/docs');
 const outputFile = path.join(__dirname, '../public/llms.txt');
-const baseUrl = 'https://lbugdb.github.io/docs';
+const baseUrl = 'https://docs.ladybugdb.com/';
 
 const header = "# Ladybug Documentation\n\n> Comprehensive documentation for Ladybug, an embedded (in-process), scalable, blazing fast graph database.\n";
 

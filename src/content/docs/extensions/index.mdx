@@ -133,11 +133,11 @@ Uninstalling a currently loaded extension won't affect the running database inst
 
 You can host your own extension server for Ladybug using Docker.
 
-The extension server is based on NGINX and is hosted on [GitHub](https://ghcr.io/lbugdb/extension-repo). You can pull the Docker image and run it in your environment:
+The extension server is based on NGINX and is hosted on [GitHub](https://ghcr.io/ladybugdb/extension-repo). You can pull the Docker image and run it in your environment:
 
 ```bash
-docker pull ghcr.io/lbugdb/extension-repo:latest
-docker run -d -p 8080:80 ghcr.io/lbugdb/extension-repo:latest
+docker pull ghcr.io/ladybugdb/extension-repo:latest
+docker run -d -p 8080:80 ghcr.io/ladybugdb/extension-repo:latest
 ```
 
 In this example, the extension server will be available at `http://localhost:8080`. You can then install extensions from your server by appending the `FROM` clause to the `INSTALL` command:
