@@ -14,7 +14,7 @@ in Python to run almost any graph algorithm on a Ladybug subgraph.
 ## Prepare the dataset
 
 A dataset of Nobel laureates and their mentorship network is provided
-[here](https://raw.githubusercontent.com/lbugdb/tutorials/main/src/network_analysis/data.zip).
+[here](https://raw.githubusercontent.com/ladybugdb/ladybug/tutorials/main/src/network_analysis/data.zip).
 Download the dataset to your local directory and unzip it.
 
 The nodes in the dataset are scholars who won Nobel prizes, as well as other
