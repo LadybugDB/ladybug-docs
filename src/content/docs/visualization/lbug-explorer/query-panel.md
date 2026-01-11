@@ -101,7 +101,7 @@ from within the Docker container that's running Ladybug Explorer. In Docker Desk
 Once this is enabled, you should be able to run the following command and then open `http://localhost:8000` as normal.
 ```bash
 # Run the following command to start Ladybug Explorer with host networking enabled
-docker run --net=host --rm lbugdb/explorer:latest
+docker run --net=host --rm ghcr.io/ladybugdb/explorer:latest
 ```
 :::
 

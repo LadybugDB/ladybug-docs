@@ -36,7 +36,7 @@ To access an existing Ladybug database, you can mount its path to the `/database
 docker run -p 8000:8000 \
            -v {path to the directory containing the database file}:/database \
            -e LBUG_FILE={database file name} \
-           --rm lbugdb/explorer:latest
+           --rm ghcr.io/ladybugdb/explorer:latest
 ```
 
 By mounting a local database file in Docker via `-v {path to the directory containing the database file}` and `-e LBUG_FILE={database file name}`, the changes done in the UI will persist to the local database file after the UI is shutdown. If the directory is mounted but the `LBUG_FILE` environment variable is not set, Ladybug Explorer will look for a file named `database.kz` in the mounted directory or create it if missing.
@@ -51,7 +51,7 @@ This is simply done by removing the `-v` flag in the example above. If no databa
 with `-v`, the server will be started with an empty database.
 
 ```bash
-docker run -p 8000:8000 --rm lbugdb/explorer:latest
+docker run -p 8000:8000 --rm ghcr.io/ladybugdb/explorer:latest
 ```
 
 Click on the `Datasets` tab on the top right corner and then: (i) you can select one of the bundled datasets
@@ -72,7 +72,7 @@ environment variable to `READ_ONLY` as shown below.
 docker run -p 8000:8000 \
            -v /absolute/path/to/database:/database \
            -e MODE=READ_ONLY \
-           --rm lbugdb/explorer:latest
+           --rm ghcr.io/ladybugdb/explorer:latest
 ```
 
 In read-only mode, you can still issue read queries (such as `MATCH`) and visualize the results,
@@ -88,7 +88,7 @@ you can do so by setting the `LBUG_IN_MEMORY` environment variable to true as fo
 ```bash
 docker run -p 8000:8000 \
            -e LBUG_IN_MEMORY=true \
-           --rm lbugdb/explorer:latest
+           --rm ghcr.io/ladybugdb/explorer:latest
 ```
 
 You can think of an in-memory database as ephemeral, where the database exists purely in memory --
@@ -110,7 +110,7 @@ For example, to launch Ladybug Explorer with a buffer pool size of 1GB, you can 
 docker run -p 8000:8000 \
            -v /absolute/path/to/database:/database \
            -e LBUG_BUFFER_POOL_SIZE=1073741824 \
-           --rm lbugdb/explorer:latest
+           --rm ghcr.io/ladybugdb/explorer:latest
 ```
 
 #### Accessing data files in the container
@@ -121,7 +121,7 @@ As mentioned above, Ladybug Explorer is launched from a Docker image. If you wan
 docker run -p 8000:8000 \
            -v /absolute/path/to/database:/database \
            -v /absolute/path/to/data:/data \
-           --rm lbugdb/explorer:latest
+           --rm ghcr.io/ladybugdb/explorer:latest
 ```
 
 With this configuration, the data directory you specify on your host machine will be accessible as `/data` in the container. For example, in the query panel, you can copy a CSV file into your database by running the following command:
@@ -167,7 +167,7 @@ To install the dev build, you can attach the `dev` tag to the docker command as 
 ```bash
 docker run -p 8000:8000 \
            -v /absolute/path/to/database:/database \
-           --rm lbugdb/explorer:dev
+           --rm ghcr.io/ladybugdb/explorer:dev
 ```
 
 The dev build of Ladybug Explorer is compatible with the nightly build of Ladybug, but it's not guaranteed to be stable
