@@ -20,8 +20,8 @@ tar xzf lbug_cli-*.tar.gz`,
 macos: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-osx-universal.tar.gz
 tar xzf lbug_cli-*.tar.gz
 ./lbug`,
-win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-windows-x86_64.zip`,
-winUrl: `https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-windows-x86_64.zip`,
+    win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip`,
+    winUrl: `https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip`,
   },
 java: `<dependency>
   <groupId>com.ladybugdb</groupId>
@@ -41,7 +41,7 @@ tar xzf liblbug-*.tar.gz`,
 tar xzf liblbug-*.tar.gz`,
     win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-windows-x86_64.zip`
 },
-go: `go get github.com/LadybugDB/go-lbug@v${version}`,
+  go: `go get https://github.com/LadybugDB/go-ladybug@v0.13.1`,
 swift: `dependencies: [
   .package(url: "https://github.com/LadybugDB/ladybug-swift/", branch: "${version}"),
 ],`
@@ -63,13 +63,16 @@ executable with no dependencies that can be used to interact with a Ladybug data
 <Tabs syncKey="cli">
 <TabItem label="Linux">
 
-Use a tool like `curl` to download the latest version of the Ladybug CLI to your local machine.
-<Code code={DOWNLOAD_LINKS.cli.linux} lang="bash" frame="terminal"/>
-
-Now you can run Ladybug from the command line.
+You can install the Ladybug CLI using our install script.
 
 ```bash
-./lbug
+curl -s https://install.ladybugdb.com | bash
+```
+
+You can now run Ladybug from the command line.
+
+```bash
+lbug
 ```
 
 </TabItem>
@@ -97,10 +100,11 @@ Alternatively, you can download the Ladybug CLI directly.
 <TabItem label="Windows">
 
 Use a tool like `curl` to download the latest version of the Ladybug CLI to your local machine. Alternatively,
-simply open 
-<a href={DOWNLOAD_LINKS.cli.winUrl} target="_blank">this URL</a> in your browser.
+simply open [this URL](https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip) in your browser.
 
-<Code code={DOWNLOAD_LINKS.cli.win} lang="bash" frame="terminal"/>
+```bash
+curl -L -O https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip
+```
 
 Right-click on the `lbug_cli-xxx.zip` file and click on **Extract All**. This will create a directory
 containing a file named `lbug.exe`. Then, right-click on the directory and click "Open in terminal".
