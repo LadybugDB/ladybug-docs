@@ -47,7 +47,7 @@ Each person has a `name` and an `alias`, which is the name they are best known b
 
 ```py
 import real_ladybug as lb
-from yfiles_jupyter_graphs_for_kuzu import LadybugGraphWidget
+from yfiles_jupyter_graphs_for_kuzu import KuzuGraphWidget
 # Open a new in-memory database
 db = lb.Database(":memory:")
 conn = lb.Connection(db)
@@ -77,7 +77,7 @@ notebook.
 
 ```py
 # Create a widget instance using the existing connection
-g = LadybugGraphWidget(conn)
+g = KuzuGraphWidget(conn)
 # Display the entire graph
 g.show_cypher("MATCH (a)-[b]->(c) RETURN * LIMIT 100")
 ```
@@ -102,7 +102,7 @@ In this case, because the relationships result in a tree structure, it can be us
 the mentors of Christian Christiansen up to 2 degrees?".
 
 ```py
-g2 = LadybugGraphWidget(conn, layout="tree")
+g2 = KuzuGraphWidget(conn, layout="tree")
 # Match the mentors of Christian Christiansen up to 2 degrees
 g2.show_cypher("MATCH (a:Person)-[r:MENTORED*1..2]->(b:Person {name: 'Christian Christiansen'}) RETURN *")
 ```
