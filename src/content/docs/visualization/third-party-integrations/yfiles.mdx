@@ -4,7 +4,7 @@ title: yFiles Jupyter Graphs for Ladybug
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-[yFiles Jupyter Graphs for Ladybug](https://github.com/yWorks/yfiles-jupyter-graphs-for-lbug) is an
+[yFiles Jupyter Graphs for Ladybug](https://github.com/yWorks/yfiles-jupyter-graphs-for-kuzu) is an
 open source Jupyter notebook widget that allows you to visualize Ladybug graphs from inside your Jupyter notebooks.
 It leverages the larger *yFiles Jupyter Graphs* ecosystem from [yWorks](https://www.yworks.com/products/yfiles-graphs-for-jupyter).
 
@@ -25,7 +25,7 @@ The yFiles Jupyter Graphs widget can be installed using `uv` or `pip`:
 ```bash
 # Install lbug as a pre-requisite
 uv init
-uv add real_ladybug yfiles-jupyter-graphs-for-lbug
+uv add real_ladybug yfiles-jupyter-graphs-for-kuzu
 ```
 
 </TabItem>
@@ -33,7 +33,7 @@ uv add real_ladybug yfiles-jupyter-graphs-for-lbug
 
 ```bash
 # Install lbug as a pre-requisite
-pip install real_ladybug yfiles-jupyter-graphs-for-lbug
+pip install real_ladybug yfiles-jupyter-graphs-for-kuzu
 ```
 
 </TabItem>
@@ -47,7 +47,7 @@ Each person has a `name` and an `alias`, which is the name they are best known b
 
 ```py
 import real_ladybug as lb
-from yfiles_jupyter_graphs_for_lbug import LadybugGraphWidget
+from yfiles_jupyter_graphs_for_kuzu import LadybugGraphWidget
 # Open a new in-memory database
 db = lb.Database(":memory:")
 conn = lb.Connection(db)
@@ -167,6 +167,6 @@ g2.show_cypher("MATCH (a:Person)-[r:MENTORED*1..3]->(b:Person {name: 'Christian 
 
 ## More examples
 
-Visit the yFiles Jupyter Graphs for Ladybug [GitHub page](https://github.com/yWorks/yfiles-jupyter-graphs-for-lbug)
+Visit the yFiles Jupyter Graphs for Ladybug [GitHub page](https://github.com/yWorks/yfiles-jupyter-graphs-for-kuzu)
 to see an example notebook with more examples.
 
