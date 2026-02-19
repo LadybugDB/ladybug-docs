@@ -108,7 +108,7 @@ export default defineConfig({
                     link: '/',
                 },
                 {
-                    label: 'Install Ladybug',
+                    label: 'Install',
                     collapsed: true,
                     items: [
                         { label: 'Install Ladybug', link: '/installation', },
@@ -116,7 +116,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    label: 'Get started',
+                    label: 'Getting started',
                     collapsed: false,
                     items: [
                         { label: 'Create your first graph', link: '/get-started' },
@@ -137,11 +137,58 @@ export default defineConfig({
                     ]
                 },
                 {
-                    label: 'Import data',
+                    label: 'User manuals',
                     collapsed: true,
                     items: [
                         {
-                            label: 'Copy from files/formats',
+                            label: 'Cypher manual',
+                            collapsed: true,
+                            items: [
+                                { label: 'Overview', link: '/cypher'},
+                                { label: 'Syntax', link: '/cypher/syntax'},
+                                { label: 'Data types', link: '/cypher/data-types'},
+                                { label: 'Query clauses', link: '/cypher/query-clauses' },
+                                { label: 'Functions, expressions, & operators', link: '/cypher/expressions' },
+                                { label: 'Data definition language (DDL)', link: '/cypher/data-definition' },
+                                { label: 'Data manipulation clauses', link: '/cypher/data-manipulation-clauses' },
+                                { label: 'Subqueries', link: '/cypher/subquery' },
+                                { label: 'Macros', link: '/cypher/macro' },
+                                { label: 'Transactions', link: '/cypher/transaction' },
+                                { label: 'Attach/Detach to external databases', link: '/cypher/attach' },
+                                { label: 'Configuration', link: '/cypher/configuration' },
+                                { label: 'Differences with Neo4j', link: '/cypher/difference' },
+                            ],
+                        },
+                        {
+                            label: 'Client APIs',
+                            collapsed: true,
+                            items: [
+                                { label: 'Overview', link: '/client-apis/' },
+                                { label: 'CLI', link: '/client-apis/cli' },
+                                { label: 'Python', link: '/client-apis/python' },
+                                { label: 'Node.js', link: '/client-apis/nodejs' },
+                                { label: 'Java', link: '/client-apis/java' },
+                                { label: 'Rust', link: '/client-apis/rust' },
+                                { label: 'Go', link: '/client-apis/go' },
+                                { label: 'Swift', link: '/client-apis/swift' },
+                                { label: 'C++', link: '/client-apis/cpp' },
+                                { label: 'C', link: '/client-apis/c' },
+                                { label: '.NET', link: '/client-apis/net', badge: { text: 'Community', variant: 'caution'}},
+                                { label: 'Elixir', link: '/client-apis/elixir', badge: { text: 'Community', variant: 'caution'}},
+                                { label: 'Ruby', link: '/client-apis/ruby', badge: { text: 'Community', variant: 'caution'}},
+                                { label: 'Nim', link: '/client-apis/nim', badge: { text: 'Community', variant: 'caution'}},
+                            ],
+                        },
+                        { label: 'Ladybug-Wasm', link: '/client-apis/wasm' },
+                    ],
+                },
+                {
+                    label: 'Operational manuals',
+                    collapsed: true,
+                    items: [
+                        {
+                            label: 'Import data',
+                            collapsed: true,
                             items: [
                                 { label: 'Overview', link: '/import' },
                                 { label: 'Copy from CSV', link: '/import/csv' },
@@ -152,25 +199,19 @@ export default defineConfig({
                                 { label: 'Copy from JSON', link: '/import/copy-from-json' },
                             ]
                         },
-                        { label: 'Merge', link: '/import/merge' },
-                    ]
-                },
-                {
-                    label: 'Export data',
-                    collapsed: true,
-                    items: [
-                        { label: 'Overview', link: '/export' },
-                        { label: 'Copy to CSV', link: '/export/csv' },
-                        { label: 'Copy to Parquet', link: '/export/parquet' },
-                        { label: 'Copy to JSON', link: '/export/json'},
-                    ]
-                },
-                {
-                    label: 'Migrate your database',
-                    collapsed: true,
-                    items: [
-                        { label: 'Overview', link: '/migrate' },
-                    ]
+                        {
+                            label: 'Export data',
+                            collapsed: true,
+                            items: [
+                                { label: 'Overview', link: '/export' },
+                                { label: 'Copy to CSV', link: '/export/csv' },
+                                { label: 'Copy to Parquet', link: '/export/parquet' },
+                                { label: 'Copy to JSON', link: '/export/json'},
+                            ]
+                        },
+                        { label: 'Migrate your database', link: '/migrate' },
+                        { label: 'Connections & concurrency', link: '/concurrency' },
+                    ],
                 },
                 {
                     label: 'Visualize graphs',
@@ -197,47 +238,6 @@ export default defineConfig({
                         },
                     ],
                 },
-                {
-                    label: 'Cypher manual',
-                    collapsed: true,
-                    items: [
-                        { label: 'Overview', link: '/cypher'},
-                        { label: 'Syntax', link: '/cypher/syntax'},
-                        { label: 'Data types', link: '/cypher/data-types'},
-                        { label: 'Query clauses', link: '/cypher/query-clauses' },
-                        { label: 'Functions, expressions, & operators', link: '/cypher/expressions' },
-                        { label: 'Data definition language (DDL)', link: '/cypher/data-definition' },
-                        { label: 'Data manipulation clauses', link: '/cypher/data-manipulation-clauses' },
-                        { label: 'Subqueries', link: '/cypher/subquery' },
-                        { label: 'Macros', link: '/cypher/macro' },
-                        { label: 'Transactions', link: '/cypher/transaction' },
-                        { label: 'Attach/Detach to external databases', link: '/cypher/attach' },
-                        { label: 'Configuration', link: '/cypher/configuration' },
-                        { label: 'Differences with Neo4j', link: '/cypher/difference' },
-                    ],
-                },
-                {
-                    label: 'Use client APIs',
-                    collapsed: true,
-                    items: [
-                        { label: 'Overview', link: '/client-apis/' },
-                        { label: 'CLI', link: '/client-apis/cli' },
-                        { label: 'Python', link: '/client-apis/python' },
-                        { label: 'Node.js', link: '/client-apis/nodejs' },
-                        { label: 'Java', link: '/client-apis/java' },
-                        { label: 'Rust', link: '/client-apis/rust' },
-                        { label: 'Go', link: '/client-apis/go' },
-                        { label: 'Swift', link: '/client-apis/swift' },
-                        { label: 'C++', link: '/client-apis/cpp' },
-                        { label: 'C', link: '/client-apis/c' },
-                        { label: '.NET', link: '/client-apis/net', badge: { text: 'Community', variant: 'caution'}},
-                        { label: 'Elixir', link: '/client-apis/elixir', badge: { text: 'Community', variant: 'caution'}},
-                        { label: 'Ruby', link: '/client-apis/ruby', badge: { text: 'Community', variant: 'caution'}},
-                        { label: 'Nim', link: '/client-apis/nim', badge: { text: 'Community', variant: 'caution'}},
-                    ],
-                },
-                { label: 'Ladybug-Wasm', link: '/client-apis/wasm' },
-                { label: 'Connections & concurrency', link: '/concurrency' },
                 {
                     label: 'Developer guide',
                     collapsed: true,
