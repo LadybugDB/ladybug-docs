@@ -31,19 +31,13 @@ This imports:
 
 [Apache GraphAr](https://graphar.apache.org/) is an open source, standard data file format for graph data storage and retrieval. It is designed for efficient storage and out-of-core querying of large-scale graph data, using chunking, columnar storage, and CSR/CSC semantics.
 
-Ladybug can read GraphAr archives directly. GraphAr data can be generated from various sources including Neo4j, PySpark, and other graph systems that support GraphAr export.
+To use GraphAr data in Ladybug, convert it to Icebug format first:
 
-### Loading GraphAr data
-
-Use the `READ_PARQUET` function to read GraphAr archives:
-
-```cypher
--- Read GraphAr vertex files
-LOAD FROM PARQUET('/path/to/graphar/vertices/*.parquet');
-
--- Read GraphAr edge files
-LOAD FROM PARQUET('/path/to/graphar/edges/*.parquet');
+```bash
+uvx icebug-format --graphar <path to graphar archive>
 ```
+
+This generates a directory of Parquet files plus a Cypher schema file that can be loaded directly with `lbug -i`. See the [Icebug format](#icebug-format) section for details.
 
 ## Icebug format
 
