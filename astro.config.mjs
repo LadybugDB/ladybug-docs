@@ -197,6 +197,7 @@ export default defineConfig({
                                 { label: 'Copy from DataFrame', link: '/import/copy-from-dataframe' },
                                 { label: 'Copy from subquery', link: '/import/copy-from-subquery' },
                                 { label: 'Copy from JSON', link: '/import/copy-from-json' },
+                                { label: 'Graph databases', link: '/import/graph-databases' },
                             ]
                         },
                         {
