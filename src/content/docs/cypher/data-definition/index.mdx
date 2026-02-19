@@ -36,6 +36,23 @@ You can drop tables from the database with `DROP TABLE`.
 <LinkCard
     title="DROP" href="/cypher/data-definition/drop"
     description="Drop statements"
-/>
+  />
+
+## Subgraphs
+
+Subgraphs in Ladybug provide isolation and configuration separate from the rest of the system, similar to
+`CREATE DATABASE` and `USE DATABASE` in relational databases. Each subgraph has its own schema, data, and
+configuration.
+
+Ladybug supports two types of subgraphs:
+
+- **Strictly typed subgraphs (default)**: All nodes must be created using `CREATE NODE TABLE` before they can be used.
+- **Open type graphs**: Created via `CREATE GRAPH mygraph ANY`. In open type graphs, you can create nodes with labels
+  without using `CREATE NODE TABLE` first. This provides compatibility for users migrating from GQL or Neo4j.
+
+<LinkCard
+    title="CREATE GRAPH" href="/cypher/data-definition/create-graph"
+    description="Create subgraph statements"
+  />
 
 ---
