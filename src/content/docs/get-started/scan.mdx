@@ -1,18 +1,50 @@
 ---
 title: "Scan data from various sources"
-description: "Use LOAD FROM to scan and inspect data from CSV, JSON, Parquet and other sources before importing"
+description: "Ingest data into Ladybug or query external data sources in place"
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-Cypher supports the `LOAD FROM` clause to scan data from various sources. Scanning is the act of
-reading data from a source, but _not inserting it_ into the database. Inserting data into the database
-involves "copying"; see the [Import data](/import) section for details.
+There are two ways to work with external data in Ladybug:
 
-Scanning data using `LOAD FROM` is useful to inspect a subset of your data, understand its structure,
-and perform transformations like rearranging columns.
+1. **Ingest** - Copy data into Ladybug for storage and querying
+2. **Query in place** - Query external data sources directly without importing
 
-## General usage
+## Ingest data into Ladybug
+
+Use `COPY FROM` to bulk import data from files or external databases into Ladybug node or relationship tables.
+
+```cypher
+COPY Person FROM "person.csv";
+```
+
+Supported formats:
+- Parquet (recommended for performance)
+- CSV (slower but commonly used)
+- JSON (slower but commonly used)
+- NumPy
+- Pandas/Polars DataFrames
+- PyArrow Tables
+
+<LinkCard
+  title="Import data"
+  description="Learn more about COPY FROM for importing data"
+  href="/import"
+/>
+
+## Load from (scan in memory)
+
+Use `LOAD FROM` to scan data from various sources into memory without inserting it into the database. This is useful for inspecting data structure and applying simple transformations before importing.
+
+When scanning with `LOAD FROM`, only the `WHERE` clause is supported for filtering:
+
+```cypher
+LOAD FROM "user.csv" (header = true)
+WHERE age > 25
+RETURN COUNT(*);
+```
+
+### Example: CSV file
 
 Say you have a `user.csv` file that looks like this:
 
@@ -77,14 +109,76 @@ LIMIT 2;
 └───────┴─────────┘
 ```
 
-## More features
+## Query external data in place
 
-`LOAD FROM` is a general-purpose clause in Cypher for scanning data from various data sources,
-including files and in-memory DataFrames. See the detailed documentation below for more details
-on how to use the `LOAD FROM` clause.
+Query data directly from external sources without importing. Unlike `LOAD FROM`, this supports any Cypher query that works on native node/rel tables.
+
+### Supported sources
+
+- Parquet files
+- Arrow memory
+- DuckDB tables
+- PostgreSQL (coming soon)
+- SQLite (coming soon)
+
+### Syntax
+
+Create a table that references an external data source using the `WITH (storage="...")` option:
+
+```cypher
+CREATE NODE TABLE Employee (id INT64, name STRING, PRIMARY KEY (id))
+WITH (storage='path/to/employee.parquet');
+```
+
+```cypher
+CREATE REL TABLE WorksIn (from Person, to Company, since INT32)
+WITH (storage='path/to/works_in.parquet');
+```
+
+### Arrow memory
+
+You can query Arrow memory directly by registering it with the database. The `arrowId` is obtained when you register Arrow memory (e.g., via the Python API):
+
+```cypher
+CREATE NODE TABLE Employee (id INT64, name STRING, PRIMARY KEY (id))
+WITH (storage='arrow://my_arrow_table_id');
+```
+
+### DuckDB
+
+First, [attach a DuckDB database](https://docs.ladybugdb.com/extensions/attach/duckdb/):
+
+```cypher
+ATTACH 'university.db' AS uw (dbtype duckdb);
+```
+
+Then create tables that reference the DuckDB tables:
+
+**NODE tables:**
+```cypher
+CREATE NODE TABLE Employee (id INT64, name STRING, PRIMARY KEY (id))
+WITH (storage='uw.employee');
+
+CREATE NODE TABLE Company (id INT64, name STRING, PRIMARY KEY (id))
+WITH (storage='uw.company');
+```
+
+**REL table:**
+```cypher
+CREATE REL TABLE WorksIn (from Employee, to Company, since INT32)
+WITH (storage='uw.worksIn');
+```
+
+Once created, you can query the tables just like any other Ladybug table:
+
+```cypher
+MATCH (e:Employee)-[w:WorksIn]->(c:Company)
+RETURN e.name, c.name, w.since
+LIMIT 5;
+```
 
 <LinkCard
-  title="LOAD (Scan)"
-  description="Explore the options for the LOAD clause in Ladybug"
-  href="/cypher/query-clauses/load-from"
+  title="DuckDB extension"
+  description="Learn more about attaching DuckDB databases"
+  href="https://docs.ladybugdb.com/extensions/attach/duckdb/"
 />
