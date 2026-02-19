@@ -627,11 +627,11 @@ Ladybug supports two list-like data types: (i) variable-length lists, simply cal
 ## JSON
 
 :::note[Note]
-The JSON data type is not natively available in Ladybug, and requires the [JSON extension](/extensions/json)
+Starting in v0.15.0, the JSON data type is natively available in Ladybug. Only the table functions to manipulate JSON are in the [JSON extension](/extensions/json).
 :::
 
-Using the official `json` extension, you can model and operate on properties as JSON natively via the `JSON`
-logical type, rather than as a string.
+Using the native `JSON` type or the `json` extension, you can model and operate on properties as JSON natively via the `JSON`
+logical type, rather than as a string. We recommend storing JSON data using the `JSON` type instead of `STRING`.
 
 <LinkCard
   title="How to work with JSON"
