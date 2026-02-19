@@ -49,21 +49,34 @@ section. List all available shell commands by running `lbug -h`.
 $ lbug -h
   lbug [databasePath] {OPTIONS}
 
-    LadybugDB Shell
+    Lbug shell
 
   OPTIONS:
 
-      databasePath                      Database path.
+      databasePath                      Path to the database. If not given or
+                                        set to ":memory:", the database will be
+                                        opened under in-memory mode.
       -h, --help                        Display this help menu
       -d, --default_bp_size,
       --defaultbpsize                   Size of buffer pool for default and
                                         large page sizes in megabytes
+      --max_db_size=[max_db_size],
+      --maxdbsize=[max_db_size]         Maximum size of the database in bytes
       --no_compression, --nocompression Disable compression
       -r, --read_only, --readonly       Open database at read-only mode.
       -p, --path_history                Path to directory for shell history
       -v, --version                     Display current database version
       -m, --mode                        Set the output mode of the shell
       -s, --no_stats, --nostats         Disable query stats
+      -b, --no_progress_bar,
+      --noprogressbar                   Disable query progress bar
+      -w, --ignore_wal_replay_errors    By default something goes wrong when
+                                        replaying the WAL an exception will be
+                                        thrown. With this flag enabled we will
+                                        instead ignore these errors and stop
+                                        replaying the WAL.
+      -i, --init                        Path to file with script to run on
+                                        startup
       "--" can be used to terminate flag options and force all following
       arguments to be treated as positional options
 ```
@@ -98,6 +111,8 @@ lbug> :help
     :singleline     set singleline mode
     :highlight [on|off]     toggle syntax highlighting on or off
     :render_errors [on|off]     toggle error highlighting on or off
+    :render_completion [on|off]     toggle completion highlighting on or off
+    :schema     print database schema
 
     Note: you can change and see several system configurations, such as num-threads,
           timeout, and progress_bar using Cypher CALL statements.
@@ -110,6 +125,9 @@ Clear shell. Alternatively, you can use `Ctrl + L` to clear the shell.
 
 #### `:quit`
 Exit from shell. Alternatively, you can use `Ctrl + D` to exit the shell.
+
+#### `:schema`
+Print the database schema, showing all node tables, rel tables, and their properties.
 
 #### `:max_rows [max_rows]`
 Set maximum number of rows for display. 0 defaults to 20.
