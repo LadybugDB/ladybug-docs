@@ -173,8 +173,6 @@ export default defineConfig({
                                 { label: 'Swift', link: '/client-apis/swift' },
                                 { label: 'C++', link: '/client-apis/cpp' },
                                 { label: 'C', link: '/client-apis/c' },
-                                { label: '.NET', link: '/client-apis/net', badge: { text: 'Community', variant: 'caution'}},
-                                { label: 'Elixir', link: '/client-apis/elixir', badge: { text: 'Community', variant: 'caution'}},
                                 { label: 'Ruby', link: '/client-apis/ruby', badge: { text: 'Community', variant: 'caution'}},
                                 { label: 'Nim', link: '/client-apis/nim', badge: { text: 'Community', variant: 'caution'}},
                             ],
