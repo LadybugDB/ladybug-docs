@@ -76,6 +76,9 @@ $ cd build/relwithdebinfo/test
 # Run all tests from `test/test_files/common/types/interval.test`
 $ ctest -R common~types~interval
 
+# Run all tests from `test/test_files/common/types/interval.test` without changing directory
+$ ctest --test-dir ./build/relwithdebinfo/test -R common~types~interval
+
 # Run only the DifferentTypesCheck test
 $ ctest -R common~types~interval.DifferentTypesCheck
 
@@ -91,7 +94,7 @@ To switch between main tests and extension tests, pass `E2E_TEST_FILES_DIRECTORY
 Example:
 
 ```bash
-# Build extension tests
+# Build extension tests. You would need to install DuckDB to build the extension tests. See https://duckdb.org/install/
 $ make extension-test-build
 
 # First cd to build/relwithdebinfo/test

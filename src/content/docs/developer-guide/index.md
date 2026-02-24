@@ -97,6 +97,14 @@ Follow the instructions at [Microsoft's documentation](https://docs.microsoft.co
 make release NUM_THREADS=$env:NUMBER_OF_PROCESSORS
 ```
 
+## Run the CLI
+
+After building Ladybug, you can run the CLI with the following command:
+
+```bash
+./build/release/tools/shell/lbug foo.lbug
+```
+
 ## Run Tests
 
 ### C/C++ tests
