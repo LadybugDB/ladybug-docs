@@ -102,7 +102,7 @@ make release NUM_THREADS=$env:NUMBER_OF_PROCESSORS
 After building Ladybug, you can run the CLI with the following command:
 
 ```bash
-./build/release/tools/shell/lbug foo.lbug
+./build/release/tools/shell/lbug foo.lbdb
 ```
 
 ## Run Tests
