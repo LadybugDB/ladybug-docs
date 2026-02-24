@@ -147,6 +147,8 @@ make python NUM_THREADS=$(nproc)
 
 #### Run Python tests
 
+`pytest` is used for running Python tests. Refer https://docs.pytest.org/en/stable/how-to/usage.html for more information on how to use pytest effectively
+
 ```bash
 make pytest-venv NUM_THREADS=$(nproc)
 ```
@@ -171,6 +173,8 @@ make nodejs NUM_THREADS=$(nproc)
 
 #### Run Node.js tests
 
+Node.js tests are run using `npm test` cmd. Refer https://docs.npmjs.com/cli/v9/commands/npm-test for more information on how to use npm test effectively
+
 ```bash
 make nodejstest NUM_THREADS=$(nproc)
 ```
@@ -193,6 +197,8 @@ make java NUM_THREADS=$(nproc)
 
 #### Run Java tests
 
+Java tests are run using `./gradlew test` cmd. Refer https://docs.gradle.org/current/userguide/command_line_interface.html for more information on how to use Gradle effectively
+
 ```bash
 make javatest NUM_THREADS=$(nproc)
 ```
@@ -210,6 +216,8 @@ cd tools/rust_api && CARGO_BUILD_JOBS=$(nproc) cargo build
 ```
 
 #### Run Rust tests
+
+Rust tests are run using `cargo test` cmd. Refer https://doc.rust-lang.org/cargo/commands/cargo-test.html for more information on how to use cargo test effectively
 
 ```bash
 make rusttest
