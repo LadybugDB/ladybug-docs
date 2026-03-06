@@ -18,7 +18,7 @@ the [`manylinux_2_28`](https://github.com/pypa/manylinux) standard for both x86-
 
 ## Node.js
 
-Ladybug's Node.js API is based on **Node-API version 5**. For a list of compatible Node.js versions, please refer to [the official documentation](https://nodejs.org/api/n-api.html#node-api-version-matrix). The native module is pre-compiled for all supported platforms and will be automatically installed when you run `npm install lbug`. The OS compatibility is the same as the pre-compiled CLI, C and C++ APIs.
+Ladybug's Node.js API is based on **Node-API version 5**. For a list of compatible Node.js versions, please refer to [the official documentation](https://nodejs.org/api/n-api.html#node-api-version-matrix). The native module is pre-compiled for all supported platforms and will be automatically installed when you run `npm install @ladybugdb/core`. The OS compatibility is the same as the pre-compiled CLI, C and C++ APIs.
 
 ## Java and Android
 
