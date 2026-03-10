@@ -8,7 +8,78 @@ This page is intended for developers who want to build Ladybug from source. If y
 please refer to the [installation guide](https://docs.ladybugdb.com/installation) for downloading pre-built binaries for your platform.
 :::
 
+The [Ladybug repository](https://github.com/LadybugDB/ladybug) consists of several submodules:
+
+- `benchmark` - Benchmarking tools
+- `dataset` - Sample datasets for testing
+- `extension` - Extension framework
+- `tools/java_api` - Java bindings
+- `tools/nodejs_api` - Node.js bindings
+- `tools/python_api` - Python bindings
+- `tools/rust_api` - Rust bindings
+- `tools/wasm` - WebAssembly bindings
+
+### What are Git submodules?
+
+Git submodules allow you to keep a Git repository as a subdirectory of another Git repository. This lets you separate different components into their own repositories while maintaining them as part of a single parent project.
+
+### Checking out submodules
+
+To clone the repository with all submodules:
+
+```bash
+git clone --recursive https://github.com/LadybugDB/ladybug
+```
+
+To check out a specific submodule individually:
+
+```bash
+git submodule update --init <submodule-path>
+```
+
+For example, to check out only the Python API:
+
+```bash
+git submodule update --init tools/python_api
+```
+
+To update all submodules to their latest committed versions:
+
+```bash
+git submodule update --recursive
+```
+
+### Contributing Changes
+
+**Core changes**: Send a pull request against the [main repository](https://github.com/LadybugDB/ladybug).
+
+**Submodule changes**:
+1. Send a pull request against the specific submodule repository
+2. Ensure the submodule passes its specific CI pipeline
+3. Send a second pull request to the main repository to update the submodule reference
+
+To make changes to a submodule, navigate to its directory, make your changes, and push them to the submodule's repository:
+
+```bash
+cd tools/python_api
+# make changes
+git add . && git commit -m "description" && git push
+```
+
+Then update the submodule reference in the main repo:
+
+```bash
+cd ..
+git add tools/python_api
+git commit -m "Update python_api submodule"
+git push
+```
+
 To build from source code, Ladybug requires CMake (`>=3.15`), Python (`>=3.9`), and a compiler that supports C++20. The minimum supported versions of C++ compilers are GCC 13, Clang 18, and MSVC 19.29. The preferred compiler on Linux is GCC; on macOS, Apple Clang; and on Windows, MSVC. On Linux, Clang is also tested. Other compilers that support C++20 may also work, but are not tested.
+
+:::tip[Recommended for faster rebuilds]
+For development, consider using **Ninja** as the build generator (faster parallel builds) and **ccache** (caches compilation results). On most platforms, you can use `make release GEN=Ninja` to build with Ninja.
+:::
 
 Below are the instructions for building Ladybug on Ubuntu, AlmaLinux, Arch Linux, macOS, and Windows. These instructions should also work for other similar platforms:
 
@@ -26,33 +97,33 @@ You can refer to our [multi-platform GitHub Actions workflow](https://github.com
 
 ```bash
 apt update
-apt install -y build-essential cmake gcc g++ python3
+apt install -y build-essential cmake gcc g++ python3 ninja-build ccache
 ```
 
 ```bash
-make release NUM_THREADS=$(nproc)
+make release NUM_THREADS=$(nproc) GEN=Ninja
 ```
 
 ### AlmaLinux 9.2
 
 ```bash
 dnf update
-dnf install -y cmake gcc gcc-c++ python3
+dnf install -y cmake gcc gcc-c++ python3 ninja-build ccache
 ```
 
 ```bash
-make release NUM_THREADS=$(nproc)
+make release NUM_THREADS=$(nproc) GEN=Ninja
 ```
 
 ### Arch Linux
 
 ```bash
 pacman -Syu
-pacman -S --needed base-devel cmake gcc python
+pacman -S --needed base-devel cmake gcc python ninja ccache
 ```
 
 ```bash
-make release NUM_THREADS=$(nproc)
+make release NUM_THREADS=$(nproc) GEN=Ninja
 ```
 
 ### macOS 14
@@ -64,11 +135,11 @@ xcode-select --install
 ```
 
 ```bash
-brew install cmake python
+brew install cmake python ninja ccache
 ```
 
 ```bash
-make release NUM_THREADS=$(sysctl -n hw.physicalcpu)
+make release NUM_THREADS=$(sysctl -n hw.physicalcpu) GEN=Ninja
 ```
 
 ### Windows 10
@@ -94,7 +165,7 @@ Follow the instructions at [Microsoft's documentation](https://docs.microsoft.co
 #### Build Ladybug
 
 ```powershell
-make release NUM_THREADS=$env:NUMBER_OF_PROCESSORS
+make release NUM_THREADS=$env:NUMBER_OF_PROCESSORS GEN=Ninja
 ```
 
 ## Run the CLI
