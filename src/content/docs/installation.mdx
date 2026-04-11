@@ -43,7 +43,7 @@ tar xzf liblbug-*.tar.gz`,
 },
   go: `go get https://github.com/LadybugDB/go-ladybug@v0.13.1`,
 swift: `dependencies: [
-  .package(url: "https://github.com/LadybugDB/ladybug-swift/", branch: "${version}"),
+  .package(url: "https://github.com/LadybugDB/swift-ladybug/", branch: "${version}"),
 ],`
 }
 
@@ -119,7 +119,7 @@ On Linux, macOS, and WSL2, you can also use [`Nix`](https://nixos.org/learn) to 
 Run Ladybug in a temporary shell:
 
 ```bash
-nix-shell -p lbug
+nix-shell -p ladybugdb
 lbug
 ```
 
@@ -147,7 +147,7 @@ The instructions are the same for Linux, macOS, and Windows.
 
 ```bash
 uv init
-uv add real_ladybug
+uv add ladybug
 ```
 
 </TabItem>
@@ -155,7 +155,7 @@ uv add real_ladybug
 <TabItem label="pip">
 
 ```bash
-pip install real_ladybug
+pip install ladybug
 ```
 
 </TabItem>
@@ -214,7 +214,7 @@ To add `lbug-swift` to your Swift project, you can use the Swift package manager
       .target(
         name: "YourTargetName",
         dependencies: [
-          .product(name: "Ladybug", package: "lbug-swift"),
+          .product(name: "Ladybug", package: "swift-ladybug"),
         ]
       )
     ]
@@ -223,7 +223,7 @@ To add `lbug-swift` to your Swift project, you can use the Swift package manager
 Alternatively, you can add the package through Xcode:
 1. Open your Xcode project.
 2. Go to `File` > `Add Packages Dependencies...`.
-3. Enter the URL of the lbug-swift repository: `https://github.com/LadybugDB/ladybug-swift`.
+3. Enter the URL of the ladybug-swift repository: `https://github.com/LadybugDB/swift-ladybug`.
 4. Select the version you want to use (e.g., {version} for the latest stable release or `main` for the latest development version).
 
 
@@ -268,15 +268,15 @@ for more details.
 
 Our [Model Context Protocol](https://modelcontextprotocol.io/introduction) server allows you to expose
 your Ladybug database as a tool that can be used by LLMs and agents.
-Refer to the Ladybug-MCP [GitHub repo](https://github.com/LadybugDB/ladybug-mcp-server) for more details.
+Refer to the Ladybug-MCP [GitHub repo](https://github.com/LadybugDB/mcp-server-ladybug) for more details.
 
 ## Nightly Builds
 
 If you want access to the latest features in development, you can use our nightly builds.
 
-- Python: `uv pip install --pre lbug`
-- Node.js: `npm i lbug@next`
-- Java: The latest snapshot version is available on [GitHub Packages](https://github.com/LadybugDB/ladybug/packages/2258307)
+- Python: `uv pip install --pre ladybug`
+- Node.js: `npm i @ladybugdb/core@next`
+- Java: The latest snapshot version is available on [GitHub Packages](https://github.com/LadybugDB/ladybug/packages/)
 - For the CLI, C/C++ shared libraries, and Rust crate, the latest nightly versions for each can be
 downloaded from the latest run of [this GitHub Actions workflow](https://github.com/LadybugDB/ladybug/actions/workflows/build-and-deploy.yml).
 
