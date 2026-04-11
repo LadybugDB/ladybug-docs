@@ -14,7 +14,7 @@ There are two different ways in Ladybug to import dataframes:
 The dataframe can be passed as a query parameter:
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 import polars as pl
 
 db = lb.Database(":memory:")
@@ -117,7 +117,7 @@ We can ignore these erroneous rows during import by setting the `ignore_errors` 
 in the `COPY FROM` command:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 db = lb.Database(":memory:")
 conn = lb.Connection(db)
@@ -157,7 +157,7 @@ You can directly copy from a Pandas dataframe into Ladybug. Both numpy-backed an
 dataframes are supported.
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 import pandas as pd
 
 db = lb.Database(":memory:")
@@ -188,7 +188,7 @@ You can utilize an existing in-memory PyArrow table to copy data directly into L
 Internally, the Polars dataframe example above also leverages scanning from PyArrow tables.
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 import pyarrow as pa
 
 db = lb.Database(":memory:")
@@ -218,7 +218,7 @@ print(res.get_as_df())
 This example shows a basic use case where you have no nesting of data and no null values.
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 import polars as pl
 
 db = lb.Database(":memory:")
@@ -338,7 +338,7 @@ We can now scan the DataFrame using the `LOAD FROM` clause in Ladybug in combina
 obtain each of the insurance provider records in a row-wise manner.
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 
 db = lb.Database(":memory:")
 conn = lb.Connection(db)
@@ -368,7 +368,7 @@ We now have the necessary information to create our `Patient`, `InsuranceProvide
 tables and copy the relevant data into them.
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 
 db = lb.Database(":memory:")
 conn = lb.Connection(db)

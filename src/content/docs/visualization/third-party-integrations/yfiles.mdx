@@ -25,7 +25,7 @@ The yFiles Jupyter Graphs widget can be installed using `uv` or `pip`:
 ```bash
 # Install lbug as a pre-requisite
 uv init
-uv add real_ladybug yfiles-jupyter-graphs-for-kuzu
+uv add ladybug yfiles-jupyter-graphs-for-kuzu
 ```
 
 </TabItem>
@@ -33,7 +33,7 @@ uv add real_ladybug yfiles-jupyter-graphs-for-kuzu
 
 ```bash
 # Install lbug as a pre-requisite
-pip install real_ladybug yfiles-jupyter-graphs-for-kuzu
+pip install ladybug yfiles-jupyter-graphs-for-kuzu
 ```
 
 </TabItem>
@@ -46,7 +46,7 @@ table `Person`, and one relationship table `MENTORED`, which describes who mento
 Each person has a `name` and an `alias`, which is the name they are best known by.
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 from yfiles_jupyter_graphs_for_kuzu import KuzuGraphWidget
 # Open a new in-memory database
 db = lb.Database(":memory:")

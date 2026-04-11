@@ -25,7 +25,7 @@ and is more commonly used when building Ladybug applications in Node.js.
 The asynchronous API is commonly used when writing Ladybug applications in Node.js.
 
 ```js
-const lbug = require("lbug");
+const lbug = require("@ladybugdb/core");
 
 (async () => {
   // Create an empty on-disk database and connect to it
@@ -65,7 +65,7 @@ This is useful for running Ladybug in a synchronous context, such as debugging o
 where async operations are not desired.
 
 ```js
-const lbug = require("lbug");
+const lbug = require("@ladybugdb/core");
 
 // Create an empty on-disk database and connect to it
 const db = new lbug.Database("example.lbug");

@@ -34,7 +34,7 @@ First, initialize a connection to a new Ladybug database named `example.lbug`:
 
 ```py
 from pathlib import Path
-import real_ladybug as lb
+import ladybug as lb
 
 db_path = "example.lbug"
 
@@ -112,7 +112,7 @@ The first method to run a graph algorithm natively in Ladybug is using the `algo
 #### Install and load the extension
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 db_path = "example.lbug"
 
@@ -237,7 +237,7 @@ a NetworkX algorithm result into a Pandas/Polars DataFrame and write it back to 
 First, obtain a connection to the existing `example.lbug` database:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 db_path = "example.lbug"
 

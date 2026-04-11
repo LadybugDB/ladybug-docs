@@ -35,7 +35,7 @@ curl -L -o ./data/lives-in.csv https://raw.githubusercontent.com/LadybugDB/datas
 The synchronous API is the default and is a common way to work with Ladybug in Python.
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
     # Create an empty on-disk database and connect to it
@@ -79,7 +79,7 @@ such as in web frameworks like FastAPI or cases where you need to concurrently r
 
 ```python
 import asyncio
-import real_ladybug as lb
+import ladybug as lb
 
 async def main():
     # Create an empty on-disk database and connect to it
@@ -187,7 +187,7 @@ The following examples show how to output query results to each of these data st
 You can output the results of a Cypher query to a Pandas DataFrame using the `get_as_df()` method:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pandas as pd
 
 db = lb.Database(":memory:")
@@ -226,7 +226,7 @@ print(result.get_as_df())
 You can output the results of a Cypher query to a Polars DataFrame using the `get_as_pl()` method:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import polars as pl
 
 db = lb.Database(":memory:")
@@ -277,7 +277,7 @@ shape: (3, 1)
 You can output the results of a Cypher query to a PyArrow Table using the `get_as_arrow()` method:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pyarrow as pa
 
 db = lb.Database(":memory:")
@@ -314,7 +314,7 @@ Scanning a DataFrame or Table does *not* copy the data into Ladybug, it only rea
 <TabItem label="Pandas">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pandas as pd
 
 db = lb.Database(":memory:")
@@ -339,7 +339,7 @@ print(result.get_as_df())
 <TabItem label="Polars">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import polars as pl
 
 db = lb.Database(":memory:")
@@ -370,7 +370,7 @@ shape: (3, 2)
 <TabItem label="Arrow Table">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pyarrow as pa
 
 db = lb.Database(":memory:")
@@ -405,7 +405,7 @@ age: [[30,40,50]]
 Copy from a Pandas DataFrame into a Ladybug table using the `COPY FROM` command:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pandas as pd
 
 db = lb.Database(":memory:")
@@ -436,7 +436,7 @@ print(result.get_as_df())
 Copy from a Polars DataFrame into a Ladybug table using the `COPY FROM` command:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import polars as pl
 
 db = lb.Database(":memory:")
@@ -473,7 +473,7 @@ shape: (3, 2)
 Copy from a PyArrow Table into a Ladybug table using the `COPY FROM` command:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pyarrow as pa
 
 db = lb.Database(":memory:")
@@ -541,7 +541,7 @@ difference between two numbers, and then apply it in a Cypher query.
 ### Register the UDF
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 db = lb.Database(":memory:")
 conn = lb.Connection(db)
