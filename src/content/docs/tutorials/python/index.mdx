@@ -24,7 +24,7 @@ for alternative installation methods.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install real_ladybug
+pip install ladybug
 ```
 
 Next, [download the zipped data](https://lbugdb.github.io/data/tutorial/tutorial_data.zip) and unzip the files.
@@ -70,7 +70,7 @@ We are now ready to start the tutorial.
 ## Create the database
 Clear out the contents of `src/create_db.py` and import Ladybug:
 ```py
-import real_ladybug as lb
+import ladybug as lb
 ```
 Next, create and connect to an empty Ladybug database:
 ```py
@@ -169,7 +169,7 @@ We can now start querying the graph to answer some questions about the social ne
 
 Replace the contents of `src/main.py` with the following code snippet:
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
     db = lb.Database("social_network.lbug")
@@ -328,7 +328,7 @@ This tells us that there is exactly one path of length 3 between the three users
 ## Summary
 In this tutorial, we've shown how to use Ladybug's Python API to import CSV data as a graph and query it using Cypher.
 
-You're now ready to import your own datasets into Ladybug and query them usin Ladybug's Python API!
+You're now ready to import your own datasets into Ladybug and query them using Ladybug's Python API!
 
 ## Code
 Here is the full code from the tutorial that you can use to follow along. Reminder that you can run the code as follows:
@@ -344,7 +344,7 @@ python src/main.py
 <TabItem label="create_db.py">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
     db = lb.Database("social_network.lbug")
@@ -396,7 +396,7 @@ if __name__ == "__main__":
 <TabItem label="main.py">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
     db = lb.Database("social_network.lbug")

@@ -36,7 +36,7 @@ extension to directly create the embeddings using Cypher.
 ```python
 # create_embeddings.py
 # pip install sentence-transformers
-import real_ladybug as lb
+import ladybug as lb
 import os
 
 db = lb.Database("example.lbug")
@@ -96,7 +96,7 @@ for title, publisher in zip(titles, publishers):
 <TabItem value="llm" label="LLM extension">
 ```python
 # create_embeddings.py
-import real_ladybug as lb
+import ladybug as lb
 import os
 
 db = lb.Database("example.lbug")
@@ -269,7 +269,7 @@ Let's run some example search queries on our newly created vector index.
 <Tabs syncKey="vector">
 <TabItem value="sentence_transformers" label="sentence_transformers">
 ```python
-import real_ladybug as lb
+import ladybug as lb
 
 # Initialize the database
 db = lb.Database("example.lbug")
@@ -304,7 +304,7 @@ print(result.get_as_pl())
 </TabItem>
 <TabItem value="llm" label="LLM extension">
 ```python
-import real_ladybug as lb
+import ladybug as lb
 
 # Initialize the database
 db = lb.Database("example.lbug")
