@@ -42,6 +42,22 @@ You can alternatively set the following environment variables:
 | `S3_REGION` | S3 region |
 | `S3_URL_STYLE` | S3 URL style |
 
+### Using a non-AWS endpoint
+
+To connect to an S3-compatible service (such as Cloudflare R2, MinIO, or Tigris), set `s3_endpoint` to the service's endpoint and provide credentials as usual:
+
+```cypher
+CALL s3_access_key_id='<your-key-id>';
+CALL s3_secret_access_key='<your-secret>';
+CALL s3_endpoint='<service-endpoint>';
+CALL s3_region='auto';
+```
+
+A few notes:
+
+- `s3_region` is required for request signing but is ignored by most non-AWS services. Any non-empty value works; `auto` is a common convention.
+- `s3_url_style` defaults to virtual-hosted-style. Some services (for example, MinIO in its default configuration) require path-style URLs — set `s3_url_style='path'` in that case.
+
 ### Scanning data from S3
 
 The example below shows how to scan data from a Parquet file hosted on S3.
@@ -91,7 +107,7 @@ TO 's3://lbug-datasets/saved/location.parquet';
 #### Requirements on the S3 server APIs
 
 S3 offers a standard set of APIs for read and write operations. The `httpfs` extension uses these APIs to communicate with remote storage services and thus should also work
-with other services that are compatible with the S3 API (such as [Cloudflare R2](https://www.cloudflare.com/en-gb/developer-platform/r2/)).
+with other services that are compatible with the S3 API (such as [Cloudflare R2](https://www.cloudflare.com/en-gb/developer-platform/r2/) and [Tigris](https://www.tigrisdata.com/)).
 
 The table below shows which parts of the S3 API are needed for each feature of the extension to work.
 
