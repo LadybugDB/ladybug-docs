@@ -56,7 +56,7 @@ CALL s3_region='auto';
 A few notes:
 
 - `s3_region` is required for request signing but is ignored by most non-AWS services. Any non-empty value works; `auto` is a common convention.
-- `s3_url_style` defaults to virtual-hosted-style. Some services (for example, MinIO in its default configuration) require path-style URLs — set `s3_url_style='path'` in that case.
+- `s3_url_style` defaults to `vhost` (virtual-hosted-style). Some services (for example, MinIO in its default configuration) require path-style URLs — set `s3_url_style='path'` in that case.
 
 ### Scanning data from S3
 
