@@ -234,11 +234,11 @@ println!("{}", result2);
 Returns
 ```
 u2.username|follower_count
-coolwolf752|3
-stormfox762|5
+mysticwolf198|4
 stormcat597|2
+coolking201|3
 brightninja683|5
-stormqueen831|4
+epiccat105|4
 ```
 This is a lot more useful! We can now clearly see how many followers each user has.
 
@@ -256,11 +256,11 @@ println!("{}", result3);
 Returns:
 ```
 u2.username|follower_count
-stormninja678|6
+darkdog878|6
 ```
 
 This dataset has multiple users with the greatest follower count of `6`. So, we are
-excluding other users with the same follower count as `stormninja678` (or whoever appeared first).
+excluding other users with the same follower count as `darkdog878` (or whoever appeared first).
 If you want to retrieve all of them, the query becomes a bit longer:
 ```cypher
 MATCH (u1:User)-[f:FOLLOWS]->(u2:User)
@@ -270,6 +270,11 @@ MATCH (u1:User)-[f:FOLLOWS]->(u2:User)
 WITH u2, COUNT(u1) as follower_count, max_count
 WHERE follower_count = max_count
 RETURN u2.username, follower_count
+```
+```
+u2.username|follower_count
+stormninja678|6
+darkdog878|6
 ```
 
 ### Q2: What is the shortest path between two users?
