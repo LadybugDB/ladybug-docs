@@ -13,8 +13,9 @@ in Python to run almost any graph algorithm on a Ladybug subgraph.
 
 ## Prepare the dataset
 
-This tutorial uses a dataset of Nobel laureates and their mentorship network.
-Create a local `data` directory containing `scholars.csv` and `mentorships.csv` before running the examples below.
+A dataset of Nobel laureates and their mentorship network is provided
+[here](https://huggingface.co/datasets/ladybugdb/python-tutorial/blob/main/nobel-mentorship.zip).
+Download the dataset to your local directory and unzip it.
 
 The nodes in the dataset are scholars who won Nobel prizes, as well as other
 scholars who didn't win prizes but were involved in mentoring them. The edges represent
