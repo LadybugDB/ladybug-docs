@@ -20,8 +20,8 @@ tar xzf lbug_cli-*.tar.gz`,
 macos: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/lbug_cli-osx-universal.tar.gz
 tar xzf lbug_cli-*.tar.gz
 ./lbug`,
-    win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip`,
-    winUrl: `https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip`,
+    win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/latest/download/lbug_cli-windows-x86_64.zip`,
+    winUrl: `https://github.com/LadybugDB/ladybug/releases/latest/download/lbug_cli-windows-x86_64.zip`,
   },
 java: `<dependency>
   <groupId>com.ladybugdb</groupId>
@@ -41,7 +41,7 @@ tar xzf liblbug-*.tar.gz`,
 tar xzf liblbug-*.tar.gz`,
     win: `curl -L -O https://github.com/LadybugDB/ladybug/releases/download/v${version}/liblbug-windows-x86_64.zip`
 },
-  go: `go get https://github.com/LadybugDB/go-ladybug@v0.13.1`,
+  go: `go get github.com/LadybugDB/go-ladybug`,
 swift: `dependencies: [
   .package(url: "https://github.com/LadybugDB/swift-ladybug/", branch: "${version}"),
 ],`
@@ -100,10 +100,10 @@ Alternatively, you can download the Ladybug CLI directly.
 <TabItem label="Windows">
 
 Use a tool like `curl` to download the latest version of the Ladybug CLI to your local machine. Alternatively,
-simply open [this URL](https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip) in your browser.
+simply open [this URL](https://github.com/LadybugDB/ladybug/releases/latest/download/lbug_cli-windows-x86_64.zip) in your browser.
 
 ```bash
-curl -L -O https://github.com/LadybugDB/ladybug/releases/download/latest/lbug_cli-windows-x86_64.zip
+curl -L -O https://github.com/LadybugDB/ladybug/releases/latest/download/lbug_cli-windows-x86_64.zip
 ```
 
 Right-click on the `lbug_cli-xxx.zip` file and click on **Extract All**. This will create a directory
