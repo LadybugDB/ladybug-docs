@@ -13,9 +13,8 @@ in Python to run almost any graph algorithm on a Ladybug subgraph.
 
 ## Prepare the dataset
 
-A dataset of Nobel laureates and their mentorship network is provided
-[here](https://raw.githubusercontent.com/ladybugdb/ladybug/tutorials/main/src/network_analysis/data.zip).
-Download the dataset to your local directory and unzip it.
+This tutorial uses a dataset of Nobel laureates and their mentorship network.
+Create a local `data` directory containing `scholars.csv` and `mentorships.csv` before running the examples below.
 
 The nodes in the dataset are scholars who won Nobel prizes, as well as other
 scholars who didn't win prizes but were involved in mentoring them. The edges represent
@@ -408,5 +407,4 @@ For performance and scalability, it's recommended to use Ladybug's native `algo`
 is available. If not, you can always fall back to using NetworkX, which has a far more extensive suite of
 graph algorithms.
 
-To reproduce the analysis shown in this tutorial, see the code
-[here](https://github.com/LadybugDB/tutorials/tree/main/src/network_analysis).
+To reproduce the analysis shown in this tutorial, run the code snippets above after placing the CSV files in `./data`.
