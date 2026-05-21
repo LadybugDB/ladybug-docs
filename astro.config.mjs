@@ -151,6 +151,7 @@ export default defineConfig({
                                 { label: 'Functions, expressions, & operators', link: '/cypher/expressions' },
                                 { label: 'Data definition language (DDL)', link: '/cypher/data-definition' },
                                 { label: 'Data manipulation clauses', link: '/cypher/data-manipulation-clauses' },
+                                { label: 'Indexes', link: '/cypher/indexes' },
                                 { label: 'Subqueries', link: '/cypher/subquery' },
                                 { label: 'Macros', link: '/cypher/macro' },
                                 { label: 'Transactions', link: '/cypher/transaction' },
@@ -195,6 +196,7 @@ export default defineConfig({
                                 { label: 'Copy from DataFrame', link: '/import/copy-from-dataframe' },
                                 { label: 'Copy from subquery', link: '/import/copy-from-subquery' },
                                 { label: 'Copy from JSON', link: '/import/copy-from-json' },
+                                { label: 'Icebug', link: '/import/icebug' },
                                 { label: 'Graph databases', link: '/import/graph-databases' },
                             ]
                         },
