@@ -48,7 +48,7 @@ The catalog module contains schema-level information that is generated through D
 The storage module contains data that needs to be persistent to disk. Specifically:
 
 - **BufferManager**: manages all memory being used in the system (except for small memory allocations from the OS); caches recently read pages in memory.
-- **Index**: Hash index for primary keys.
+- **Index**: Hash index and ART (Adaptive Radix Tree) index for primary keys.
 - **Column**: Vanilla column data structure.
 - **List**: CSR-like data structure.
 - **NodeTable**: A collection of multiple columns.
