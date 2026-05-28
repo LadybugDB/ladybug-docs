@@ -14,6 +14,11 @@ The currently available relational database extensions are shown below:
 
 Extension Name | Description | Minimum Version
 :---:|:---:|:---:
+[`adbc`](/extensions/attach/adbc) | Scan from any ADBC-compatible database | –
 [`duckdb`](/extensions/attach/duckdb) | Scan from an attached DuckDB database | 0.10.0
 [`postgres`](/extensions/attach/postgres) | Scan from an attached PostgreSQL database | 14.0
 [`sqlite`](/extensions/attach/sqlite) | Scan from an attached SQLite database | 3.3.0
+
+:::note[Note]
+The `adbc` extension is a generic adapter that works with any database exposing an [ADBC driver](https://arrow.apache.org/adbc/). Prefer a dedicated extension (DuckDB, PostgreSQL, SQLite) when one is available, as dedicated extensions offer additional features such as arbitrary SQL pass-through via `SQL_QUERY`.
+:::
