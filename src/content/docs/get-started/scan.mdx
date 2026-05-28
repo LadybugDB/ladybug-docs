@@ -115,7 +115,8 @@ Query data directly from external sources without importing. Unlike `LOAD FROM`,
 
 ### Supported sources
 
-- Parquet files
+- Icebug disk (CSR Parquet files with a Cypher schema)
+- Icebug memory (CSR Arrow tables)
 - Arrow memory
 - DuckDB tables
 - PostgreSQL (coming soon)
@@ -132,16 +133,78 @@ WITH (storage='path/to/employee.parquet');
 
 ```cypher
 CREATE REL TABLE WorksIn (from Person, to Company, since INT32)
-WITH (storage='path/to/works_in.parquet');
+WITH (storage='path/to/works_in.parquet', format='icebug-disk');
 ```
+
+### Icebug disk
+
+**NODE tables:**
+```cypher
+CREATE NODE TABLE Employee (id INT64, name STRING, PRIMARY KEY (id))
+WITH (storage='icebug-disk/', format='icebug-disk');
+
+CREATE NODE TABLE Company (id INT64, name STRING, PRIMARY KEY (id))
+WITH (storage='icebug-disk/company.parquet', format='icebug-disk');
+```
+
+**REL table:**
+```cypher
+CREATE REL TABLE WorksIn (from Employee, to Company, since INT32)
+WITH (storage='icebug-disk/', format='icebug-disk');
+```
+
+For more details about generating and using icebug-disk files, see the [icebug documentation](/import/icebug/).
+
+### Icebug memory
+
+```python
+import ladybug as lb
+
+db = lb.Database()
+conn = lb.Connection(db)
+
+# Create node table
+conn.create_arrow_table(
+    table_name="employee",           # node table name to be used in ladybug
+    dataframe=pa_employee            # node table as a pa.Table
+)
+
+# create rel table
+conn.create_arrow_rel_table(
+    table_name="worksin",            # rel table name to be used in ladybug
+    src_table_name="employee",       # src node table name from table creation earlier
+    dst_table_name="company",        # dst node table name from table creation earlier
+    layout="CSR",
+    dataframe=pa_company_indices,    # rel table with 'source' and 'target' columns
+    dst_col_name="target",               # dst col name in the indices table
+    indptr=pa_company_indptr,        # row pointers for indices table
+)
+```
+
+For more details about generating and using icebug-memory tables, see the [icebug documentation](/import/icebug/).
 
 ### Arrow memory
 
-You can query Arrow memory directly by registering it with the database. The `arrowId` is obtained when you register Arrow memory (e.g., via the Python API):
+```python
+import ladybug as lb
 
-```cypher
-CREATE NODE TABLE Employee (id INT64, name STRING, PRIMARY KEY (id))
-WITH (storage='arrow://my_arrow_table_id');
+db = lb.Database()
+conn = lb.Connection(db)
+
+# Create node table
+conn.create_arrow_table(
+    table_name="employee",           # node table name to be used in ladybug
+    dataframe=pa_employee            # node table as a pa.Table
+)
+
+# create rel table
+conn.create_arrow_rel_table(
+    table_name="worksin",            # rel table name to be used in ladybug
+    src_table_name="employee",       # src node table name from table creation earlier
+    dst_table_name="company",        # dst node table name from table creation earlier
+    layout="FLAT",
+    dataframe=pa_company,            # rel table with 'from' and 'to' columns
+)
 ```
 
 ### DuckDB
