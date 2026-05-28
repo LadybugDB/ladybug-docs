@@ -176,7 +176,7 @@ conn.create_arrow_rel_table(
     dst_table_name="company",        # dst node table name from table creation earlier
     layout="CSR",
     dataframe=pa_company_indices,    # rel table with 'source' and 'target' columns
-    dst_col_name="target",               # dst col name in the indices table
+    dst_col_name="target",           # dst col name in the indices table
     indptr=pa_company_indptr,        # row pointers for indices table
 )
 ```
