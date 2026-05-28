@@ -301,6 +301,7 @@ export default defineConfig({
                         },
                         { label: 'LLM', link: '/extensions/llm', badge: { text: 'New' }},
                         { label: 'Neo4j', link: '/extensions/neo4j'},
+                        { label: 'ADBC', link: '/extensions/adbc' },
                         {
                             label: 'Relational databases',
                             collapsed: true,

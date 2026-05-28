@@ -59,7 +59,7 @@ If the ladybug instance is created backed by a file `graph.lbdb`, you can move i
 ATTACH 'graph.lbdb' AS mygraph (dbtype lbug);
 ```
 
-For more details about attaching databases, see the [attach documentation](/extensions/attach/lbug.md).
+For more details about attaching databases, see the [attach documentation](/extensions/attach/lbug).
 
 ### Remote storage
 
