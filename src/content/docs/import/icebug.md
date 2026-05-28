@@ -32,7 +32,9 @@ CREATE REL TABLE follows(FROM user TO user, since INT32) WITH (storage = '<path-
 CREATE REL TABLE livesin(FROM user TO city) WITH (storage = '<path-to-dir>', format = 'icebug-disk');
 ```
 
-Note: For node tables, you can directly pass the parquet file path as the storage location
+:::note[Note]
+For node tables, you can directly pass the parquet file path as the storage location
+:::
 
 ### Using Icebug files
 
@@ -42,7 +44,7 @@ Start Ladybug with the generated schema file using the `-i` flag:
 lbug -i csr_graph/schema.cypher
 ```
 
-or Run the DDL queries yourself in a Ladybug instance. We also support parquet files on remote storage (e.g. S3)
+or Run the DDL queries yourself in a Ladybug instance.
 
 Then query the graph directly:
 
@@ -58,6 +60,45 @@ ATTACH 'graph.lbdb' AS mygraph (dbtype lbug);
 ```
 
 For more details about attaching databases, see the [attach documentation](/extensions/attach/lbug.md).
+
+### Remote storage
+
+Icebug-disk supports Parquet files on remote storage. The `storage` path in your schema.cypher can be any URI supported by Ladybug's file system extensions.
+
+| Storage type | Example URI | Extension required |
+|---|---|---|
+| Amazon S3 | `s3://my-bucket/graphs/mygraph/` | `httpfs` |
+| Google Cloud Storage | `gcs://my-bucket/graphs/mygraph/` | `httpfs` |
+| Azure Blob Storage | `az://my-container/mygraph/` | `azure` |
+| Huggingface Hub | `xet://huggingface.co/mygraph/` | `httpfs` |
+| HTTPS | `https://host/path/mygraph/` | `httpfs` |
+
+#### Example: S3
+
+First, install and configure the `httpfs` extension if not already done:
+
+```cypher
+INSTALL httpfs;
+LOAD httpfs;
+CALL s3_credential(
+  key_id='YOUR_KEY_ID',
+  secret='YOUR_SECRET',
+  region='us-east-1'
+);
+```
+
+Then use S3 URIs directly in your schema:
+
+```cypher
+CREATE NODE TABLE city(id INT32, name STRING, population INT64, PRIMARY KEY(id))
+  WITH (storage = 's3://my-bucket/mygraph/', format = 'icebug-disk');
+CREATE REL TABLE livesin(FROM user TO city)
+  WITH (storage = 's3://my-bucket/mygraph/', format = 'icebug-disk');
+```
+
+:::note[Note]
+Remote Parquet files are read lazily — only the row groups needed for a query are fetched. This makes remote icebug-disk datasets practical even over high-latency links, though local storage will always be faster for repeated queries.
+:::
 
 ## icebug-memory
 
@@ -77,11 +118,13 @@ graph: IcebugMemGraph = IcebugMemGraph.from_arrow_tables(
 )
 ```
 
-Note: The convertion utility is only available in python for now.
+:::note[Note]
+The conversion utility is only available in Python for now.
+:::
 
 ### Using Icebug tables
 
-Ladybug python, nodejs, rust, and C++ bindings expose create APIs for node and rel tables. For example, in python:
+Ladybug Python, Node.js, Rust, and C++ bindings expose create APIs for node and rel tables. For example, in Python:
 
 ```python
 import ladybug as lb

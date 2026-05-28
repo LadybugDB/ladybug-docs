@@ -1,0 +1,130 @@
+---
+title: ADBC extension
+description: Connect to any ADBC-compatible database (DuckDB, PostgreSQL, SQLite, Snowflake, etc.) using the Apache Arrow ADBC standard.
+---
+
+The `adbc` extension allows you to attach any database that exposes an [Apache Arrow Database Connectivity (ADBC)](https://arrow.apache.org/adbc/) driver. ADBC is a vendor-neutral standard for database connectivity, and drivers are available for PostgreSQL, DuckDB, SQLite, Snowflake, and more.
+
+Use ADBC when:
+- You need to connect to a database that doesn't have its own dedicated Ladybug extension.
+- You want to use a single, uniform interface across multiple backend databases.
+
+## Dependencies
+
+The `adbc` extension requires the ADBC driver for the database you want to connect to. You must have the driver library available on your system before using this extension.
+
+Common ADBC drivers can be installed via `pip`:
+
+```bash
+# PostgreSQL
+pip install adbc-driver-postgresql
+
+# DuckDB
+pip install adbc-driver-duckdb
+
+# SQLite
+pip install adbc-driver-sqlite
+
+# Snowflake
+pip install adbc-driver-snowflake
+```
+
+Each package installs a shared library (e.g., `libadbc_driver_postgresql.so` on Linux) that ADBC can load by name.
+
+## Usage
+
+Please see [Install an extension](/extensions#install-an-extension) and [Load an extension](/extensions#load-an-extension) first before getting started.
+
+### Attach syntax
+
+```cypher
+ATTACH [DB_PATH] [AS alias]
+  (dbtype adbc, driver = 'DRIVER_NAME', tables = 'TABLE1[,TABLE2,...]' [, schema = 'SCHEMA_NAME'] [, KEY = 'VALUE' ...])
+```
+
+- **`DB_PATH`**: Path or URI to the database. Paths are passed to the driver as `path`; URIs containing `://` are passed as `uri`.
+- **`alias`**: Optional name to reference this database in Ladybug queries.
+- **`driver`** (required): ADBC driver name or path to its shared library.
+- **`tables`** (required): Comma-separated list of table names to expose in Ladybug.
+- **`schema`** (optional): Schema name to look up tables in. Defaults to `main`.
+- Any additional key-value options are forwarded directly to the ADBC driver (e.g., connection credentials).
+
+:::note[Note]
+Unlike other database extensions, the ADBC extension currently requires you to explicitly list the tables you want to attach via `tables = 'table1,table2,...'`. Automatic table discovery is not yet supported.
+:::
+
+### Example: Attach a DuckDB database
+
+First, install and load the `adbc` extension:
+
+```cypher
+INSTALL adbc;
+LOAD adbc;
+```
+
+Then attach a local DuckDB file:
+
+```cypher
+ATTACH 'games.duckdb' AS games_db (dbtype adbc, driver='duckdb', tables='games');
+```
+
+Scan the table:
+
+```cypher
+LOAD FROM games_db.games RETURN id, title, score ORDER BY id;
+```
+
+```table
+┌────┬────────┬───────┐
+│ id │ title  │ score │
+├────┼────────┼───────┤
+│ 1  │ Portal │ 95    │
+│ 2  │ Celeste│ 94    │
+│ 3  │ Hades  │ 93    │
+└────┴────────┴───────┘
+```
+
+### Example: Attach a PostgreSQL database
+
+```cypher
+ATTACH 'postgresql://user:password@localhost:5432/mydb' AS pg
+  (dbtype adbc, driver='adbc_driver_postgresql', tables='orders,customers');
+```
+
+### Example: Attach a Snowflake database
+
+```cypher
+ATTACH '' AS sf (
+  dbtype adbc,
+  driver = 'adbc_driver_snowflake',
+  tables = 'employees',
+  adbc.snowflake.sql.account = 'myaccount',
+  username = 'myuser',
+  password = 'mypassword'
+);
+```
+
+### Detach a database
+
+```cypher
+DETACH games_db;
+```
+
+## Copy data into Ladybug
+
+You can import data from an ADBC-attached table using `COPY FROM`:
+
+```cypher
+CREATE NODE TABLE Game (id INT64 PRIMARY KEY, title STRING, score INT64);
+COPY Game FROM games_db.games;
+```
+
+Or selectively with a subquery:
+
+```cypher
+COPY Game FROM (LOAD FROM games_db.games WHERE score >= 94 RETURN id, title, score);
+```
+
+## Comparison to dedicated extensions
+
+The `adbc` extension trades per-database optimizations (e.g., push-down SQL queries via `SQL_QUERY`) for breadth: any ADBC driver works. Dedicated extensions such as [`duckdb`](/extensions/attach/duckdb) and [`postgres`](/extensions/attach/postgres) support features like `SQL_QUERY` that bypass Ladybug's query engine entirely for filtering, and may offer better type coverage. Prefer a dedicated extension when one is available.
