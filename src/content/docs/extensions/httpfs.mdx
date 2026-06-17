@@ -39,6 +39,12 @@ Kitchener|200000
 Guelph|75000
 ```
 
+:::note[Note]
+Reading files over HTTP(S), including attaching a remote database via an HTTP URL, requires the server to support HTTP range requests.
+Object storage (S3/GCS) and standard static-file servers (nginx, Apache, Caddy) support this by default; dynamically generated responses and
+some proxies may not.
+:::
+
 ## Local cache
 
 Remote file system calls can be expensive and highly dependent on your network conditions (bandwidth, latency).
