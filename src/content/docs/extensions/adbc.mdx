@@ -13,20 +13,23 @@ Use ADBC when:
 
 The `adbc` extension requires the ADBC driver for the database you want to connect to. You must have the driver library available on your system before using this extension.
 
-Common ADBC drivers can be installed via `pip`:
+Common ADBC drivers can be installed via `dbc`:
 
 ```bash
+# Install dbc tool
+uv tool install dbc
+
 # PostgreSQL
-pip install adbc-driver-postgresql
+dbc install postgresql
 
 # DuckDB
-pip install adbc-driver-duckdb
+dbc install duckdb
 
 # SQLite
-pip install adbc-driver-sqlite
+dbc install sqlite
 
 # Snowflake
-pip install adbc-driver-snowflake
+dbc install snowflake
 ```
 
 Each package installs a shared library (e.g., `libadbc_driver_postgresql.so` on Linux) that ADBC can load by name.
