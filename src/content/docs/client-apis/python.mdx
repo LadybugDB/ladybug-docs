@@ -39,7 +39,7 @@ import ladybug as lb
 
 def main() -> None:
     # Create an empty on-disk database and connect to it
-    db = lb.Database("example.lbug")
+    db = lb.Database("example.lbdb")
     conn = lb.Connection(db)
 
     create_tables(conn)
@@ -83,7 +83,7 @@ import ladybug as lb
 
 async def main():
     # Create an empty on-disk database and connect to it
-    db = lb.Database("example.lbug")
+    db = lb.Database("example.lbdb")
     # The underlying connection pool will be automatically created and managed by the async connection
     conn = lb.AsyncConnection(db, max_concurrent_queries=4)
 

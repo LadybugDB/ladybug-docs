@@ -18,14 +18,14 @@ local database, whereas under [in-memory](/get-started#in-memory-database) mode,
 no data is persisted to disk.
 
 Throughout this documentation, let's suppose you open a Ladybug database file that's on-disk, named
-`example.lbug`.
+`example.lbdb`.
 
 ## Understand connections
 
 ### Database and connection objects
 Application processes must connect to a Ladybug database in two steps before they can start querying it:
 
-**Step 1.** Create an instance of a `Database` object `db` and pass it the database filename (`example.lbug` in our example below), and
+**Step 1.** Create an instance of a `Database` object `db` and pass it the database filename (`example.lbdb` in our example below), and
 a read-write mode which can be either:
 1. `READ_WRITE` (default); or
 2. `READ_ONLY`
@@ -38,7 +38,7 @@ do both read (e.g., queries with `MATCH WHERE RETURN` statements) as well as wri
 - In contrast, a Connection object that was created using a `READ_ONLY` database can only execute
 queries that do read operations.
 
-Then, using `conn`, one can execute Cypher queries against the `example.lbug` database.
+Then, using `conn`, one can execute Cypher queries against the `example.lbdb` database.
 Here's a simple example application in Python that demonstrates these two steps for creating a `READ_WRITE`
 database and a connection. The same principles apply to other language APIs as well:
 
@@ -46,8 +46,8 @@ database and a connection. The same principles apply to other language APIs as w
 import ladybug as lb
 
 # Open the database in `READ_WRITE` mode. The below code is equivalent to:
-# db = lb.Database("example.lbug", read_only=False)
-db = lb.Database("example.lbug")
+# db = lb.Database("example.lbdb", read_only=False)
+db = lb.Database("example.lbdb")
 conn = lb.Connection(db)
 conn.execute("CREATE (a:Person {name: 'Alice'});")
 ```
@@ -97,13 +97,13 @@ in that process).
 However, there are common scenarios when you may want to launch
 multiple application processes that connect to the same database. One such scenario
 is when developing your workflow in Python using a Jupyter notebook
-that connects to `example.lbug`. Say you want to also run the Ladybug CLI alongside your Jupyter notebook,
-which also connects to the same `example.lbug`. When you launch Ladybug CLI and point it to
-`example.lbug`, Ladybug CLI embeds Ladybug and tries to create a `READ_WRITE` Database object. So if your notebook process already
+that connects to `example.lbdb`. Say you want to also run the Ladybug CLI alongside your Jupyter notebook,
+which also connects to the same `example.lbdb`. When you launch Ladybug CLI and point it to
+`example.lbdb`, Ladybug CLI embeds Ladybug and tries to create a `READ_WRITE` Database object. So if your notebook process already
 has created a Database object, this will fail with an error that looks like this:
 
 ```console
-RuntimeError: IO exception: Could not set lock on file : /path/to/database/example.lbug
+RuntimeError: IO exception: Could not set lock on file : /path/to/database/example.lbdb
 ```
 
 If this happens, you would have to shut down your notebook process (or simply restart your Jupyter server),
@@ -113,12 +113,12 @@ so that its Database object is destroyed, before the CLI can run.
 
 Note that the above limitation about creating multiple Database objects does not mean that you cannot create
 multiple Connections from the same `READ_WRITE` Database object and issue concurrent queries. For example,
-you can write a program that creates a single `READ_WRITE` Database object `db` that points to `example.lbug`.
+you can write a program that creates a single `READ_WRITE` Database object `db` that points to `example.lbdb`.
 Then, you can spawn multiple threads
 T<sub>1</sub>, ..., T<sub>k</sub>, and each T<sub>i</sub> obtains a connection from `db` and concurrently issues
 read or write queries. This is safe. Every read and write statement in Ladybug is wrapped around a transaction
 (either automatically or manually by you). Concurrent transactions that operate on the same database
-`example.lbug` are safely executed by Ladybug's transaction manager (i.e., the transaction manager inside `db`),
+`example.lbdb` are safely executed by Ladybug's transaction manager (i.e., the transaction manager inside `db`),
 again as long as those transactions are issued by connections that were created from the same Database object.
 See the documentation on [transactions](/cypher/transaction) for the transactional guarantees that Ladybug provides.
 
@@ -128,7 +128,7 @@ Below, we provide some examples and best practices for common scenarios you are 
 
 ### Scenario 1: One process that creates a `READ_WRITE` database
 In this scenario, you have a single application process that embeds Ladybug and creates a `READ_WRITE` Database object
-that opens the `example.lbug` database. Within this process, you can create multiple concurrent connections, each of which
+that opens the `example.lbdb` database. Within this process, you can create multiple concurrent connections, each of which
 can execute queries that can read and write to the database, which will be handled safely
 by Ladybug's transaction manager. Pictorially, this scenario looks as follows:
 
@@ -139,7 +139,7 @@ from `conn1` and `conn2` are executed sequentially but they could be running con
 
 ### Scenario 2: Multiple processes that create `READ_ONLY` databases
 In this scenario, you have multiple application processes that embed
-Ladybug and create `READ_ONLY` Database objects that open the same database `example.lbug`.
+Ladybug and create `READ_ONLY` Database objects that open the same database `example.lbdb`.
 Each process can create multiple concurrent connections and issue queries.
 However, each connection can only execute read-only queries (because the database is opened in `READ_ONLY` mode).
 Since the connections and queries are read-only, none of the queries can change the actual database files on disk.
@@ -152,12 +152,12 @@ If you're interested in running multiple processes that can read and write to th
 
 ### Performing read-write operations from multiple processes
 In certain production settings, you may need to have multiple processes that read and write to the same Ladybug database,
-say again stored under `example.lbug`.
+say again stored under `example.lbdb`.
 This is the case for example if you have an online application. Say you have a browser application and multiple users
 use your application from different browsers and each user interaction leads to concurrent read-write queries
 on the same database. To support such scenarios, a common design pattern is this:
 1. **One API server process** that embeds Ladybug
-   and creates a single `READ_WRITE` Database object pointing to `example.lbug`.
+   and creates a single `READ_WRITE` Database object pointing to `example.lbdb`.
    The API server is responsible for handling incoming requests from clients, say through HTTP or gRPC. The
    requests' Cypher queries, which can read and write data to the database, are executed
    (possibly) concurrently.
@@ -210,7 +210,7 @@ Sometimes, when you are working in a Jupyter notebook and building your Ladybug 
 open other processes that connect to the same directory as the database file, you may come across this error:
 
 ```console
-RuntimeError: IO exception: Could not set lock on file : /path/to/database/example.lbug
+RuntimeError: IO exception: Could not set lock on file : /path/to/database/example.lbdb
 ```
 
 The lock, as described in earlier sections on this page, is present to protect you from inadvertent

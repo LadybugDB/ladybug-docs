@@ -28,15 +28,15 @@ you can attach to a single external Ladybug database (or be connected to the loc
 Therefore, you don't need to prefix your node and relationship tables.
 Instead, you will use the alias to `DETACH` from the external Ladybug database.
 
-Suppose you are connected to a local database `example.lbug`. After configuring a [S3 connection](/extensions/s3#configure-the-connection), you can attach a Ladybug database hosted on S3 as:
+Suppose you are connected to a local database `example.lbdb`. After configuring a [S3 connection](/extensions/s3#configure-the-connection), you can attach a Ladybug database hosted on S3 as:
 
 ```cypher
-ATTACH 's3://lbug-example/university.lbug.lbug' AS uw (dbtype lbug);
+ATTACH 's3://lbug-example/university.lbdb.lbdb' AS uw (dbtype lbug);
 ```
-After attaching a remote Ladybug database, you no longer have access to the original local Ladybug database `example.lbug`.
-After the `ATTACH` statement above, you can only query the external Ladybug database under `s3://lbug-example/university.lbug.lbug`.
+After attaching a remote Ladybug database, you no longer have access to the original local Ladybug database `example.lbdb`.
+After the `ATTACH` statement above, you can only query the external Ladybug database under `s3://lbug-example/university.lbdb.lbdb`.
 
-If you wish to attach to a database hosted on GCS instead, just replace the prefix `s3://` with `gs://` (in this case it would become `gs://lbug-example/university.lbug`). For more information on how to set up Ladybug with GCS, see [here](/extensions/gcs).
+If you wish to attach to a database hosted on GCS instead, just replace the prefix `s3://` with `gs://` (in this case it would become `gs://lbug-example/university.lbdb`). For more information on how to set up Ladybug with GCS, see [here](/extensions/gcs).
 
 #### Execute queries on external Ladybug database
 We only allow **read-only** queries to execute on external Ladybug databases (even if the external database is stored on local disk).
@@ -72,12 +72,12 @@ To detach from an external Ladybug database, use `DETACH [ALIAS]`:
 DETACH uw;
 ```
 
-After the `DETACH` statement, you can continue querying your local Ladybug database `example.lbug`. Therefore, detaching
+After the `DETACH` statement, you can continue querying your local Ladybug database `example.lbdb`. Therefore, detaching
 from an external Ladybug database switches your Ladybug database back to the local database you had started your session with.
 
 ### Use a local cache for remote files
 
-When connecting to a remote external Ladybug database, say the `s3://lbug-example/university.lbug` database in our example above,
+When connecting to a remote external Ladybug database, say the `s3://lbug-example/university.lbdb` database in our example above,
 you would use the `httpfs` extension. When querying this remote database in Cypher, Ladybug will make HTTPS calls to the
 remote server to query this database. You can speed up your Cypher queries by using the local httpfs cache,
 similar to how you can speed up `LOAD FROM` queries using the [local httpfs cache](/extensions/httpfs#local-cache)

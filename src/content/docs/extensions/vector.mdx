@@ -39,7 +39,7 @@ extension to directly create the embeddings using Cypher.
 import ladybug as lb
 import os
 
-db = lb.Database("example.lbug")
+db = lb.Database("example.lbdb")
 conn = lb.Connection(db)
 
 from sentence_transformers import SentenceTransformer
@@ -99,7 +99,7 @@ for title, publisher in zip(titles, publishers):
 import ladybug as lb
 import os
 
-db = lb.Database("example.lbug")
+db = lb.Database("example.lbdb")
 conn = lb.Connection(db)
 
 conn.execute("INSTALL llm; LOAD llm;")
@@ -272,7 +272,7 @@ Let's run some example search queries on our newly created vector index.
 import ladybug as lb
 
 # Initialize the database
-db = lb.Database("example.lbug")
+db = lb.Database("example.lbdb")
 conn = lb.Connection(db)
 
 # Install and load vector extension once again
@@ -307,7 +307,7 @@ print(result.get_as_pl())
 import ladybug as lb
 
 # Initialize the database
-db = lb.Database("example.lbug")
+db = lb.Database("example.lbdb")
 conn = lb.Connection(db)
 
 # Install and load vector extension once again

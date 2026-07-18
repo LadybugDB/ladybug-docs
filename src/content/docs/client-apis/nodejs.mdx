@@ -29,7 +29,7 @@ const lbug = require("@ladybugdb/core");
 
 (async () => {
   // Create an empty on-disk database and connect to it
-  const db = new lbug.Database("example.lbug");
+  const db = new lbug.Database("example.lbdb");
   const conn = new lbug.Connection(db);
 
   // Create the tables
@@ -68,7 +68,7 @@ where async operations are not desired.
 const lbug = require("@ladybugdb/core");
 
 // Create an empty on-disk database and connect to it
-const db = new lbug.Database("example.lbug");
+const db = new lbug.Database("example.lbdb");
 const conn = new lbug.Connection(db);
 
 // Create the tables

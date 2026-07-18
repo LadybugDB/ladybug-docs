@@ -71,7 +71,7 @@ at the time of creating the database, as explained below.
 
 ### On-disk database
 
-If you specify a database path when initializing a database, such as `example.lbug`, Ladybug
+If you specify a database path when initializing a database, such as `example.lbdb`, Ladybug
 will operate in the **on-disk** mode. In this mode, Ladybug persists all data to disk at the given
 path. All transactions are logged to a Write-Ahead Log (WAL) and updates are periodically merged into the
 database files during checkpoints.
@@ -119,7 +119,7 @@ import ladybug as lb
 
 def main():
     # Create an empty on-disk database and connect to it
-    db = lb.Database("example.lbug")
+    db = lb.Database("example.lbdb")
     conn = lb.Connection(db)
 
     # Create schema
@@ -274,7 +274,7 @@ const lbug = require("lbug");
 
 (async () => {
   // Create an empty on-disk database and connect to it
-  const db = new lb.Database("example.lbug");
+  const db = new lb.Database("example.lbdb");
   const conn = new lb.Connection(db);
 
   // Create the tables
@@ -351,7 +351,7 @@ import com.ladybugdb.*;
 public class Main {
     public static void main(String[] args) throws ObjectRefDestroyedException {
         // Create an empty on-disk database and connect to it
-        Database db = new Database("example.lbug");
+        Database db = new Database("example.lbdb");
         Connection conn = new Connection(db);
         // Create tables.
         conn.query("CREATE NODE TABLE User(name STRING PRIMARY KEY, age INT64)");
@@ -405,7 +405,7 @@ use lbug::{Connection, Database, Error, SystemConfig};
 
 fn main() -> Result<(), Error> {
     // Create an empty on-disk database and connect to it
-    let db = Database::new("example.lbug", SystemConfig::default())?;
+    let db = Database::new("example.lbdb", SystemConfig::default())?;
     let conn = Connection::new(&db)?;
 
     // Create the tables
@@ -458,7 +458,7 @@ func main() {
     // Create an empty on-disk database and connect to it
     systemConfig := lb.DefaultSystemConfig()
     systemConfig.BufferPoolSize = 1024 * 1024 * 1024
-    db, err := lb.OpenDatabase("example.lbug", systemConfig)
+    db, err := lb.OpenDatabase("example.lbdb", systemConfig)
     if err != nil {
         panic(err)
     }
@@ -542,7 +542,7 @@ Next, replace the contents of `Sources/main.swift`:
 import Ladybug
 
 // Create an empty on-disk database and connect to it
-let db = try! Database("example.lbug")
+let db = try! Database("example.lbdb")
 let conn = try! Connection(db)
 
 // Create schema and load data
@@ -642,13 +642,13 @@ unique_ptr<QueryResult> runQuery(const string_view &query, unique_ptr<Connection
 }
 
 int main() {
-    // Remove example.lbug
-    remove("example.lbug");
+    // Remove example.lbdb
+    remove("example.lbdb");
     remove("example.lb.wal");
 
     // Create an empty on-disk database and connect to it
     SystemConfig systemConfig;
-    auto database = make_unique<Database>("example.lbug", systemConfig);
+    auto database = make_unique<Database>("example.lbdb", systemConfig);
     auto connection = make_unique<Connection>(database.get());
 
     // Create the schema.
@@ -772,7 +772,7 @@ int main()
 {
     // Create an empty on-disk database and connect to it
     lbug_database db;
-    lbug_database_init("example.lbug", lbug_default_system_config(), &db);
+    lbug_database_init("example.lbdb", lbug_default_system_config(), &db);
 
     // Connect to the database.
     lbug_connection conn;
@@ -878,10 +878,10 @@ When using the Ladybug CLI's shell, you can create an on-disk database by specif
 the `lbug` command in the terminal.
 
 ```bash
-lbug example.lbug
+lbug example.lbdb
 ```
 ```
-Opened the database example.lbug in read-write mode.
+Opened the database example.lbdb in read-write mode.
 Enter ":help" for usage hints.
 lbug>
 ```
