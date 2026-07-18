@@ -68,7 +68,7 @@ Let's see this in action with an example.
 import ladybug as lb
 import pandas as pd
 
-db = lb.Database('example.lbug')
+db = lb.Database('example.lbdb')
 conn = lb.Connection(db)
 
 df = pd.DataFrame({

@@ -75,7 +75,7 @@ import ladybug as lb
 Next, create and connect to an empty Ladybug database:
 ```py
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     # Rest of the code goes here
@@ -83,7 +83,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
-This will create a database `social_network.lbug` where the imported CSV data will be stored.
+This will create a database `social_network.lbdb` where the imported CSV data will be stored.
 
 :::note[Note]
 Ladybug also supports an "in-memory" mode where the database is active only during the execution of the Python program.
@@ -91,7 +91,7 @@ This mode is useful when you want to create on-the-fly graphs for ephemeral quer
 For more information, refer to the example in the [create your first graph](/get-started) section.
 :::
 
-For this tutorial, we are using the "on-disk" mode, and the database will be persisted to the `social_network.lbug` database file.
+For this tutorial, we are using the "on-disk" mode, and the database will be persisted to the `social_network.lbdb` database file.
 
 ### Define schema
 The first step in building a Ladybug graph is to define a schema.
@@ -160,7 +160,7 @@ $ python src/create_db.py
 If you run the program again, you'll get an error about duplicated primary keys.
 This is because the data has already been imported into the Ladybug database, and because
 Ladybug is strictly typed, you cannot overwrite data when there are primary key conflicts.
-To ingest the data again, you will have to delete the database file (i.e. `rm social_network.lbug`)
+To ingest the data again, you will have to delete the database file (i.e. `rm social_network.lbdb`)
 in between runs.
 :::
 
@@ -172,7 +172,7 @@ Replace the contents of `src/main.py` with the following code snippet:
 import ladybug as lb
 
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     # Query to be filled out below
@@ -351,7 +351,7 @@ python src/main.py
 import ladybug as lb
 
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     conn.execute("""
@@ -403,7 +403,7 @@ if __name__ == "__main__":
 import ladybug as lb
 
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     # Query to be filled out below

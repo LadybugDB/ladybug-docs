@@ -19,10 +19,10 @@ data is persisted to disk after the CLI shell is closed. Note that if the databa
 directory does not exist, it will be created for you.
 
 ```bash
-$ lbug example.lbug
+$ lbug example.lbdb
 ```
 ```
-Opened the database example.lbug in read-write mode.
+Opened the database example.lbdb in read-write mode.
 Enter ":help" for usage hints.
 lbug>
 ```
@@ -199,10 +199,10 @@ COPY Person FROM 'person.csv';
 Pipe the file content to the CLI as follows:
 
 ```bash
-lbug example.lbug < schema.cypher
+lbug example.lbdb < schema.cypher
 ```
 ``` table
-Opened the database example.lbug in read-write mode.
+Opened the database example.lbdb in read-write mode.
 Enter ":help" for usage hints.
 ┌────────────────────────────────┐
 │ result                         │

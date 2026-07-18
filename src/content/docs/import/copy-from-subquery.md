@@ -46,7 +46,7 @@ command. This can be combined with predicate filters as follows:
 import ladybug as lb
 import pandas as pd
 
-db = lb.Database("example.lbug")
+db = lb.Database("example.lbdb")
 conn = lb.Connection(db)
 
 df = pd.DataFrame({

@@ -30,13 +30,13 @@ uv add lbug polars pyarrow networkx numpy scipy
 
 ## Create the graph
 
-First, initialize a connection to a new Ladybug database named `example.lbug`:
+First, initialize a connection to a new Ladybug database named `example.lbdb`:
 
 ```py
 from pathlib import Path
 import ladybug as lb
 
-db_path = "example.lbug"
+db_path = "example.lbdb"
 
 Path(db_path).unlink(missing_ok=True)
 Path(db_path + ".wal").unlink(missing_ok=True)
@@ -114,7 +114,7 @@ The first method to run a graph algorithm natively in Ladybug is using the `algo
 ```py
 import ladybug as lb
 
-db_path = "example.lbug"
+db_path = "example.lbdb"
 
 db = lb.Database(db_path)
 conn = lb.Connection(db)
@@ -234,12 +234,12 @@ you want to run a graph algorithm that's not yet supported in Ladybug. It's triv
 a NetworkX algorithm result into a Pandas/Polars DataFrame and write it back to Ladybug.
 :::
 
-First, obtain a connection to the existing `example.lbug` database:
+First, obtain a connection to the existing `example.lbdb` database:
 
 ```py
 import ladybug as lb
 
-db_path = "example.lbug"
+db_path = "example.lbdb"
 
 db = lb.Database(db_path)
 conn = lb.Connection(db)

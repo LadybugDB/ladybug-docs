@@ -93,10 +93,10 @@ fn main() -> Result<(), Error> {
 
 Create and connect to an empty Ladybug database:
 ```rs
-let db = Database::new("social_network.lbug", SystemConfig::default())?;
+let db = Database::new("social_network.lbdb", SystemConfig::default())?;
 let conn = Connection::new(&db)?;
 ```
-This will create a database `social_network.lbug` where the imported CSV data will be stored.
+This will create a database `social_network.lbdb` where the imported CSV data will be stored.
 
 Ladybug also supports an `in-memory` mode where the database is active only during the execution of the Rust program. For more information, refer to the example in the [create your first graph](/get-started) section.
 
@@ -166,12 +166,12 @@ id|name|type|database name|comment
 5|POSTS|REL|local(lbug)|
 7|LIKES|REL|local(lbug)|
 ```
-The CSV data has been copied into a new Ladybug database in `social_network.lbug`.
+The CSV data has been copied into a new Ladybug database in `social_network.lbdb`.
 
 :::note[Note]
 If you run the program again, you'll get an error about duplicated primary keys.
 This is because the data has already been imported into the Ladybug database. You
-will have to delete the database file (i.e. `rm social_network.lbug`)
+will have to delete the database file (i.e. `rm social_network.lbdb`)
 in between runs.
 :::
 
@@ -184,7 +184,7 @@ Replace the contents of `src/main.rs` with the following code snippet:
 use lbug::{Connection, Database, Error, SystemConfig, Value};
 
 fn main() -> Result<(), Error> {
-    let db = Database::new("social_network.lbug", SystemConfig::default())?;
+    let db = Database::new("social_network.lbdb", SystemConfig::default())?;
     let conn = Connection::new(&db)?;
 
     // Rest of the code goes here.
@@ -390,7 +390,7 @@ cargo run --bin lbug_social_network
 use lbug::{Connection, Database, Error, SystemConfig};
 
 fn main() -> Result<(), Error> {
-    let db = Database::new("social_network.lbug", SystemConfig::default())?;
+    let db = Database::new("social_network.lbdb", SystemConfig::default())?;
     let conn = Connection::new(&db)?;
 
     conn.query(
@@ -444,7 +444,7 @@ fn main() -> Result<(), Error> {
 use lbug::{Connection, Database, Error, SystemConfig, Value};
 
 fn main() -> Result<(), Error> {
-    let db = Database::new("social_network.lbug", SystemConfig::default())?;
+    let db = Database::new("social_network.lbdb", SystemConfig::default())?;
     let conn = Connection::new(&db)?;
 
     let result1 = conn.query(
