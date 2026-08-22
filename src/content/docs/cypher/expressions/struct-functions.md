@@ -21,5 +21,6 @@ The functions that can be used with structs are as follows:
 | Function | Description | Example | Result |
 | ----------- | ----------- |  ----------- |  ----------- |
 | `struct_extract(struct, 'field_name')` | Extracts named field from struct | `struct_extract({name: 'Alice', age: 20}, 'name')` | `'Alice'` |
+| `properties(struct)` | Returns the struct of properties | `properties({name: 'Alice', age: 20})` | `{name: Alice, age: 20}` |
 
 </div>
