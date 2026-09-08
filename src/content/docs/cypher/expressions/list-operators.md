@@ -10,7 +10,7 @@ The following table shows the operators that can be used with lists.
 | Operator | Description | Example | Result |
 | :----------- | ----------- |  ----------- |  ----------- |
 | `+` | concatenates two lists | `RETURN [1,2,3] + [4,5] AS mylist` | `[1,2,3,4,5]` |
-| `[start:stop]` | access specific elements in a list | `WITH [1,2,3,4,5] AS mylist RETURN mylist[1:3]` | `[1,2]` |
+| `[start:stop]` | access specific elements in a list | `WITH [1,2,3,4,5] AS mylist RETURN mylist[1:3]` | `[1,2,3]` |
 | `IN` | operator for the `list_contains` function | `1 IN [1,2,3]` | `true` |
 
 </div>
