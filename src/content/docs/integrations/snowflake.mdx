@@ -21,9 +21,9 @@ privileges:
 These are requested in the manifest and granted through the Snowsight install
 flow. No additional account-level grants are needed for the built-in demo.
 
-### Iceberg namespace grants (optional)
+### Iceberg namespace grants
 
-To load your own tables into the graph, the app uses restricted caller's rights.
+To query your own Snowflake tables, the app uses restricted caller's rights.
 Grant the app read access to the database and schema containing your tables:
 
 ```sql
@@ -228,17 +228,4 @@ CALL <app_name>.core.resume_service();
 
 -- View container logs
 CALL <app_name>.core.get_service_logs('0', 'ladybug');
-```
-
-## Cypher Quick Reference
-
-```
-(n:Label)                  Match a node with a given label
-(n:Label {prop: value})    Match a node with specific property
--[:REL_TYPE]->             Directed relationship
-WHERE n.prop > value       Filter condition
-RETURN n.prop              Select output columns
-ORDER BY n.prop            Sort results
-LIMIT n                    Limit result count
-COUNT(n)                   Aggregate count
 ```
