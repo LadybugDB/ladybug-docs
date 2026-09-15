@@ -1,0 +1,244 @@
+---
+title: Snowflake Native App
+description: Run Ladybug inside Snowflake as a Native App and query Snowflake tables with Cypher.
+---
+
+LadybugDB is a graph query engine that runs inside Snowflake as a Native App.
+It lets you run [Cypher](https://en.wikipedia.org/wiki/Cypher_(query_language))
+queries against an in-memory graph built from your Snowflake tables — including
+Iceberg tables — with no external infrastructure.
+
+## Required Privileges
+
+After installing the app, Snowflake prompts you to grant these account-level
+privileges:
+
+| Privilege | Why it's needed |
+|-----------|-----------------|
+| **CREATE COMPUTE POOL** | LadybugDB runs as a container service and needs a compute pool (`CPU_X64_XS`, 1 node) to execute. The pool is created automatically during setup. |
+| **BIND SERVICE ENDPOINT** | The container exposes an internal HTTP endpoint that Snowflake service functions call. This privilege allows the app to bind that endpoint. |
+
+These are requested in the manifest and granted through the Snowsight install
+flow. No additional account-level grants are needed for the built-in demo.
+
+### Iceberg namespace grants (optional)
+
+To load your own tables into the graph, the app uses restricted caller's rights.
+Grant the app read access to the database and schema containing your tables:
+
+```sql
+GRANT CALLER USAGE ON DATABASE my_db TO APPLICATION <app_name>;
+GRANT CALLER DATA READ ON SCHEMA my_db.my_schema TO APPLICATION <app_name>;
+```
+
+Both grants are required. The database-level grant allows the app to resolve
+objects in the schema; the schema-level grant allows it to read table data.
+
+## Configuration
+
+No manual configuration is required. On install the app:
+
+1. Creates a compute pool (`<app_name>_compute_pool`, `CPU_X64_XS`, 1 node).
+2. Starts the LadybugDB container service.
+3. Waits for the service to become ready.
+4. Registers all service functions and procedures.
+
+The service auto-suspends after 10 minutes of inactivity to avoid charges, and
+resumes automatically on the next function call. You can also manage the
+lifecycle manually (see [Service Management](#service-management)).
+
+## Quick Start
+
+> In all examples below, replace `<app_name>` with the name you chose when
+> installing the application (e.g. `ladybugdb`).
+
+```sql
+-- Verify the service is running
+CALL <app_name>.core.get_service_status();
+
+-- Run all 6 built-in demo queries
+SELECT <app_name>.core.run_demo();
+
+-- Run a custom Cypher query against the demo graph
+SELECT <app_name>.core.query_graph(
+  'MATCH (u:User) RETURN u.name, u.age ORDER BY u.age'
+);
+```
+
+## Functions and Procedures
+
+### Demo graph (built-in, stateless)
+
+| Function | Description |
+|----------|-------------|
+| `core.query_graph(cypher STRING)` | Run a Cypher query against the built-in demo graph. Returns JSON. |
+| `core.run_demo()` | Run 6 sample queries and return all results as JSON. |
+| `core.list_tables()` | Show node and relationship table definitions in the demo graph. |
+
+### Iceberg namespace (persistent, your data)
+
+| Function / Procedure | Description |
+|----------------------|-------------|
+| `core.register_namespace(schema_fqn STRING, schema_cypher STRING)` | Load all tables from a consumer schema into the graph. `schema_cypher` declares the graph topology (see below). |
+| `core.query_iceberg(cypher STRING)` | Run a Cypher query against the loaded namespace graph. Returns JSON. |
+| `core.iceberg_schema()` | Show node and relationship tables in the namespace graph. |
+| `core.namespace_info()` | Return push-down metadata: source FQNs, PK/FK mappings, column types, and the original `schema_cypher`. |
+| `core.clear_iceberg()` | Reset the namespace graph. |
+
+### Service management
+
+| Procedure | Description |
+|-----------|-------------|
+| `core.get_service_status()` | Check if the container service is running. |
+| `core.suspend_service()` | Suspend the service to stop compute charges. |
+| `core.resume_service()` | Resume a suspended service. |
+| `core.get_service_logs(instance_id, container_name)` | View container logs. Use `'0'` and `'ladybug'` for defaults. |
+
+## Loading Your Data (Iceberg Namespace)
+
+### Naming convention
+
+Place your tables in a single schema. Name them as follows:
+
+- **Node tables**: any name *not* starting with `rel_`.
+  The first column is used as the primary key.
+- **Relationship tables**: prefix with `rel_` (e.g. `rel_has_department`,
+  `rel_friends`). The first two columns are the source and destination foreign
+  keys matching the primary keys of the referenced node tables.
+
+### Schema declaration
+
+Pass a `schema_cypher` string that declares the graph topology using
+`CREATE REL TABLE` statements:
+
+```
+CREATE REL TABLE has_department (FROM university TO department, MANY_MANY);
+CREATE REL TABLE friends (FROM person TO person);
+```
+
+This tells LadybugDB which node tables each relationship connects. Backtick
+quoting is supported for table names with special characters.
+
+### Full example
+
+```sql
+-- 1. Grant the app access to your schema
+GRANT CALLER USAGE ON DATABASE analytics TO APPLICATION <app_name>;
+GRANT CALLER DATA READ ON SCHEMA analytics.graph_data TO APPLICATION <app_name>;
+
+-- 2. Register the namespace
+CALL <app_name>.core.register_namespace(
+  'analytics.graph_data',
+  'CREATE REL TABLE has_department (FROM university TO department, MANY_MANY);
+   CREATE REL TABLE collaborates (FROM university TO university);'
+);
+
+-- 3. Query with Cypher
+SELECT <app_name>.core.query_iceberg(
+  'MATCH (u:university {name: ''Stanford''})-[:has_department]->(d:department)
+   RETURN d.name, d.budget ORDER BY d.budget DESC'
+);
+
+-- 4. Inspect the graph schema
+SELECT <app_name>.core.iceberg_schema();
+
+-- 5. View push-down metadata (source table FQNs, column types)
+SELECT <app_name>.core.namespace_info();
+```
+
+## Demo Graph
+
+The built-in demo graph models a small social network with **5 users** and
+**3 cities**, connected by `Follows` and `LivesIn` relationships.
+
+### Example queries
+
+```sql
+-- All users sorted by age
+SELECT <app_name>.core.query_graph(
+  'MATCH (u:User) RETURN u.name, u.age ORDER BY u.age'
+);
+
+-- Who does Alice follow?
+SELECT <app_name>.core.query_graph(
+  'MATCH (a:User {name: ''Alice''})-[:Follows]->(b:User) RETURN b.name'
+);
+
+-- Friends of friends (2-hop) from Alice
+SELECT <app_name>.core.query_graph(
+  'MATCH (a:User {name: ''Alice''})-[:Follows]->(b:User)-[:Follows]->(c:User)
+   RETURN a.name AS start, b.name AS via, c.name AS reached'
+);
+
+-- Users who follow someone in the same city
+SELECT <app_name>.core.query_graph(
+  'MATCH (a:User)-[:Follows]->(b:User),
+         (a)-[:LivesIn]->(c:City)<-[:LivesIn]-(b)
+   RETURN a.name AS user, b.name AS follows, c.name AS shared_city'
+);
+
+-- Count followers per user
+SELECT <app_name>.core.query_graph(
+  'MATCH (a:User)-[:Follows]->(b:User)
+   RETURN b.name, COUNT(a) AS follower_count ORDER BY follower_count DESC'
+);
+```
+
+## Output Format
+
+All functions return JSON strings. Each key is a column name and each value is
+a list of values for that column:
+
+```json
+{
+  "u.name": ["Eve", "Bob", "Dave", "Alice", "Carol"],
+  "u.age":  [22, 25, 28, 30, 35]
+}
+```
+
+To parse results into rows in Snowflake:
+
+```sql
+SELECT f.value::STRING AS name
+FROM TABLE(
+  FLATTEN(
+    PARSE_JSON(
+      <app_name>.core.query_graph('MATCH (u:User) RETURN u.name ORDER BY u.age')
+    ):'u.name'
+  )
+) f;
+```
+
+## Service Management
+
+The service runs on a `CPU_X64_XS` compute pool (1 node). It auto-suspends
+after 10 minutes of inactivity and resumes automatically on the next call.
+
+To manage the lifecycle manually:
+
+```sql
+-- Check status
+CALL <app_name>.core.get_service_status();
+
+-- Suspend immediately
+CALL <app_name>.core.suspend_service();
+
+-- Resume
+CALL <app_name>.core.resume_service();
+
+-- View container logs
+CALL <app_name>.core.get_service_logs('0', 'ladybug');
+```
+
+## Cypher Quick Reference
+
+```
+(n:Label)                  Match a node with a given label
+(n:Label {prop: value})    Match a node with specific property
+-[:REL_TYPE]->             Directed relationship
+WHERE n.prop > value       Filter condition
+RETURN n.prop              Select output columns
+ORDER BY n.prop            Sort results
+LIMIT n                    Limit result count
+COUNT(n)                   Aggregate count
+```
