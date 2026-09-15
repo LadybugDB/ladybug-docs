@@ -315,6 +315,15 @@ export default defineConfig({
                         { label: 'Vector search', link: '/extensions/vector'},
                     ],
                 },
+                {
+                    label: 'Integrations',
+                    collapsed: true,
+                    items: [
+                        { label: 'Overview', link: '/integrations'},
+                        { label: 'Snowflake', link: '/integrations/snowflake'},
+                        { label: 'PostgreSQL', link: '/integrations/postgres'},
+                    ],
+                },
             ],
             plugins: process.env.CHECK_LINKS
                 ? [

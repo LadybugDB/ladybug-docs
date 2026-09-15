@@ -1,0 +1,232 @@
+---
+title: PostgreSQL Extension (pg_ladybug)
+description: Run Cypher queries inside PostgreSQL with the pg_ladybug extension.
+---
+
+**Cypher query support as a PostgreSQL extension.**
+
+`pg_ladybug` embeds the [Ladybug](https://github.com/LadybugDB/ladybug) graph engine
+via its C API (`liblbug`) and lets you run **Cypher** queries that read your **Postgres**
+tables — with native Postgres execution under the hood.
+
+:::note[Note]
+This page covers `pg_ladybug`, which runs Cypher *inside* PostgreSQL. To query a
+PostgreSQL database from a standalone Ladybug instance instead, see the
+[`postgres` extension](/extensions/attach/postgres).
+:::
+
+Source: [LadybugDB/pg_ladybug](https://github.com/LadybugDB/pg_ladybug).
+
+## How it works
+
+1. You declare which Postgres tables represent Cypher node/edge labels
+   (`ladybug.register_node`, `ladybug.register_edge`), or use the `node_*`/`rel_*`
+   naming convention.
+2. You write a `MATCH` query in Cypher.
+3. `pg_ladybug` hands it to the embedded Ladybug planner. Ladybug's planner
+   detects that all tables are backed by the *same* Postgres database and
+   rewrites the entire pattern into a **single SQL JOIN query**.
+4. `pg_ladybug` extracts that SQL from the EXPLAIN plan and runs it **natively via
+   SPI** against your local Postgres tables.
+5. Results stream back through a standard `SETOF record` SRF.
+
+There is also a second mode: run Cypher-only queries that don't access Postgres tables
+at all. You can create Ladybug tables just like in a standalone Ladybug deployment.
+Data lives in `$PGDATA/storage.lbdb`. Mixed-mode execution is not supported in this
+release.
+
+## Requirements
+
+- **PostgreSQL 17+** (tested on 17 and 18)
+- **pg_config** (postgresql-server-dev package)
+- **`liblbug.so` v0.19.0+** (Ladybug engine shared library; see Installation)
+- **`libpg_client.lbug_extension`** (pg_client extension for ATTACH; see Installation)
+- **OpenSSL** (liblbug requires `libssl`/`libcrypto`)
+
+## Installation
+
+### 1. Download liblbug and pg_client
+
+You need **liblbug v0.19.0 or later** and the **pg_client extension**.
+
+```bash
+# Download liblbug v0.19.0 (shared library)
+# Set LBUG_VERSION or use a nightly build RUN_ID
+export LBUG_PRECOMPILED_RUN_ID=<run_id>
+export LBUG_TARGET_DIR=./lib
+export LBUG_LIB_KIND=shared
+bash scripts/download-liblbug.sh
+
+# Download pg_client extension (nightly build from LadybugDB/extensions)
+# Place libpg_client.lbug_extension next to liblbug.so
+cp /path/to/libpg_client.lbug_extension lib/
+```
+
+The `lib/` directory should contain:
+
+```
+lib/
+├── liblbug.so -> liblbug.so.0
+├── liblbug.so.0 -> liblbug.so.0.19.0.*
+├── liblbug.so.0.19.0.*
+└── libpg_client.lbug_extension
+```
+
+### 2. Build and install the extension
+
+```bash
+make
+sudo make install
+```
+
+### 3. Start a test database
+
+```bash
+bash scripts/setup-test-db.sh
+```
+
+Or manually:
+
+```sql
+CREATE EXTENSION pg_ladybug;
+```
+
+## Quick start
+
+```bash
+# Run the full test suite (uses pgembed — no pre-installed PG needed)
+bash scripts/test.sh
+
+# Or use an existing PG cluster
+bash scripts/setup-test-db.sh
+bash scripts/test.sh
+```
+
+## Manual test walkthrough
+
+```sql
+-- Connect to the test database
+\c ladybug_test
+
+-- Set connection string for the Ladybug ATTACH (via pg_client)
+SET ladybug.pg_connstr = 'host=/var/run/postgresql port=5433 dbname=ladybug_test user=postgres';
+
+-- --- Simple node MATCH ---
+SELECT * FROM ladybug.cypher(
+  'MATCH (n:node_person) RETURN n.name, n.age ORDER BY n.age'
+) AS t(name text, age int);
+
+-- Output:
+--  name  | age
+-- -------+-----
+--  Bob   |  25
+--  Dave  |  28
+--  Alice |  30
+--  Carol |  35
+
+-- --- See the pushed SQL ---
+SELECT ladybug.pushed_sql(
+  'MATCH (n:node_person) RETURN n.name, n.age ORDER BY n.age'
+);
+-- Returns: SELECT * FROM node_person ORDER BY age
+
+-- --- Relationship pattern (requires rel_* tables with FK constraints) ---
+SELECT * FROM ladybug.cypher(
+  'MATCH (a:node_person)-[r:rel_knows]->(b:node_person) RETURN a.name, b.name, r.since'
+) AS t(a_name text, b_name text, since int);
+```
+
+**Note on labels vs table names:** the pg_client extension registers tables
+using their raw names. Use `node_person` (the table name) as the label
+in Cypher queries. Label-to-table mapping via `ladybug.register_node()` is
+used by the SQL extraction layer.
+
+## Naming convention
+
+Tables with the following prefixes are automatically recognized by the
+pg_client extension:
+
+| Prefix | Cypher role  | Example       |
+|--------|--------------|---------------|
+| `node_`| Node label   | `node_person` |
+| `rel_` | Relationship | `rel_knows`   |
+
+For `rel_*` tables, the source and destination node tables are determined by
+foreign key constraints on `src_id` and `dst_id` columns.
+
+You can also register tables manually using `ladybug.register_node()` and
+`ladybug.register_edge()`.
+
+## Test scripts
+
+```bash
+# Run the test suite (uses pgembed — no pre-installed PG needed)
+bash scripts/test.sh
+
+# With verbose output
+bash scripts/test.sh -v
+```
+
+The test suite uses [pgembed](https://pypi.org/project/pgembed/) to start a
+temporary PostgreSQL instance, build the extension against it, install
+pg_ladybug + pg_client, and run the full test suite.
+
+## SQL reference
+
+| Function | Description |
+|---|---|
+| `ladybug.cypher(text)` → `SETOF record` | Translate Cypher → SQL via Ladybug planner, execute natively, return rows |
+| `ladybug.sql_query(text)` → `SETOF record` | Run arbitrary SQL via SPI (pure Postgres, no liblbug needed) |
+| `ladybug.explain(text)` → `text` | Return the Ladybug EXPLAIN plan as text |
+| `ladybug.pushed_sql(text)` → `text` | Return the pushed-down SQL that `cypher()` would execute |
+| `ladybug.register_node(label, table_name, id_column, props_json, graph)` → `int` | Map a Postgres table as a Cypher node label |
+| `ladybug.register_edge(label, table_name, from_col, to_col, id_column, graph)` → `int` | Map a Postgres table as a Cypher edge label |
+| `ladybug.list_labels(graph)` → `table` | List all registered node/edge labels for a graph |
+| `ladybug.reset_graph(graph)` → `int` | Clear all label mappings for a graph |
+
+## GUCs
+
+| GUC | Default | Description |
+|---|---|---|
+| `ladybug.pg_connstr` | `""` | Connection string used to ATTACH this Postgres to Ladybug's catalog via pg_client |
+| `ladybug.storage_path` | `<DataDir>/storage.lbdb` | Filesystem path for the persistent Ladybug storage. If initialization at this path fails, the extension falls back to in-memory mode and emits a `WARNING`. Set to an empty string to disable persistent storage. |
+
+## Execution strategies
+
+`ladybug.cypher()` tries two strategies when executing a Cypher query:
+
+1. **Pushdown (default).** The Cypher is handed to the embedded Ladybug
+   planner, which extracts a pushed-down SQL string. That SQL is then run
+   natively by PostgreSQL via SPI, and the rows are streamed back through
+   the SRF. This is the fastest path and is the only one that lets the
+   engine plan across multiple Cypher patterns (e.g. multi-hop matches).
+2. **Direct execution (fallback).** If the planner reports that no
+   pushdown is possible for the Cypher (for example `RETURN 1`,
+   `UNWIND [1, 2, 3] AS x RETURN x`, or any Cypher that produces values
+   the planner cannot translate to plain SQL), `ladybug.cypher()` falls
+   back to executing the Cypher as-is through the Ladybug engine and
+   returning the result rows as if a corresponding native SQL query had
+   been run.
+
+Use `ladybug.pushed_sql()` and `ladybug.explain()` to inspect which
+strategy was used for a given query.
+
+The bridge uses the `pg_client` Ladybug extension (loaded from
+`libpg_client.lbug_extension`) to ATTACH the local PostgreSQL database.
+pg_client queries `information_schema.tables` and `information_schema.columns`
+via libpq, making it compatible with all PostgreSQL versions.
+
+## Updating liblbug
+
+```bash
+# Download a specific nightly build
+export LBUG_PRECOMPILED_RUN_ID=<run_id>
+bash scripts/download-liblbug.sh
+
+# Or download the latest release
+bash scripts/download-liblbug.sh
+```
+
+## License
+
+PostgreSQL License.
