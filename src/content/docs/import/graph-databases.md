@@ -37,37 +37,4 @@ To use GraphAr data in Ladybug, convert it to Icebug format first:
 uvx icebug-format --graphar <path to graphar archive>
 ```
 
-This generates a directory of Parquet files plus a Cypher schema file that can be loaded directly with `lbug -i`. See the [Icebug format](#icebug-format) section for details.
-
-## Icebug format
-
-[Icebug](https://github.com/Ladybug-Memory/icebug-format) is a Ladybug-native graph-aware Parquet format designed for ingestion-free graph analytics. Unlike general-purpose Parquet files, Icebug preserves graph structure (node and relationship tables) and enables direct querying without preprocessing.
-
-### Generating Icebug files
-
-Use the `icebug-format` tool to generate Icebug files from existing databases:
-
-```bash
-# From a DuckDB database
-uvx icebug-format --source-db demo-db.duckdb --schema schema.cypher
-
-# From a GraphAr archive
-uvx icebug-format --graphar <path to archive>
-```
-
-This generates a directory of Parquet files (for nodes and relationships) plus a Cypher schema file.
-
-### Using Icebug files
-
-Start Ladybug with the generated schema file using the `-i` flag:
-
-```bash
-lbug -i csr_graph/schema.cypher
-```
-
-Then query the graph directly:
-
-```cypher
-MATCH (a:User)-[b:LivesIn]->(c:City)
-RETURN a.*, b.*, c.*;
-```
+This generates a directory of Parquet files plus a Cypher schema file that can be loaded directly with `lbug -i`. See the [Icebug format](/import/icebug) section for details.

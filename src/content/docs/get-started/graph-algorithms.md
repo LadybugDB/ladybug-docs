@@ -14,7 +14,7 @@ in Python to run almost any graph algorithm on a Ladybug subgraph.
 ## Prepare the dataset
 
 A dataset of Nobel laureates and their mentorship network is provided
-[here](https://raw.githubusercontent.com/ladybugdb/ladybug/tutorials/main/src/network_analysis/data.zip).
+[here](https://huggingface.co/datasets/ladybugdb/python-tutorial/blob/main/nobel-mentorship.zip).
 Download the dataset to your local directory and unzip it.
 
 The nodes in the dataset are scholars who won Nobel prizes, as well as other
@@ -30,13 +30,13 @@ uv add lbug polars pyarrow networkx numpy scipy
 
 ## Create the graph
 
-First, initialize a connection to a new Ladybug database named `example.lbug`:
+First, initialize a connection to a new Ladybug database named `example.lbdb`:
 
 ```py
 from pathlib import Path
-import real_ladybug as lb
+import ladybug as lb
 
-db_path = "example.lbug"
+db_path = "example.lbdb"
 
 Path(db_path).unlink(missing_ok=True)
 Path(db_path + ".wal").unlink(missing_ok=True)
@@ -112,9 +112,9 @@ The first method to run a graph algorithm natively in Ladybug is using the `algo
 #### Install and load the extension
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
-db_path = "example.lbug"
+db_path = "example.lbdb"
 
 db = lb.Database(db_path)
 conn = lb.Connection(db)
@@ -234,12 +234,12 @@ you want to run a graph algorithm that's not yet supported in Ladybug. It's triv
 a NetworkX algorithm result into a Pandas/Polars DataFrame and write it back to Ladybug.
 :::
 
-First, obtain a connection to the existing `example.lbug` database:
+First, obtain a connection to the existing `example.lbdb` database:
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
-db_path = "example.lbug"
+db_path = "example.lbdb"
 
 db = lb.Database(db_path)
 conn = lb.Connection(db)
@@ -408,5 +408,4 @@ For performance and scalability, it's recommended to use Ladybug's native `algo`
 is available. If not, you can always fall back to using NetworkX, which has a far more extensive suite of
 graph algorithms.
 
-To reproduce the analysis shown in this tutorial, see the code
-[here](https://github.com/LadybugDB/tutorials/tree/main/src/network_analysis).
+To reproduce the analysis shown in this tutorial, run the code snippets above after placing the CSV files in `./data`.

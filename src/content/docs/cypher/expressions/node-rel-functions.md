@@ -10,6 +10,7 @@ The following functions are used to get information about nodes and relationship
 | `ID` | returns the internal ID of node/rel | |
 | `LABEL` | returns the label name of node/relationship | `LABELS` |
 | `OFFSET` | returns the offset of the internal ID | |
+| `PROPERTIES` | returns a struct of all user-defined properties of node/rel | |
 
 See below for more details on each of these functions.
 
@@ -76,4 +77,26 @@ MATCH (a) RETURN OFFSET(ID(a)) AS OFFSET LIMIT 1;
 ├────────┤
 │ 0      │
 └────────┘
+```
+
+## PROPERTIES
+
+Returns a `STRUCT` containing all user-defined properties of a node or relationship, omitting internal metadata columns (`_ID`, `_LABEL`, `_SRC`, `_DST`).
+
+| Input type | Output type |
+| --- | --- |
+| `NODE` | `STRUCT` |
+| `REL` | `STRUCT` |
+
+```cypher
+MATCH (a:User {name: 'Alice'}) RETURN PROPERTIES(a) AS props;
+```
+
+```table
+┌───────────────────────────────────────────┐
+│ props                                     │
+│ STRUCT(name STRING, age INT64)            │
+├───────────────────────────────────────────┤
+│ {name: Alice, age: 30}                    │
+└───────────────────────────────────────────┘
 ```

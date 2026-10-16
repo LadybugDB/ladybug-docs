@@ -35,12 +35,12 @@ Run the appropriate version of Ladybug Explorer via Docker as follows:
 
 ```bash
 docker run --rm -p 8000:8000 \
-    -v /path/to/example.lbug:/database \
+    -v /path/to/example.lbdb:/database \
     ghcr.io/ladybugdb/explorer:latest
 
 docker run -p 8000:8000 \
            -v /path/to/local/directory:/database \
-           -e LBUG_FILE=example.lbug \
+           -e LBUG_FILE=example.lbdb \
            --rm ghcr.io/ladybugdb/explorer:latest
 ```
 

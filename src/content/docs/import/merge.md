@@ -65,10 +65,10 @@ without having to merge the rows one by one (i.e., **without for loops**).
 Let's see this in action with an example.
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 import pandas as pd
 
-db = lb.Database('example.lbug')
+db = lb.Database('example.lbdb')
 conn = lb.Connection(db)
 
 df = pd.DataFrame({

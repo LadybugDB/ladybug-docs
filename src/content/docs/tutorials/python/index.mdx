@@ -24,12 +24,12 @@ for alternative installation methods.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install real_ladybug
+pip install ladybug
 ```
 
-Next, [download the zipped data](https://lbugdb.github.io/data/tutorial/tutorial_data.zip) and unzip the files.
+Next, [download the zipped data](https://huggingface.co/datasets/ladybugdb/python-tutorial/resolve/main/tutorial_data.zip) and unzip the files.
 ```bash
-curl -o tutorial_data.zip https://lbugdb.github.io/data/tutorial/tutorial_data.zip
+curl -o tutorial_data.zip https://huggingface.co/datasets/ladybugdb/python-tutorial/resolve/main/tutorial_data.zip
 unzip tutorial_data.zip
 rm tutorial_data.zip
 ```
@@ -70,12 +70,12 @@ We are now ready to start the tutorial.
 ## Create the database
 Clear out the contents of `src/create_db.py` and import Ladybug:
 ```py
-import real_ladybug as lb
+import ladybug as lb
 ```
 Next, create and connect to an empty Ladybug database:
 ```py
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     # Rest of the code goes here
@@ -83,7 +83,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
-This will create a database `social_network.lbug` where the imported CSV data will be stored.
+This will create a database `social_network.lbdb` where the imported CSV data will be stored.
 
 :::note[Note]
 Ladybug also supports an "in-memory" mode where the database is active only during the execution of the Python program.
@@ -91,7 +91,7 @@ This mode is useful when you want to create on-the-fly graphs for ephemeral quer
 For more information, refer to the example in the [create your first graph](/get-started) section.
 :::
 
-For this tutorial, we are using the "on-disk" mode, and the database will be persisted to the `social_network.lbug` database file.
+For this tutorial, we are using the "on-disk" mode, and the database will be persisted to the `social_network.lbdb` database file.
 
 ### Define schema
 The first step in building a Ladybug graph is to define a schema.
@@ -160,7 +160,7 @@ $ python src/create_db.py
 If you run the program again, you'll get an error about duplicated primary keys.
 This is because the data has already been imported into the Ladybug database, and because
 Ladybug is strictly typed, you cannot overwrite data when there are primary key conflicts.
-To ingest the data again, you will have to delete the database file (i.e. `rm social_network.lbug`)
+To ingest the data again, you will have to delete the database file (i.e. `rm social_network.lbdb`)
 in between runs.
 :::
 
@@ -169,10 +169,10 @@ We can now start querying the graph to answer some questions about the social ne
 
 Replace the contents of `src/main.py` with the following code snippet:
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     # Query to be filled out below
@@ -217,10 +217,10 @@ LIMIT 5
 ```
 ```
 ['u2.username', 'follower_count']
-['darkdog878', 6]
-['epicking81', 3]
-['fastgirl798', 4]
+['mysticwolf198', 4]
 ['stormcat597', 2]
+['coolking201', 3]
+['brightninja683', 5]
 ['epiccat105', 4]
 ```
 
@@ -237,11 +237,11 @@ LIMIT 1
 ```
 ```
 ['u2.username', 'follower_count']
-['stormninja678', 6]
+['darkdog878', 6]
 ```
 
 This dataset has multiple users with the greatest follower count of `6`. So, we are
-excluding other users with the same follower count as `stormninja678` (or whoever appeared first).
+excluding other users with the same follower count as `darkdog878` (or whoever appeared first).
 If you want to retrieve all of them, the query becomes a bit longer:
 ```cypher
 MATCH (u1:User)-[f:FOLLOWS]->(u2:User)
@@ -251,6 +251,10 @@ MATCH (u1:User)-[f:FOLLOWS]->(u2:User)
 WITH u2, COUNT(u1) as follower_count, max_count
 WHERE follower_count = max_count
 RETURN u2.username, follower_count
+```
+```
+['stormninja678', 6]
+['darkdog878', 6]
 ```
 
 ### Q2: What is the shortest path between two users?
@@ -328,7 +332,7 @@ This tells us that there is exactly one path of length 3 between the three users
 ## Summary
 In this tutorial, we've shown how to use Ladybug's Python API to import CSV data as a graph and query it using Cypher.
 
-You're now ready to import your own datasets into Ladybug and query them usin Ladybug's Python API!
+You're now ready to import your own datasets into Ladybug and query them using Ladybug's Python API!
 
 ## Code
 Here is the full code from the tutorial that you can use to follow along. Reminder that you can run the code as follows:
@@ -344,10 +348,10 @@ python src/main.py
 <TabItem label="create_db.py">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     conn.execute("""
@@ -396,10 +400,10 @@ if __name__ == "__main__":
 <TabItem label="main.py">
 
 ```py
-import real_ladybug as lb
+import ladybug as lb
 
 def main() -> None:
-    db = lb.Database("social_network.lbug")
+    db = lb.Database("social_network.lbdb")
     conn = lb.Connection(db)
 
     # Query to be filled out below

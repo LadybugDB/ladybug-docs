@@ -108,13 +108,13 @@ runPreparedQuery(const string_view &query,
 }
 
 int main() {
-    // Remove example.lbug
-    remove("example.lbug");
-    remove("example.lbug.wal");
+    // Remove example.lbdb
+    remove("example.lbdb");
+    remove("example.lbdb.wal");
 
     // Create an empty on-disk database and connect to it
     SystemConfig systemConfig;
-    auto database = make_unique<Database>("example.lbug", systemConfig);
+    auto database = make_unique<Database>("example.lbdb", systemConfig);
     auto connection = make_unique<Connection>(database.get());
 
     // Create the schema.
