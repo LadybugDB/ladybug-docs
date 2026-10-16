@@ -17,6 +17,7 @@ graph visualization to analyze trends in your graph data.
 gdotv's Ladybug Cypher query editor offers a powerful suite of features to accelerate and enhance your
 query writing experience, by offering essential development features:
 
+- MCP Server
 - Cypher syntax validation
 - Autocomplete suggestions based on your graph data schema
 - Embedded schema documentation so you can immediately identify the relevant labels and property keys for your nodes & edges
@@ -48,6 +49,7 @@ to make sure that the connection is successful.
 
 <img src="/img/visualization/gdotv/gdotv-2.png" />
 
+
 ## Query using Cypher
 
 You're now ready to write and execute Cypher queries in gdotv! The default query is loaded in
@@ -59,6 +61,20 @@ the query editor, which can be executed by clicking on the "Play" button or pres
 The default visualization is a graph of the results, if you choose to `RETURN *` or return nodes,
 relationships, or paths from your query. You can also choose to visualize the results as a table
 by returning the properties of the nodes or relationships.
+
+## MCP Server
+
+gdotv includes its own MCP server, so AI agents such as Claude Code, Cursor, Codex and VS Code can
+work with your Ladybug database directly through gdotv. The MCP server can write a Cypher query
+based on your Ladybug schema, validate it, then run it and provide a link which opens the
+result in gdotv. Further capabilities include being able to save queries as reports and put
+together dashboards, both of which can be reused with parameters by your team.
+
+gdotv's MCP server is secure by design. Anything gdotv can't verify as a read operation is refused
+unless write operations are opted-in. This setting is connection specific and can be toggled via
+the connection settings.
+
+More information, including how to set it up, can be found in the [gdotv documentation](https://gdotv.com/docs/mcp-server/).
 
 ## No-code Ladybug Exploration
 
