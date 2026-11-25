@@ -6,9 +6,19 @@ description: Hardware and software requirements for running Ladybug graph databa
 ## CLI, C, and C++
 
 The Ladybug CLI and the C and C++ APIs are pre-compiled for:
-- **macOS >= 11.0**, as a universal binary that supports both Intel-based and ARM-based Macs.
-- **Linux**, as a universal binary that supports both x86-64 and aarch64 architectures and supports most modern Linux distributions such as **RHEL/CentOS/Rocky Linux/Oracle Linux 8.0 or later and Ubuntu 22.04 or later**.
-- **Windows**, as a universal binary that supports both x86-64 and aarch64 architectures and supports most modern Windows versions such as **Windows 10 and 11**.
+- **macOS >= 13.3**, as separate x86-64 (Intel) and arm64 (Apple Silicon) binaries.
+- **Linux**, with separate x86-64 and aarch64 binaries. It requires **glibc 2.28 or later** (the `manylinux_2_28` baseline), which covers most modern Linux distributions such as **RHEL/AlmaLinux/CentOS/Rocky Linux/Oracle Linux 8.0 or later, Ubuntu 20.04 or later, and Debian 11 or later**.
+- **Windows**, with separate x86-64 and aarch64 binaries, supporting most modern Windows versions such as **Windows 10 and 11**.
+
+### Runtime requirements
+
+The native engine links OpenSSL 3 dynamically and the native packages do not bundle it, so it must be installed on the machine that runs your app. This is intentional: OpenSSL is security-critical software with frequent vulnerability fixes, so you should rely on your OS or runtime vendor — your Linux distribution's package manager, Homebrew's `openssl@3` on macOS, or a maintained OpenSSL 3 installer on Windows — to receive timely security updates, rather than on a copy bundled with Ladybug:
+
+- **Windows**: `libssl-3-x64.dll` and `libcrypto-3-x64.dll` (`-arm64` on ARM64) on the DLL search path, for example from an OpenSSL 3 installer or copied next to your executable, plus the Microsoft Visual C++ Redistributable (the system-wide runtime libraries, such as `MSVCP140.dll` and `VCRUNTIME140.dll`, required by apps built with Visual Studio — the VS 2015–2022 package covers the VS 2022 builds, but the architecture must match: x64 or ARM64).
+- **Linux**: the distribution's OpenSSL 3 package (`libssl.so.3`, `libcrypto.so.3`).
+- **macOS**: Homebrew's `openssl@3`.
+
+When one of these is missing, the first database call throws `DllNotFoundException` for `lbug_shared` "or one of its dependencies".
 
 ## Python
 
